@@ -177,33 +177,6 @@
       border: 1px solid #ef9a9a;
     }
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-top: 14px;
-    }
-
-    .stat-card {
-      background: #fff7f7;
-      border: 1px solid #e5c4c4;
-      border-radius: 14px;
-      padding: 12px;
-      text-align: center;
-    }
-
-    .stat-card .num {
-      font-size: 22px;
-      font-weight: bold;
-      color: #8b0000;
-    }
-
-    .stat-card .label {
-      font-size: 12px;
-      color: #666;
-      margin-top: 4px;
-    }
-
     .table-wrap {
       overflow-x: auto;
       margin-top: 14px;
@@ -250,12 +223,11 @@
 
     @media (max-width: 600px) {
       .row,
-      .row-3,
-      .cap-so-box,
-      .stats,
-      .tabs {
-        grid-template-columns: 1fr;
-      }
+.row-3,
+.cap-so-box,
+.tabs {
+  grid-template-columns: 1fr;
+}
 
       .header h1 {
         font-size: 20px;
@@ -389,27 +361,6 @@
 
       <div id="messageNhatKy" class="message"></div>
 
-      <div class="stats">
-        <div class="stat-card">
-          <div class="num" id="statTong">0</div>
-          <div class="label">Tổng dòng</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="num" id="statCapSo">0</div>
-          <div class="label">Đã cấp số</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="num" id="statDangKy">0</div>
-          <div class="label">Đã đăng ký</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="num" id="statHuy">0</div>
-          <div class="label">Đã hủy</div>
-        </div>
-      </div>
 
       <div class="table-wrap">
         <table>
@@ -592,7 +543,6 @@
       jsonpRequest(params, function(result) {
         if (result.success) {
           renderNhatKy(result.data || []);
-          renderThongKe(result.thongKe || {});
           showMessageNhatKy('Tra cứu thành công: ' + (result.data || []).length + ' dòng.', 'success');
         } else {
           showMessageNhatKy(result.message || 'Không tra cứu được dữ liệu.', 'error');
@@ -632,13 +582,6 @@
 
         body.appendChild(tr);
       });
-    }
-
-    function renderThongKe(thongKe) {
-      document.getElementById('statTong').innerText = thongKe.tong || 0;
-      document.getElementById('statCapSo').innerText = thongKe.daCapSo || 0;
-      document.getElementById('statDangKy').innerText = thongKe.daDangKy || 0;
-      document.getElementById('statHuy').innerText = thongKe.daHuy || 0;
     }
 
     function capNhatSoVaKyHieu() {
