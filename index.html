@@ -74,6 +74,33 @@
       margin-bottom: 16px;
     }
 
+    .so-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .so-card {
+      background: #fff7f7;
+      border: 1px solid #e2bdbd;
+      border-radius: 14px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .so-card .label {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 6px;
+    }
+
+    .so-card .value {
+      font-size: 26px;
+      font-weight: bold;
+      color: #8b0000;
+    }
+
     label {
       font-weight: bold;
       display: block;
@@ -143,6 +170,19 @@
       background: linear-gradient(135deg, #8b0000, #b71c1c);
     }
 
+    .btn-secondary {
+      background: linear-gradient(135deg, #5d4037, #795548);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #7f0000, #d32f2f);
+      margin-top: 0;
+      padding: 8px 10px;
+      font-size: 13px;
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+
     button:disabled {
       opacity: 0.65;
       cursor: not-allowed;
@@ -187,7 +227,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 800px;
+      min-width: 900px;
       background: white;
     }
 
@@ -223,11 +263,12 @@
 
     @media (max-width: 600px) {
       .row,
-.row-3,
-.cap-so-box,
-.tabs {
-  grid-template-columns: 1fr;
-}
+      .row-3,
+      .cap-so-box,
+      .so-box,
+      .tabs {
+        grid-template-columns: 1fr;
+      }
 
       .header h1 {
         font-size: 20px;
@@ -268,6 +309,20 @@
               <option value="/TB-ĐU">/TB-ĐU</option>
               <option value="/GM-ĐU">/GM-ĐU</option>
             </select>
+          </div>
+        </div>
+
+        <button type="button" class="btn-secondary" id="xemSoBtn">Xem số tiếp theo</button>
+
+        <div class="so-box">
+          <div class="so-card">
+            <div class="label">Số hiện tại</div>
+            <div class="value" id="soHienTaiText">-</div>
+          </div>
+
+          <div class="so-card">
+            <div class="label">Số tiếp theo</div>
+            <div class="value" id="soTiepTheoText">-</div>
           </div>
         </div>
 
@@ -361,7 +416,6 @@
 
       <div id="messageNhatKy" class="message"></div>
 
-
       <div class="table-wrap">
         <table>
           <thead>
@@ -373,11 +427,12 @@
               <th>Số và ký hiệu</th>
               <th>Trích yếu</th>
               <th>Lý do</th>
+              <th>Thao tác</th>
             </tr>
           </thead>
           <tbody id="nhatKyBody">
             <tr>
-              <td colspan="7">Chưa tra cứu dữ liệu.</td>
+              <td colspan="8">Chưa tra cứu dữ liệu.</td>
             </tr>
           </tbody>
         </table>
@@ -396,12 +451,16 @@
     const messageBox = document.getElementById('message');
     const submitBtn = document.getElementById('submitBtn');
     const capSoBtn = document.getElementById('capSoBtn');
+    const xemSoBtn = document.getElementById('xemSoBtn');
 
     const namInput = document.getElementById('namVanBan');
     const soVanBanInput = document.getElementById('soVanBan');
     const kyHieuInput = document.getElementById('kyHieu');
     const soVaKyHieuInput = document.getElementById('soVaKyHieu');
     const ngayVanBanInput = document.getElementById('ngayVanBan');
+
+    const soHienTaiText = document.getElementById('soHienTaiText');
+    const soTiepTheoText = document.getElementById('soTiepTheoText');
 
     const tabDangKy = document.getElementById('tabDangKy');
     const tabNhatKy = document.getElementById('tabNhatKy');
@@ -427,6 +486,43 @@
 
     kyHieuInput.addEventListener('change', capNhatSoVaKyHieu);
 
+    xemSoBtn.addEventListener('click', function() {
+      xemSoTiepTheo();
+    });
+
+    function xemSoTiepTheo() {
+      const nam = namInput.value.trim();
+
+      if (!nam) {
+        showMessage('Vui lòng nhập năm trước khi xem số.', 'error');
+        return;
+      }
+
+      xemSoBtn.disabled = true;
+      xemSoBtn.innerText = 'Đang xem...';
+
+      jsonpRequest({
+        action: 'XEM_SO_TIEP_THEO',
+        nam: nam
+      }, function(result) {
+        if (result.success) {
+          soHienTaiText.innerText = result.soHienTai;
+          soTiepTheoText.innerText = result.soTiepTheo;
+          showMessage('Số tiếp theo là: ' + result.soTiepTheo, 'success');
+        } else {
+          showMessage(result.message || 'Không xem được số tiếp theo.', 'error');
+        }
+
+        xemSoBtn.disabled = false;
+        xemSoBtn.innerText = 'Xem số tiếp theo';
+
+      }, function() {
+        showMessage('Không kết nối được Apps Script.', 'error');
+        xemSoBtn.disabled = false;
+        xemSoBtn.innerText = 'Xem số tiếp theo';
+      });
+    }
+
     capSoBtn.addEventListener('click', function() {
       const nam = namInput.value.trim();
       const kyHieu = kyHieuInput.value;
@@ -447,6 +543,9 @@
         if (result.success) {
           soVanBanInput.value = result.soVanBan;
           soVaKyHieuInput.value = result.soVaKyHieu || (result.soVanBan + kyHieu);
+
+          soHienTaiText.innerText = result.soVanBan;
+          soTiepTheoText.innerText = Number(result.soVanBan) + 1;
 
           showMessage('Đã cấp số văn bản: ' + soVaKyHieuInput.value, 'success');
 
@@ -514,6 +613,8 @@
         capSoBtn.disabled = false;
         capSoBtn.innerText = 'Cấp số';
 
+        xemSoTiepTheo();
+
       } catch (error) {
         showMessage('Không lưu được dữ liệu. Vui lòng kiểm tra Web App.', 'error');
       }
@@ -528,6 +629,7 @@
 
     function traCuuNhatKy() {
       const traCuuBtn = document.getElementById('traCuuBtn');
+
       traCuuBtn.disabled = true;
       traCuuBtn.innerText = 'Đang tra cứu...';
 
@@ -563,12 +665,14 @@
       body.innerHTML = '';
 
       if (!data.length) {
-        body.innerHTML = '<tr><td colspan="7">Không có dữ liệu phù hợp.</td></tr>';
+        body.innerHTML = '<tr><td colspan="8">Không có dữ liệu phù hợp.</td></tr>';
         return;
       }
 
       data.forEach(item => {
         const tr = document.createElement('tr');
+
+        const showHuyButton = item.trangThai !== 'Đã hủy' && item.soVaKyHieu;
 
         tr.innerHTML = `
           <td>${escapeHtml(item.thoiGian)}</td>
@@ -578,10 +682,47 @@
           <td><strong>${escapeHtml(item.soVaKyHieu)}</strong></td>
           <td>${escapeHtml(item.trichYeu)}</td>
           <td>${escapeHtml(item.lyDo)}</td>
+          <td>
+            ${showHuyButton ? `<button type="button" class="btn-danger" onclick="huyVanBan('${escapeAttr(item.soVaKyHieu)}','${escapeAttr(item.trichYeu)}','${escapeAttr(item.nam)}')">Hủy</button>` : ''}
+          </td>
         `;
 
         body.appendChild(tr);
       });
+    }
+
+    async function huyVanBan(soVaKyHieu, trichYeu, nam) {
+      const lyDo = prompt('Nhập lý do hủy văn bản ' + soVaKyHieu + ':');
+
+      if (!lyDo || !lyDo.trim()) {
+        alert('Chưa nhập lý do hủy.');
+        return;
+      }
+
+      const data = {
+        action: 'HUY_VAN_BAN_DI',
+        nam: nam || new Date().getFullYear(),
+        soVaKyHieu: soVaKyHieu,
+        trichYeu: trichYeu || '',
+        lyDo: lyDo.trim()
+      };
+
+      try {
+        await fetch(API_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8'
+          },
+          body: JSON.stringify(data)
+        });
+
+        alert('Đã ghi nhận hủy văn bản.');
+        traCuuNhatKy();
+
+      } catch (error) {
+        alert('Không hủy được văn bản. Vui lòng kiểm tra Apps Script.');
+      }
     }
 
     function capNhatSoVaKyHieu() {
@@ -646,6 +787,20 @@
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
     }
+
+    function escapeAttr(text) {
+      if (text === null || text === undefined) return '';
+
+      return String(text)
+        .replace(/\\/g, '\\\\')
+        .replace(/'/g, "\\'")
+        .replace(/"/g, '&quot;')
+        .replace(/\n/g, ' ');
+    }
+
+    window.addEventListener('load', function() {
+      xemSoTiepTheo();
+    });
   </script>
 
 </body>
