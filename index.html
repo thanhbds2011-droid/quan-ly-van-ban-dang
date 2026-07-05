@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý văn bản Đảng</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f8f1f1;
+      color: #2b2b2b;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #8b0000, #c62828);
+      color: white;
+      padding: 22px 16px;
+      text-align: center;
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.35;
+    }
+
+    .header p {
+      margin: 8px 0 0;
+      font-size: 14px;
+      opacity: 0.95;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 18px auto;
+      padding: 14px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      border-top: 5px solid #b71c1c;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      color: #7f0000;
+      font-size: 14px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d6bcbc;
+      border-radius: 10px;
+      font-size: 15px;
+      outline: none;
+      background: #fffafa;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #b71c1c;
+      box-shadow: 0 0 0 2px rgba(183,28,28,0.12);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 22px;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #b71c1c, #d32f2f);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .message {
+      display: none;
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .success {
+      display: block;
+      background: #e8f5e9;
+      color: #1b5e20;
+      border: 1px solid #a5d6a7;
+    }
+
+    .error {
+      display: block;
+      background: #ffebee;
+      color: #b71c1c;
+      border: 1px solid #ef9a9a;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #777;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .row {
+        grid-template-columns: 1fr;
+      }
+
+      .header h1 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <h1>QUẢN LÝ VĂN BẢN ĐẢNG</h1>
+    <p>Đăng ký văn bản đi, đến</p>
+  </div>
+
+  <div class="container">
+    <div class="card">
+
+      <form id="vanBanForm">
+
+        <label>Số và ký hiệu văn bản</label>
+        <input type="text" id="soKyHieu" placeholder="Ví dụ: 49-CV/ĐU" required>
+
+        <label>Ngày tháng năm văn bản</label>
+        <input type="date" id="ngayVanBan" required>
+
+        <label>Tên loại và trích yếu nội dung văn bản</label>
+        <textarea id="trichYeu" placeholder="Nhập trích yếu nội dung văn bản..." required></textarea>
+
+        <label>Người ký</label>
+        <input type="text" id="nguoiKy" placeholder="Ví dụ: Nguyễn Văn A">
+
+        <div class="row">
+          <div>
+            <label>Số trang</label>
+            <input type="number" id="soTrang" min="1" placeholder="Ví dụ: 2">
+          </div>
+
+          <div>
+            <label>Số bản</label>
+            <input type="number" id="soBan" min="1" placeholder="Ví dụ: 1">
+          </div>
+        </div>
+
+        <label>Đơn vị/cá nhân nhận bản lưu</label>
+        <input type="text" id="donViNhanBanLuu" placeholder="Ví dụ: Văn phòng Đảng ủy">
+
+        <label>Nơi nhận văn bản</label>
+        <textarea id="noiNhanVanBan" placeholder="Nhập nơi nhận văn bản..."></textarea>
+
+        <label>Lưu hồ sơ số</label>
+        <input type="text" id="luuHoSoSo" placeholder="Ví dụ: HS-2026-01">
+
+        <label>Ghi chú</label>
+        <textarea id="ghiChu" placeholder="Ghi chú thêm nếu có..."></textarea>
+
+        <button type="submit" id="submitBtn">Lưu văn bản</button>
+
+        <div id="message" class="message"></div>
+
+      </form>
+
+    </div>
+
+    <div class="footer">
+      Phần mềm quản lý văn bản Đảng
+    </div>
+  </div>
+
+  <script>
+    const API_URL = 'https://script.google.com/macros/s/AKfycbwazhWwdWiojwjLLR_V93HzURX1QIry1Przv8l-9WgsbJY7SgD63ruAL98UdUj4HdKW/exec';
+
+    const form = document.getElementById('vanBanForm');
+    const messageBox = document.getElementById('message');
+    const submitBtn = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'Đang lưu...';
+
+      const data = {
+        soKyHieu: document.getElementById('soKyHieu').value.trim(),
+        ngayVanBan: document.getElementById('ngayVanBan').value,
+        trichYeu: document.getElementById('trichYeu').value.trim(),
+        nguoiKy: document.getElementById('nguoiKy').value.trim(),
+        soTrang: document.getElementById('soTrang').value,
+        soBan: document.getElementById('soBan').value,
+        donViNhanBanLuu: document.getElementById('donViNhanBanLuu').value.trim(),
+        noiNhanVanBan: document.getElementById('noiNhanVanBan').value.trim(),
+        luuHoSoSo: document.getElementById('luuHoSoSo').value.trim(),
+        ghiChu: document.getElementById('ghiChu').value.trim()
+      };
+
+      try {
+        await fetch(API_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        showMessage('Đã lưu văn bản thành công.', 'success');
+        form.reset();
+
+      } catch (error) {
+        showMessage('Không lưu được dữ liệu. Vui lòng kiểm tra lại Web App.', 'error');
+      }
+
+      submitBtn.disabled = false;
+      submitBtn.innerText = 'Lưu văn bản';
+    });
+
+    function showMessage(text, type) {
+      messageBox.innerText = text;
+      messageBox.className = 'message ' + type;
+    }
+  </script>
+
+</body>
+</html>
