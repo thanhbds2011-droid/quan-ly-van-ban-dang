@@ -263,53 +263,72 @@
     const submitBtn = document.getElementById('submitBtn');
     const capSoBtn = document.getElementById('capSoBtn');
 
+    const namInput = document.getElementById('namVanBan');
     const soVanBanInput = document.getElementById('soVanBan');
     const kyHieuInput = document.getElementById('kyHieu');
     const soVaKyHieuInput = document.getElementById('soVaKyHieu');
+    const ngayVanBanInput = document.getElementById('ngayVanBan');
 
-    document.getElementById('ngayVanBan').valueAsDate = new Date();
+    ngayVanBanInput.valueAsDate = new Date();
 
     kyHieuInput.addEventListener('change', capNhatSoVaKyHieu);
 
-    capSoBtn.addEventListener('click', async function() {
+    capSoBtn.addEventListener('click', function() {
+      const nam = namInput.value.trim();
+
+      if (!nam) {
+        showMessage('Vui lòng nhập năm trước khi cấp số.', 'error');
+        return;
+      }
+
       capSoBtn.disabled = true;
       capSoBtn.innerText = 'Đang cấp...';
 
-      const nam = document.getElementById('namVanBan').value;
+      const callbackName = 'jsonpCallback_' + Date.now();
 
-      try {
-        const response = await fetch(API_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: {
-            'Content-Type': 'text/plain;charset=utf-8'
-          },
-          body: JSON.stringify({
-            action: 'CAP_SO_VAN_BAN_DI',
-            nam: nam
-          })
-        });
+      window[callbackName] = function(result) {
+        try {
+          if (result.success) {
+            soVanBanInput.value = result.soVanBan;
+            capNhatSoVaKyHieu();
 
-        /*
-          Do giới hạn no-cors của Google Apps Script, trình duyệt không đọc trực tiếp được số trả về.
-          Vì vậy sau khi cấp số, anh kiểm tra trong sheet SỔ VĂN BẢN hoặc em sẽ chỉnh tiếp bằng JSONP để hiện số ngay trên giao diện.
-        */
+            showMessage('Đã cấp số văn bản: ' + result.soVanBan, 'success');
 
-        showMessage('Đã gửi yêu cầu cấp số. Vui lòng kiểm tra sheet SỔ VĂN BẢN.', 'success');
+            capSoBtn.disabled = true;
+            capSoBtn.innerText = 'Đã cấp';
+          } else {
+            showMessage(result.message || 'Không cấp được số.', 'error');
+            capSoBtn.disabled = false;
+            capSoBtn.innerText = 'Cấp số';
+          }
+        } finally {
+          delete window[callbackName];
+          script.remove();
+        }
+      };
 
-      } catch (error) {
-        showMessage('Không cấp được số. Vui lòng kiểm tra Apps Script.', 'error');
-      }
+      const script = document.createElement('script');
+      script.src = API_URL
+        + '?action=CAP_SO_VAN_BAN_DI'
+        + '&nam=' + encodeURIComponent(nam)
+        + '&callback=' + callbackName;
 
-      capSoBtn.disabled = false;
-      capSoBtn.innerText = 'Cấp số';
+      script.onerror = function() {
+        showMessage('Không kết nối được Apps Script.', 'error');
+        capSoBtn.disabled = false;
+        capSoBtn.innerText = 'Cấp số';
+        delete window[callbackName];
+        script.remove();
+      };
+
+      document.body.appendChild(script);
     });
 
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
 
-      if (!soVaKyHieuInput.value.trim()) {
-        showMessage('Vui lòng cấp số văn bản trước khi lưu.', 'error');
+      if (!soVanBanInput.value || !soVaKyHieuInput.value) {
+        showMessage('Vui lòng bấm Cấp số trước khi lưu.', 'error');
         return;
       }
 
@@ -321,7 +340,7 @@
         soVanBan: soVanBanInput.value,
         kyHieu: kyHieuInput.value,
         soVaKyHieu: soVaKyHieuInput.value,
-        ngayVanBan: document.getElementById('ngayVanBan').value,
+        ngayVanBan: ngayVanBanInput.value,
         trichYeu: document.getElementById('trichYeu').value.trim(),
         nguoiKy: document.getElementById('nguoiKy').value.trim(),
         soTrang: document.getElementById('soTrang').value,
@@ -343,9 +362,16 @@
         });
 
         showMessage('Đã lưu văn bản thành công.', 'success');
+
         form.reset();
-        document.getElementById('namVanBan').value = new Date().getFullYear();
-        document.getElementById('ngayVanBan').valueAsDate = new Date();
+        namInput.value = new Date().getFullYear();
+        ngayVanBanInput.valueAsDate = new Date();
+
+        soVanBanInput.value = '';
+        soVaKyHieuInput.value = '';
+
+        capSoBtn.disabled = false;
+        capSoBtn.innerText = 'Cấp số';
 
       } catch (error) {
         showMessage('Không lưu được dữ liệu. Vui lòng kiểm tra Web App.', 'error');
