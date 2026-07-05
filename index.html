@@ -40,9 +40,29 @@
     }
 
     .container {
-      max-width: 720px;
+      max-width: 900px;
       margin: 18px auto;
       padding: 14px;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .tab-btn {
+      margin-top: 0;
+      background: #fff;
+      color: #8b0000;
+      border: 1px solid #d6bcbc;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #8b0000, #c62828);
+      color: #fff;
     }
 
     .card {
@@ -51,6 +71,7 @@
       padding: 18px;
       box-shadow: 0 4px 16px rgba(0,0,0,0.08);
       border-top: 5px solid #b71c1c;
+      margin-bottom: 16px;
     }
 
     label {
@@ -85,6 +106,12 @@
     .row {
       display: grid;
       grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .row-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 12px;
     }
 
@@ -150,6 +177,70 @@
       border: 1px solid #ef9a9a;
     }
 
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .stat-card {
+      background: #fff7f7;
+      border: 1px solid #e5c4c4;
+      border-radius: 14px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .stat-card .num {
+      font-size: 22px;
+      font-weight: bold;
+      color: #8b0000;
+    }
+
+    .stat-card .label {
+      font-size: 12px;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 14px;
+      border: 1px solid #eee;
+      border-radius: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 800px;
+      background: white;
+    }
+
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+      font-size: 13px;
+      vertical-align: top;
+    }
+
+    th {
+      background: #8b0000;
+      color: white;
+      position: sticky;
+      top: 0;
+    }
+
+    tr:nth-child(even) {
+      background: #fffafa;
+    }
+
+    .hidden {
+      display: none;
+    }
+
     .footer {
       text-align: center;
       font-size: 12px;
@@ -159,7 +250,10 @@
 
     @media (max-width: 600px) {
       .row,
-      .cap-so-box {
+      .row-3,
+      .cap-so-box,
+      .stats,
+      .tabs {
         grid-template-columns: 1fr;
       }
 
@@ -174,12 +268,17 @@
 
   <div class="header">
     <h1>QUẢN LÝ VĂN BẢN ĐẢNG</h1>
-    <p>Đăng ký văn bản đi</p>
+    <p>Đăng ký văn bản đi và tra cứu nhật ký</p>
   </div>
 
   <div class="container">
-    <div class="card">
 
+    <div class="tabs">
+      <button type="button" class="tab-btn active" id="tabDangKy">📄 Đăng ký văn bản đi</button>
+      <button type="button" class="tab-btn" id="tabNhatKy">🔎 Tra cứu nhật ký</button>
+    </div>
+
+    <div id="dangKySection" class="card">
       <form id="vanBanForm">
 
         <div class="row">
@@ -247,7 +346,91 @@
         <div id="message" class="message"></div>
 
       </form>
+    </div>
 
+    <div id="nhatKySection" class="card hidden">
+      <h3 style="margin-top:0;color:#8b0000;">🔎 Tra cứu nhật ký</h3>
+
+      <div class="row-3">
+        <div>
+          <label>Từ ngày</label>
+          <input type="date" id="tuNgay">
+        </div>
+
+        <div>
+          <label>Đến ngày</label>
+          <input type="date" id="denNgay">
+        </div>
+
+        <div>
+          <label>Năm</label>
+          <input type="number" id="filterNam" placeholder="Ví dụ: 2026">
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Trạng thái</label>
+          <select id="filterTrangThai">
+            <option value="">Tất cả</option>
+            <option value="Đã cấp số">Đã cấp số</option>
+            <option value="Đã đăng ký">Đã đăng ký</option>
+            <option value="Đã hủy">Đã hủy</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Từ khóa</label>
+          <input type="text" id="filterTuKhoa" placeholder="Nhập số, ký hiệu, trích yếu, lý do...">
+        </div>
+      </div>
+
+      <button type="button" id="traCuuBtn">Tra cứu</button>
+
+      <div id="messageNhatKy" class="message"></div>
+
+      <div class="stats">
+        <div class="stat-card">
+          <div class="num" id="statTong">0</div>
+          <div class="label">Tổng dòng</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="num" id="statCapSo">0</div>
+          <div class="label">Đã cấp số</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="num" id="statDangKy">0</div>
+          <div class="label">Đã đăng ký</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="num" id="statHuy">0</div>
+          <div class="label">Đã hủy</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Thời gian</th>
+              <th>Trạng thái</th>
+              <th>Loại sổ</th>
+              <th>Năm</th>
+              <th>Số và ký hiệu</th>
+              <th>Trích yếu</th>
+              <th>Lý do</th>
+            </tr>
+          </thead>
+          <tbody id="nhatKyBody">
+            <tr>
+              <td colspan="7">Chưa tra cứu dữ liệu.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <div class="footer">
@@ -269,12 +452,33 @@
     const soVaKyHieuInput = document.getElementById('soVaKyHieu');
     const ngayVanBanInput = document.getElementById('ngayVanBan');
 
+    const tabDangKy = document.getElementById('tabDangKy');
+    const tabNhatKy = document.getElementById('tabNhatKy');
+    const dangKySection = document.getElementById('dangKySection');
+    const nhatKySection = document.getElementById('nhatKySection');
+
     ngayVanBanInput.valueAsDate = new Date();
+    namInput.value = new Date().getFullYear();
+
+    tabDangKy.addEventListener('click', function() {
+      dangKySection.classList.remove('hidden');
+      nhatKySection.classList.add('hidden');
+      tabDangKy.classList.add('active');
+      tabNhatKy.classList.remove('active');
+    });
+
+    tabNhatKy.addEventListener('click', function() {
+      dangKySection.classList.add('hidden');
+      nhatKySection.classList.remove('hidden');
+      tabDangKy.classList.remove('active');
+      tabNhatKy.classList.add('active');
+    });
 
     kyHieuInput.addEventListener('change', capNhatSoVaKyHieu);
 
     capSoBtn.addEventListener('click', function() {
       const nam = namInput.value.trim();
+      const kyHieu = kyHieuInput.value;
 
       if (!nam) {
         showMessage('Vui lòng nhập năm trước khi cấp số.', 'error');
@@ -284,44 +488,29 @@
       capSoBtn.disabled = true;
       capSoBtn.innerText = 'Đang cấp...';
 
-      const callbackName = 'jsonpCallback_' + Date.now();
+      jsonpRequest({
+        action: 'CAP_SO_VAN_BAN_DI',
+        nam: nam,
+        kyHieu: kyHieu
+      }, function(result) {
+        if (result.success) {
+          soVanBanInput.value = result.soVanBan;
+          soVaKyHieuInput.value = result.soVaKyHieu || (result.soVanBan + kyHieu);
 
-      window[callbackName] = function(result) {
-        try {
-          if (result.success) {
-            soVanBanInput.value = result.soVanBan;
-            capNhatSoVaKyHieu();
+          showMessage('Đã cấp số văn bản: ' + soVaKyHieuInput.value, 'success');
 
-            showMessage('Đã cấp số văn bản: ' + result.soVanBan, 'success');
-
-            capSoBtn.disabled = true;
-            capSoBtn.innerText = 'Đã cấp';
-          } else {
-            showMessage(result.message || 'Không cấp được số.', 'error');
-            capSoBtn.disabled = false;
-            capSoBtn.innerText = 'Cấp số';
-          }
-        } finally {
-          delete window[callbackName];
-          script.remove();
+          capSoBtn.disabled = true;
+          capSoBtn.innerText = 'Đã cấp';
+        } else {
+          showMessage(result.message || 'Không cấp được số.', 'error');
+          capSoBtn.disabled = false;
+          capSoBtn.innerText = 'Cấp số';
         }
-      };
-
-      const script = document.createElement('script');
-      script.src = API_URL
-        + '?action=CAP_SO_VAN_BAN_DI'
-        + '&nam=' + encodeURIComponent(nam)
-        + '&callback=' + callbackName;
-
-      script.onerror = function() {
+      }, function() {
         showMessage('Không kết nối được Apps Script.', 'error');
         capSoBtn.disabled = false;
         capSoBtn.innerText = 'Cấp số';
-        delete window[callbackName];
-        script.remove();
-      };
-
-      document.body.appendChild(script);
+      });
     });
 
     form.addEventListener('submit', async function(e) {
@@ -337,6 +526,7 @@
 
       const data = {
         action: 'LUU_VAN_BAN_DI',
+        nam: namInput.value,
         soVanBan: soVanBanInput.value,
         kyHieu: kyHieuInput.value,
         soVaKyHieu: soVaKyHieuInput.value,
@@ -381,6 +571,76 @@
       submitBtn.innerText = 'Lưu văn bản';
     });
 
+    document.getElementById('traCuuBtn').addEventListener('click', function() {
+      traCuuNhatKy();
+    });
+
+    function traCuuNhatKy() {
+      const traCuuBtn = document.getElementById('traCuuBtn');
+      traCuuBtn.disabled = true;
+      traCuuBtn.innerText = 'Đang tra cứu...';
+
+      const params = {
+        action: 'TRA_CUU_NHAT_KY',
+        tuNgay: document.getElementById('tuNgay').value,
+        denNgay: document.getElementById('denNgay').value,
+        nam: document.getElementById('filterNam').value,
+        trangThai: document.getElementById('filterTrangThai').value,
+        tuKhoa: document.getElementById('filterTuKhoa').value.trim()
+      };
+
+      jsonpRequest(params, function(result) {
+        if (result.success) {
+          renderNhatKy(result.data || []);
+          renderThongKe(result.thongKe || {});
+          showMessageNhatKy('Tra cứu thành công: ' + (result.data || []).length + ' dòng.', 'success');
+        } else {
+          showMessageNhatKy(result.message || 'Không tra cứu được dữ liệu.', 'error');
+        }
+
+        traCuuBtn.disabled = false;
+        traCuuBtn.innerText = 'Tra cứu';
+
+      }, function() {
+        showMessageNhatKy('Không kết nối được Apps Script.', 'error');
+        traCuuBtn.disabled = false;
+        traCuuBtn.innerText = 'Tra cứu';
+      });
+    }
+
+    function renderNhatKy(data) {
+      const body = document.getElementById('nhatKyBody');
+      body.innerHTML = '';
+
+      if (!data.length) {
+        body.innerHTML = '<tr><td colspan="7">Không có dữ liệu phù hợp.</td></tr>';
+        return;
+      }
+
+      data.forEach(item => {
+        const tr = document.createElement('tr');
+
+        tr.innerHTML = `
+          <td>${escapeHtml(item.thoiGian)}</td>
+          <td>${escapeHtml(item.trangThai)}</td>
+          <td>${escapeHtml(item.loaiSo)}</td>
+          <td>${escapeHtml(item.nam)}</td>
+          <td><strong>${escapeHtml(item.soVaKyHieu)}</strong></td>
+          <td>${escapeHtml(item.trichYeu)}</td>
+          <td>${escapeHtml(item.lyDo)}</td>
+        `;
+
+        body.appendChild(tr);
+      });
+    }
+
+    function renderThongKe(thongKe) {
+      document.getElementById('statTong').innerText = thongKe.tong || 0;
+      document.getElementById('statCapSo').innerText = thongKe.daCapSo || 0;
+      document.getElementById('statDangKy').innerText = thongKe.daDangKy || 0;
+      document.getElementById('statHuy').innerText = thongKe.daHuy || 0;
+    }
+
     function capNhatSoVaKyHieu() {
       const soVanBan = soVanBanInput.value;
       const kyHieu = kyHieuInput.value;
@@ -392,9 +652,56 @@
       }
     }
 
+    function jsonpRequest(params, onSuccess, onError) {
+      const callbackName = 'jsonpCallback_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
+
+      params.callback = callbackName;
+
+      const query = Object.keys(params)
+        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key] || ''))
+        .join('&');
+
+      const script = document.createElement('script');
+
+      window[callbackName] = function(result) {
+        try {
+          onSuccess(result);
+        } finally {
+          delete window[callbackName];
+          script.remove();
+        }
+      };
+
+      script.onerror = function() {
+        delete window[callbackName];
+        script.remove();
+        if (onError) onError();
+      };
+
+      script.src = API_URL + '?' + query;
+      document.body.appendChild(script);
+    }
+
     function showMessage(text, type) {
       messageBox.innerText = text;
       messageBox.className = 'message ' + type;
+    }
+
+    function showMessageNhatKy(text, type) {
+      const box = document.getElementById('messageNhatKy');
+      box.innerText = text;
+      box.className = 'message ' + type;
+    }
+
+    function escapeHtml(text) {
+      if (text === null || text === undefined) return '';
+
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
     }
   </script>
 
