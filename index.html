@@ -201,9 +201,122 @@ tr:nth-child(even){background:#fffafa}
   color:#b71c1c
 }
 
+/* ===== Xem và xuất PDF ===== */
+
+.print-toolbar{
+  max-width:1200px;
+  margin:15px auto;
+  display:flex;
+  gap:10px;
+  padding:0 10px
+}
+
+.print-toolbar button{
+  margin-top:0
+}
+
+.print-page{
+  background:white;
+  max-width:1200px;
+  margin:0 auto 30px;
+  padding:20px
+}
+
+.print-page h2{
+  text-align:center;
+  margin:0 0 15px;
+  font-size:18px
+}
+
+.print-table{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+  font-size:11px;
+  min-width:0
+}
+
+.print-table th,
+.print-table td{
+  border:1px solid #000;
+  padding:5px;
+  vertical-align:middle;
+  text-align:center;
+  word-wrap:break-word;
+  overflow-wrap:break-word;
+  white-space:normal;
+  line-height:1.25
+}
+
+.print-table th{
+  font-weight:bold;
+  background:white;
+  color:black
+}
+
+.print-table td:nth-child(3),
+.print-table td:nth-child(7),
+.print-table td:nth-child(8),
+.print-table td:nth-child(10){
+  text-align:left
+}
+
+.print-table th:nth-child(1),.print-table td:nth-child(1){width:10%}
+.print-table th:nth-child(2),.print-table td:nth-child(2){width:10%}
+.print-table th:nth-child(3),.print-table td:nth-child(3){width:22%}
+.print-table th:nth-child(4),.print-table td:nth-child(4){width:9%}
+.print-table th:nth-child(5),.print-table td:nth-child(5){width:5%}
+.print-table th:nth-child(6),.print-table td:nth-child(6){width:5%}
+.print-table th:nth-child(7),.print-table td:nth-child(7){width:12%}
+.print-table th:nth-child(8),.print-table td:nth-child(8){width:12%}
+.print-table th:nth-child(9),.print-table td:nth-child(9){width:7%}
+.print-table th:nth-child(10),.print-table td:nth-child(10){width:8%}
+
 @media(max-width:600px){
   .tabs,.row,.row-3,.so-box{grid-template-columns:1fr}
   .header h1{font-size:20px}
+}
+
+@media print{
+  @page{
+    size:A4 landscape;
+    margin:10mm
+  }
+
+  body{
+    background:white
+  }
+
+  .header,
+  .container,
+  .modal,
+  .print-toolbar{
+    display:none!important
+  }
+
+  #printSection{
+    display:block!important
+  }
+
+  .print-page{
+    max-width:none;
+    margin:0;
+    padding:0
+  }
+
+  .print-table{
+    font-size:10px;
+    page-break-inside:auto
+  }
+
+  .print-table tr{
+    page-break-inside:avoid;
+    page-break-after:auto
+  }
+
+  .print-table thead{
+    display:table-header-group
+  }
 }
 </style>
 </head>
@@ -419,9 +532,51 @@ tr:nth-child(even){background:#fffafa}
 
   <div class="footer">
     <button type="button" class="footer-log-btn" onclick="showTab('nhatky',null)">🔎 Tra cứu nhật ký</button>
+    <button type="button" class="footer-log-btn" onclick="moSoVanBanDi()">🖨️ Xem / Xuất PDF sổ văn bản đi</button>
     <div>Phần mềm quản lý văn bản Đảng</div>
   </div>
 
+</div>
+
+<div id="printSection" class="hidden">
+  <div class="print-toolbar">
+    <button onclick="window.print()">🖨️ Xuất PDF</button>
+    <button onclick="dongSoVanBanDi()">Đóng</button>
+  </div>
+
+  <div class="print-page">
+    <h2>SỔ ĐĂNG KÝ VĂN BẢN ĐI</h2>
+
+    <table class="print-table">
+      <thead>
+        <tr>
+          <th>Số và ký hiệu văn bản</th>
+          <th>Ngày tháng năm văn bản</th>
+          <th>Tên loại và trích yếu nội dung văn bản</th>
+          <th>Người ký</th>
+          <th>Số trang</th>
+          <th>Số bản</th>
+          <th>Đơn vị/cá nhân nhận bản lưu</th>
+          <th>Nơi nhận văn bản</th>
+          <th>Lưu hồ sơ số</th>
+          <th>Ghi chú</th>
+        </tr>
+        <tr>
+          <th>(1)</th>
+          <th>(2)</th>
+          <th>(3)</th>
+          <th>(4)</th>
+          <th>(5)</th>
+          <th>(6)</th>
+          <th>(7)</th>
+          <th>(8)</th>
+          <th>(9)</th>
+          <th>(10)</th>
+        </tr>
+      </thead>
+      <tbody id="printBody"></tbody>
+    </table>
+  </div>
 </div>
 
 <div id="aboutModal" class="modal">
@@ -583,6 +738,58 @@ async function huy(loaiSo,nam,soVaKyHieu,trichYeu){
   await post({action:'HUY_VAN_BAN',loaiSo,nam,soVaKyHieu,trichYeu,lyDo});
   alert('Đã ghi nhận hủy.');
   traCuuNhatKy();
+}
+
+function moSoVanBanDi(){
+  jsonp({
+    action:'LAY_DANH_SACH_VAN_BAN_DI'
+  },res=>{
+    if(!res.success){
+      alert('Không lấy được dữ liệu sổ văn bản đi.');
+      return;
+    }
+
+    renderSoVanBanDi(res.data||[]);
+    printSection.classList.remove('hidden');
+
+    window.scrollTo({
+      top:printSection.offsetTop,
+      behavior:'smooth'
+    });
+  });
+}
+
+function dongSoVanBanDi(){
+  printSection.classList.add('hidden');
+}
+
+function renderSoVanBanDi(data){
+  const body=printBody;
+  body.innerHTML='';
+
+  if(!data.length){
+    body.innerHTML='<tr><td colspan="10">Chưa có dữ liệu.</td></tr>';
+    return;
+  }
+
+  data.forEach(item=>{
+    const tr=document.createElement('tr');
+
+    tr.innerHTML=`
+      <td>${esc(item.soKyHieu)}</td>
+      <td>${esc(item.ngayVanBan)}</td>
+      <td>${esc(item.trichYeu)}</td>
+      <td>${esc(item.nguoiKy)}</td>
+      <td>${esc(item.soTrang)}</td>
+      <td>${esc(item.soBan)}</td>
+      <td>${esc(item.donViNhanBanLuu)}</td>
+      <td>${esc(item.noiNhan)}</td>
+      <td>${esc(item.luuHoSoSo)}</td>
+      <td>${esc(item.ghiChu)}</td>
+    `;
+
+    body.appendChild(tr);
+  });
 }
 
 function jsonp(params,callback){
