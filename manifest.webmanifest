@@ -1,1 +1,26 @@
-
+{
+  "name": "Quản lý Văn bản Đảng",
+  "short_name": "Văn bản Đảng",
+  "description": "Ứng dụng đăng ký văn bản đi, văn bản đến và nhật ký văn thư.",
+  "lang": "vi",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fff8f8",
+  "theme_color": "#8b0000",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
