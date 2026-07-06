@@ -6,16 +6,8 @@
   <title>Quản lý văn bản Đảng</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
-
-    body {
-      margin: 0;
-      background: #f8f1f1;
-      color: #2b2b2b;
-    }
+    * { box-sizing: border-box; font-family: Arial, sans-serif; }
+    body { margin: 0; background: #f8f1f1; color: #2b2b2b; }
 
     .header {
       background: linear-gradient(135deg, #8b0000, #c62828);
@@ -27,42 +19,41 @@
       box-shadow: 0 4px 14px rgba(0,0,0,0.25);
     }
 
-    .header h1 {
-      margin: 0;
-      font-size: 22px;
-      line-height: 1.35;
-    }
+    .header h1 { margin: 0; font-size: 22px; }
+    .header p { margin: 8px 0 0; font-size: 14px; }
 
-    .header p {
-      margin: 8px 0 0;
-      font-size: 14px;
-      opacity: 0.95;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: 18px auto;
-      padding: 14px;
-    }
+    .container { max-width: 900px; margin: 18px auto; padding: 14px; }
 
     .tabs {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 10px;
       margin-bottom: 14px;
     }
 
+    button {
+      width: 100%;
+      margin-top: 18px;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #b71c1c, #d32f2f);
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
     .tab-btn {
       margin-top: 0;
-      background: #fff;
+      background: white;
       color: #8b0000;
       border: 1px solid #d6bcbc;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
 
     .tab-btn.active {
       background: linear-gradient(135deg, #8b0000, #c62828);
-      color: #fff;
+      color: white;
     }
 
     .card {
@@ -72,33 +63,6 @@
       box-shadow: 0 4px 16px rgba(0,0,0,0.08);
       border-top: 5px solid #b71c1c;
       margin-bottom: 16px;
-    }
-
-    .so-box {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .so-card {
-      background: #fff7f7;
-      border: 1px solid #e2bdbd;
-      border-radius: 14px;
-      padding: 14px;
-      text-align: center;
-    }
-
-    .so-card .label {
-      font-size: 13px;
-      color: #666;
-      margin-bottom: 6px;
-    }
-
-    .so-card .value {
-      font-size: 26px;
-      font-weight: bold;
-      color: #8b0000;
     }
 
     label {
@@ -120,15 +84,7 @@
       background: #fffafa;
     }
 
-    textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
-
-    input:focus, textarea:focus, select:focus {
-      border-color: #b71c1c;
-      box-shadow: 0 0 0 2px rgba(183,28,28,0.12);
-    }
+    textarea { min-height: 90px; resize: vertical; }
 
     .row {
       display: grid;
@@ -142,6 +98,24 @@
       gap: 12px;
     }
 
+    .so-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .so-card {
+      background: #fff7f7;
+      border: 1px solid #e2bdbd;
+      border-radius: 14px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .so-card .label { color: #666; font-size: 13px; margin: 0 0 6px; }
+    .so-card .value { color: #8b0000; font-size: 26px; font-weight: bold; }
+
     .cap-so-box {
       display: grid;
       grid-template-columns: 1fr 130px;
@@ -149,44 +123,15 @@
       align-items: end;
     }
 
-    button {
-      width: 100%;
-      margin-top: 22px;
-      padding: 14px;
-      border: none;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #b71c1c, #d32f2f);
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
     .btn-small {
       margin-top: 0;
       height: 46px;
       padding: 10px;
       font-size: 14px;
-      background: linear-gradient(135deg, #8b0000, #b71c1c);
     }
 
-    .btn-secondary {
-      background: linear-gradient(135deg, #5d4037, #795548);
-    }
-
-    .btn-danger {
-      background: linear-gradient(135deg, #7f0000, #d32f2f);
-      margin-top: 0;
-      padding: 8px 10px;
-      font-size: 13px;
-      border-radius: 8px;
-      white-space: nowrap;
-    }
-
-    button:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-    }
+    .btn-secondary { background: linear-gradient(135deg, #5d4037, #795548); }
+    .btn-danger { background: #b71c1c; padding: 8px; margin-top: 0; font-size: 13px; }
 
     .readonly {
       background: #f1eeee;
@@ -203,19 +148,10 @@
       text-align: center;
     }
 
-    .success {
-      display: block;
-      background: #e8f5e9;
-      color: #1b5e20;
-      border: 1px solid #a5d6a7;
-    }
+    .success { display: block; background: #e8f5e9; color: #1b5e20; border: 1px solid #a5d6a7; }
+    .error { display: block; background: #ffebee; color: #b71c1c; border: 1px solid #ef9a9a; }
 
-    .error {
-      display: block;
-      background: #ffebee;
-      color: #b71c1c;
-      border: 1px solid #ef9a9a;
-    }
+    .hidden { display: none; }
 
     .table-wrap {
       overflow-x: auto;
@@ -228,7 +164,6 @@
       width: 100%;
       border-collapse: collapse;
       min-width: 900px;
-      background: white;
     }
 
     th, td {
@@ -239,569 +174,448 @@
       vertical-align: top;
     }
 
-    th {
-      background: #8b0000;
-      color: white;
-      position: sticky;
-      top: 0;
-    }
+    th { background: #8b0000; color: white; }
+    tr:nth-child(even) { background: #fffafa; }
 
-    tr:nth-child(even) {
-      background: #fffafa;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .footer {
-      text-align: center;
-      font-size: 12px;
-      color: #777;
-      margin-top: 16px;
-    }
+    .footer { text-align: center; font-size: 12px; color: #777; margin-top: 16px; }
 
     @media (max-width: 600px) {
-      .row,
-      .row-3,
-      .cap-so-box,
-      .so-box,
-      .tabs {
-        grid-template-columns: 1fr;
-      }
-
-      .header h1 {
-        font-size: 20px;
-      }
+      .tabs, .row, .row-3, .so-box, .cap-so-box { grid-template-columns: 1fr; }
+      .header h1 { font-size: 20px; }
     }
   </style>
 </head>
 
 <body>
 
-  <div class="header">
-    <h1>QUẢN LÝ VĂN BẢN ĐẢNG</h1>
-    <p>Đăng ký văn bản đi và tra cứu nhật ký</p>
+<div class="header">
+  <h1>QUẢN LÝ VĂN BẢN ĐẢNG</h1>
+  <p>Đăng ký văn bản đi, văn bản đến và tra cứu nhật ký</p>
+</div>
+
+<div class="container">
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('di')">📄 Văn bản đi</button>
+    <button class="tab-btn" onclick="showTab('den')">📥 Văn bản đến</button>
+    <button class="tab-btn" onclick="showTab('nhatky')">🔎 Nhật ký</button>
   </div>
 
-  <div class="container">
+  <div id="tab-di" class="card">
+    <h3 style="color:#8b0000;margin-top:0;">📄 Đăng ký văn bản đi</h3>
 
-    <div class="tabs">
-      <button type="button" class="tab-btn active" id="tabDangKy">📄 Đăng ký văn bản đi</button>
-      <button type="button" class="tab-btn" id="tabNhatKy">🔎 Tra cứu nhật ký</button>
-    </div>
-
-    <div id="dangKySection" class="card">
-      <form id="vanBanForm">
-
-        <div class="row">
-          <div>
-            <label>Năm</label>
-            <input type="number" id="namVanBan" value="2026" required>
-          </div>
-
-          <div>
-            <label>Ký hiệu</label>
-            <select id="kyHieu" required>
-              <option value="/CV-ĐU">/CV-ĐU</option>
-              <option value="/QĐ-ĐU">/QĐ-ĐU</option>
-              <option value="/KH-ĐU">/KH-ĐU</option>
-              <option value="/TB-ĐU">/TB-ĐU</option>
-              <option value="/GM-ĐU">/GM-ĐU</option>
-            </select>
-          </div>
-        </div>
-
-        <button type="button" class="btn-secondary" id="xemSoBtn">Xem số tiếp theo</button>
-
-        <div class="so-box">
-          <div class="so-card">
-            <div class="label">Số hiện tại</div>
-            <div class="value" id="soHienTaiText">-</div>
-          </div>
-
-          <div class="so-card">
-            <div class="label">Số tiếp theo</div>
-            <div class="value" id="soTiepTheoText">-</div>
-          </div>
-        </div>
-
-        <label>Số văn bản</label>
-        <div class="cap-so-box">
-          <input type="number" id="soVanBan" class="readonly" readonly placeholder="Bấm cấp số">
-          <button type="button" class="btn-small" id="capSoBtn">Cấp số</button>
-        </div>
-
-        <label>Số và ký hiệu văn bản</label>
-        <input type="text" id="soVaKyHieu" class="readonly" readonly placeholder="Ví dụ: 45/CV-ĐU" required>
-
-        <label>Ngày tháng năm văn bản</label>
-        <input type="date" id="ngayVanBan" required>
-
-        <label>Tên loại và trích yếu nội dung văn bản</label>
-        <textarea id="trichYeu" placeholder="Nhập trích yếu nội dung văn bản..." required></textarea>
-
-        <label>Người ký</label>
-        <input type="text" id="nguoiKy" placeholder="Ví dụ: Nguyễn Văn A">
-
-        <div class="row">
-          <div>
-            <label>Số trang</label>
-            <input type="number" id="soTrang" min="1" placeholder="Ví dụ: 2">
-          </div>
-
-          <div>
-            <label>Số bản</label>
-            <input type="number" id="soBan" min="1" placeholder="Ví dụ: 1">
-          </div>
-        </div>
-
-        <label>Đơn vị/cá nhân nhận bản lưu</label>
-        <input type="text" id="donViNhanBanLuu" placeholder="Ví dụ: Văn phòng Đảng ủy">
-
-        <label>Nơi nhận văn bản</label>
-        <textarea id="noiNhanVanBan" placeholder="Nhập nơi nhận văn bản..."></textarea>
-
-        <label>Lưu hồ sơ số</label>
-        <input type="text" id="luuHoSoSo" placeholder="Ví dụ: HS-2026-01">
-
-        <label>Ghi chú</label>
-        <textarea id="ghiChu" placeholder="Ghi chú thêm nếu có..."></textarea>
-
-        <button type="submit" id="submitBtn">Lưu văn bản</button>
-
-        <div id="message" class="message"></div>
-
-      </form>
-    </div>
-
-    <div id="nhatKySection" class="card hidden">
-      <h3 style="margin-top:0;color:#8b0000;">🔎 Tra cứu nhật ký</h3>
-
-      <div class="row-3">
-        <div>
-          <label>Từ ngày</label>
-          <input type="date" id="tuNgay">
-        </div>
-
-        <div>
-          <label>Đến ngày</label>
-          <input type="date" id="denNgay">
-        </div>
-
-        <div>
-          <label>Năm</label>
-          <input type="number" id="filterNam" placeholder="Ví dụ: 2026">
-        </div>
+    <div class="row">
+      <div>
+        <label>Năm</label>
+        <input type="number" id="namDi">
       </div>
-
-      <div class="row">
-        <div>
-          <label>Trạng thái</label>
-          <select id="filterTrangThai">
-            <option value="">Tất cả</option>
-            <option value="Đã cấp số">Đã cấp số</option>
-            <option value="Đã đăng ký">Đã đăng ký</option>
-            <option value="Đã hủy">Đã hủy</option>
-          </select>
-        </div>
-
-        <div>
-          <label>Từ khóa</label>
-          <input type="text" id="filterTuKhoa" placeholder="Nhập số, ký hiệu, trích yếu, lý do...">
-        </div>
-      </div>
-
-      <button type="button" id="traCuuBtn">Tra cứu</button>
-
-      <div id="messageNhatKy" class="message"></div>
-
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Thời gian</th>
-              <th>Trạng thái</th>
-              <th>Loại sổ</th>
-              <th>Năm</th>
-              <th>Số và ký hiệu</th>
-              <th>Trích yếu</th>
-              <th>Lý do</th>
-              <th>Thao tác</th>
-            </tr>
-          </thead>
-          <tbody id="nhatKyBody">
-            <tr>
-              <td colspan="8">Chưa tra cứu dữ liệu.</td>
-            </tr>
-          </tbody>
-        </table>
+      <div>
+        <label>Ký hiệu</label>
+        <select id="kyHieuDi">
+          <option value="/CV-ĐU">/CV-ĐU</option>
+          <option value="/QĐ-ĐU">/QĐ-ĐU</option>
+          <option value="/KH-ĐU">/KH-ĐU</option>
+          <option value="/TB-ĐU">/TB-ĐU</option>
+          <option value="/GM-ĐU">/GM-ĐU</option>
+        </select>
       </div>
     </div>
 
-    <div class="footer">
-      Phần mềm quản lý văn bản Đảng
+    <button type="button" class="btn-secondary" onclick="xemSo('Văn bản đi','namDi','soHTDi','soTTDi')">Xem số tiếp theo</button>
+
+    <div class="so-box">
+      <div class="so-card"><div class="label">Số hiện tại</div><div class="value" id="soHTDi">-</div></div>
+      <div class="so-card"><div class="label">Số tiếp theo</div><div class="value" id="soTTDi">-</div></div>
+    </div>
+
+    <label>Số văn bản</label>
+    <div class="cap-so-box">
+      <input id="soDi" class="readonly" readonly placeholder="Bấm cấp số">
+      <button type="button" class="btn-small" onclick="capSoDi()">Cấp số</button>
+    </div>
+
+    <label>Số và ký hiệu văn bản</label>
+    <input id="soKyHieuDi" class="readonly" readonly>
+
+    <label>Ngày tháng năm văn bản</label>
+    <input type="date" id="ngayDi">
+
+    <label>Tên loại và trích yếu nội dung văn bản</label>
+    <textarea id="trichYeuDi"></textarea>
+
+    <label>Người ký</label>
+    <input id="nguoiKyDi">
+
+    <div class="row">
+      <div>
+        <label>Số trang</label>
+        <input type="number" id="soTrangDi">
+      </div>
+      <div>
+        <label>Số bản</label>
+        <input type="number" id="soBanDi">
+      </div>
+    </div>
+
+    <label>Đơn vị/cá nhân nhận bản lưu</label>
+    <input id="donViNhanBanLuuDi">
+
+    <label>Nơi nhận văn bản</label>
+    <textarea id="noiNhanDi"></textarea>
+
+    <label>Lưu hồ sơ số</label>
+    <input id="luuHoSoDi">
+
+    <label>Ghi chú</label>
+    <textarea id="ghiChuDi"></textarea>
+
+    <button onclick="luuVanBanDi()">Lưu văn bản đi</button>
+    <div id="msgDi" class="message"></div>
+  </div>
+
+  <div id="tab-den" class="card hidden">
+    <h3 style="color:#8b0000;margin-top:0;">📥 Đăng ký văn bản đến</h3>
+
+    <label>Năm</label>
+    <input type="number" id="namDen">
+
+    <button type="button" class="btn-secondary" onclick="xemSo('Văn bản đến','namDen','soHTDen','soTTDen')">Xem số đến tiếp theo</button>
+
+    <div class="so-box">
+      <div class="so-card"><div class="label">Số đến hiện tại</div><div class="value" id="soHTDen">-</div></div>
+      <div class="so-card"><div class="label">Số đến tiếp theo</div><div class="value" id="soTTDen">-</div></div>
+    </div>
+
+    <label>Số đến</label>
+    <div class="cap-so-box">
+      <input id="soDen" class="readonly" readonly placeholder="Bấm cấp số">
+      <button type="button" class="btn-small" onclick="capSoDen()">Cấp số</button>
+    </div>
+
+    <label>Ngày tháng năm đến</label>
+    <input type="date" id="ngayDen">
+
+    <label>Lưu hồ sơ</label>
+    <input id="luuHoSoDen">
+
+    <label>Ghi chú</label>
+    <textarea id="ghiChuDen"></textarea>
+
+    <label>Tác giả</label>
+    <input id="tacGiaDen">
+
+    <label>Số và ký hiệu văn bản</label>
+    <input id="soKyHieuDen">
+
+    <label>Ngày tháng năm văn bản</label>
+    <input type="date" id="ngayVanBanDen">
+
+    <label>Tên loại và trích yếu nội dung văn bản</label>
+    <textarea id="trichYeuDen"></textarea>
+
+    <div class="row">
+      <div>
+        <label>Số trang</label>
+        <input type="number" id="soTrangDen">
+      </div>
+      <div>
+        <label>Số bản</label>
+        <input type="number" id="soBanDen">
+      </div>
+    </div>
+
+    <label>Đơn vị/cá nhân nhận văn bản</label>
+    <input id="donViNhanDen">
+
+    <button onclick="luuVanBanDen()">Lưu văn bản đến</button>
+    <div id="msgDen" class="message"></div>
+  </div>
+
+  <div id="tab-nhatky" class="card hidden">
+    <h3 style="color:#8b0000;margin-top:0;">🔎 Tra cứu nhật ký</h3>
+
+    <div class="row-3">
+      <div>
+        <label>Từ ngày</label>
+        <input type="date" id="tuNgay">
+      </div>
+      <div>
+        <label>Đến ngày</label>
+        <input type="date" id="denNgay">
+      </div>
+      <div>
+        <label>Năm</label>
+        <input type="number" id="filterNam">
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
+        <label>Loại sổ</label>
+        <select id="filterLoaiSo">
+          <option value="">Tất cả</option>
+          <option value="Văn bản đi">Văn bản đi</option>
+          <option value="Văn bản đến">Văn bản đến</option>
+        </select>
+      </div>
+      <div>
+        <label>Trạng thái</label>
+        <select id="filterTrangThai">
+          <option value="">Tất cả</option>
+          <option value="Đã cấp số">Đã cấp số</option>
+          <option value="Đã đăng ký">Đã đăng ký</option>
+          <option value="Đã hủy">Đã hủy</option>
+        </select>
+      </div>
+    </div>
+
+    <label>Từ khóa</label>
+    <input id="filterTuKhoa" placeholder="Nhập số, ký hiệu, trích yếu, lý do...">
+
+    <button onclick="traCuuNhatKy()">Tra cứu</button>
+    <div id="msgNhatKy" class="message"></div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Thời gian</th>
+            <th>Trạng thái</th>
+            <th>Loại sổ</th>
+            <th>Năm</th>
+            <th>Số và ký hiệu</th>
+            <th>Trích yếu</th>
+            <th>Lý do</th>
+            <th>Thao tác</th>
+          </tr>
+        </thead>
+        <tbody id="bodyNhatKy">
+          <tr><td colspan="8">Chưa tra cứu dữ liệu.</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
-  <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbwazhWwdWiojwjLLR_V93HzURX1QIry1Przv8l-9WgsbJY7SgD63ruAL98UdUj4HdKW/exec';
+  <div class="footer">Phần mềm quản lý văn bản Đảng</div>
+</div>
 
-    const form = document.getElementById('vanBanForm');
-    const messageBox = document.getElementById('message');
-    const submitBtn = document.getElementById('submitBtn');
-    const capSoBtn = document.getElementById('capSoBtn');
-    const xemSoBtn = document.getElementById('xemSoBtn');
+<script>
+const API_URL = 'https://script.google.com/macros/s/AKfycbwazhWwdWiojwjLLR_V93HzURX1QIry1Przv8l-9WgsbJY7SgD63ruAL98UdUj4HdKW/exec';
 
-    const namInput = document.getElementById('namVanBan');
-    const soVanBanInput = document.getElementById('soVanBan');
-    const kyHieuInput = document.getElementById('kyHieu');
-    const soVaKyHieuInput = document.getElementById('soVaKyHieu');
-    const ngayVanBanInput = document.getElementById('ngayVanBan');
+window.onload = function() {
+  const y = new Date().getFullYear();
+  document.getElementById('namDi').value = y;
+  document.getElementById('namDen').value = y;
+  document.getElementById('ngayDi').valueAsDate = new Date();
+  document.getElementById('ngayDen').valueAsDate = new Date();
+  xemSo('Văn bản đi','namDi','soHTDi','soTTDi');
+  xemSo('Văn bản đến','namDen','soHTDen','soTTDen');
+};
 
-    const soHienTaiText = document.getElementById('soHienTaiText');
-    const soTiepTheoText = document.getElementById('soTiepTheoText');
+function showTab(tab) {
+  ['di','den','nhatky'].forEach(x => document.getElementById('tab-' + x).classList.add('hidden'));
+  document.getElementById('tab-' + tab).classList.remove('hidden');
 
-    const tabDangKy = document.getElementById('tabDangKy');
-    const tabNhatKy = document.getElementById('tabNhatKy');
-    const dangKySection = document.getElementById('dangKySection');
-    const nhatKySection = document.getElementById('nhatKySection');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
 
-    ngayVanBanInput.valueAsDate = new Date();
-    namInput.value = new Date().getFullYear();
-
-    tabDangKy.addEventListener('click', function() {
-      dangKySection.classList.remove('hidden');
-      nhatKySection.classList.add('hidden');
-      tabDangKy.classList.add('active');
-      tabNhatKy.classList.remove('active');
-    });
-
-    tabNhatKy.addEventListener('click', function() {
-      dangKySection.classList.add('hidden');
-      nhatKySection.classList.remove('hidden');
-      tabDangKy.classList.remove('active');
-      tabNhatKy.classList.add('active');
-    });
-
-    kyHieuInput.addEventListener('change', capNhatSoVaKyHieu);
-
-    xemSoBtn.addEventListener('click', function() {
-      xemSoTiepTheo();
-    });
-
-    function xemSoTiepTheo() {
-      const nam = namInput.value.trim();
-
-      if (!nam) {
-        showMessage('Vui lòng nhập năm trước khi xem số.', 'error');
-        return;
-      }
-
-      xemSoBtn.disabled = true;
-      xemSoBtn.innerText = 'Đang xem...';
-
-      jsonpRequest({
-        action: 'XEM_SO_TIEP_THEO',
-        nam: nam
-      }, function(result) {
-        if (result.success) {
-          soHienTaiText.innerText = result.soHienTai;
-          soTiepTheoText.innerText = result.soTiepTheo;
-          showMessage('Số tiếp theo là: ' + result.soTiepTheo, 'success');
-        } else {
-          showMessage(result.message || 'Không xem được số tiếp theo.', 'error');
-        }
-
-        xemSoBtn.disabled = false;
-        xemSoBtn.innerText = 'Xem số tiếp theo';
-
-      }, function() {
-        showMessage('Không kết nối được Apps Script.', 'error');
-        xemSoBtn.disabled = false;
-        xemSoBtn.innerText = 'Xem số tiếp theo';
-      });
+function xemSo(loaiSo, namId, htId, ttId) {
+  jsonp({
+    action: 'XEM_SO_TIEP_THEO',
+    loaiSo,
+    nam: document.getElementById(namId).value
+  }, res => {
+    if (res.success) {
+      document.getElementById(htId).innerText = res.soHienTai;
+      document.getElementById(ttId).innerText = res.soTiepTheo;
     }
+  });
+}
 
-    capSoBtn.addEventListener('click', function() {
-      const nam = namInput.value.trim();
-      const kyHieu = kyHieuInput.value;
-
-      if (!nam) {
-        showMessage('Vui lòng nhập năm trước khi cấp số.', 'error');
-        return;
-      }
-
-      capSoBtn.disabled = true;
-      capSoBtn.innerText = 'Đang cấp...';
-
-      jsonpRequest({
-        action: 'CAP_SO_VAN_BAN_DI',
-        nam: nam,
-        kyHieu: kyHieu
-      }, function(result) {
-        if (result.success) {
-          soVanBanInput.value = result.soVanBan;
-          soVaKyHieuInput.value = result.soVaKyHieu || (result.soVanBan + kyHieu);
-
-          soHienTaiText.innerText = result.soVanBan;
-          soTiepTheoText.innerText = Number(result.soVanBan) + 1;
-
-          showMessage('Đã cấp số văn bản: ' + soVaKyHieuInput.value, 'success');
-
-          capSoBtn.disabled = true;
-          capSoBtn.innerText = 'Đã cấp';
-        } else {
-          showMessage(result.message || 'Không cấp được số.', 'error');
-          capSoBtn.disabled = false;
-          capSoBtn.innerText = 'Cấp số';
-        }
-      }, function() {
-        showMessage('Không kết nối được Apps Script.', 'error');
-        capSoBtn.disabled = false;
-        capSoBtn.innerText = 'Cấp số';
-      });
-    });
-
-    form.addEventListener('submit', async function(e) {
-      e.preventDefault();
-
-      if (!soVanBanInput.value || !soVaKyHieuInput.value) {
-        showMessage('Vui lòng bấm Cấp số trước khi lưu.', 'error');
-        return;
-      }
-
-      submitBtn.disabled = true;
-      submitBtn.innerText = 'Đang lưu...';
-
-      const data = {
-        action: 'LUU_VAN_BAN_DI',
-        nam: namInput.value,
-        soVanBan: soVanBanInput.value,
-        kyHieu: kyHieuInput.value,
-        soVaKyHieu: soVaKyHieuInput.value,
-        ngayVanBan: ngayVanBanInput.value,
-        trichYeu: document.getElementById('trichYeu').value.trim(),
-        nguoiKy: document.getElementById('nguoiKy').value.trim(),
-        soTrang: document.getElementById('soTrang').value,
-        soBan: document.getElementById('soBan').value,
-        donViNhanBanLuu: document.getElementById('donViNhanBanLuu').value.trim(),
-        noiNhanVanBan: document.getElementById('noiNhanVanBan').value.trim(),
-        luuHoSoSo: document.getElementById('luuHoSoSo').value.trim(),
-        ghiChu: document.getElementById('ghiChu').value.trim()
-      };
-
-      try {
-        await fetch(API_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: {
-            'Content-Type': 'text/plain;charset=utf-8'
-          },
-          body: JSON.stringify(data)
-        });
-
-        showMessage('Đã lưu văn bản thành công.', 'success');
-
-        form.reset();
-        namInput.value = new Date().getFullYear();
-        ngayVanBanInput.valueAsDate = new Date();
-
-        soVanBanInput.value = '';
-        soVaKyHieuInput.value = '';
-
-        capSoBtn.disabled = false;
-        capSoBtn.innerText = 'Cấp số';
-
-        xemSoTiepTheo();
-
-      } catch (error) {
-        showMessage('Không lưu được dữ liệu. Vui lòng kiểm tra Web App.', 'error');
-      }
-
-      submitBtn.disabled = false;
-      submitBtn.innerText = 'Lưu văn bản';
-    });
-
-    document.getElementById('traCuuBtn').addEventListener('click', function() {
-      traCuuNhatKy();
-    });
-
-    function traCuuNhatKy() {
-      const traCuuBtn = document.getElementById('traCuuBtn');
-
-      traCuuBtn.disabled = true;
-      traCuuBtn.innerText = 'Đang tra cứu...';
-
-      const params = {
-        action: 'TRA_CUU_NHAT_KY',
-        tuNgay: document.getElementById('tuNgay').value,
-        denNgay: document.getElementById('denNgay').value,
-        nam: document.getElementById('filterNam').value,
-        trangThai: document.getElementById('filterTrangThai').value,
-        tuKhoa: document.getElementById('filterTuKhoa').value.trim()
-      };
-
-      jsonpRequest(params, function(result) {
-        if (result.success) {
-          renderNhatKy(result.data || []);
-          showMessageNhatKy('Tra cứu thành công: ' + (result.data || []).length + ' dòng.', 'success');
-        } else {
-          showMessageNhatKy(result.message || 'Không tra cứu được dữ liệu.', 'error');
-        }
-
-        traCuuBtn.disabled = false;
-        traCuuBtn.innerText = 'Tra cứu';
-
-      }, function() {
-        showMessageNhatKy('Không kết nối được Apps Script.', 'error');
-        traCuuBtn.disabled = false;
-        traCuuBtn.innerText = 'Tra cứu';
-      });
+function capSoDi() {
+  jsonp({
+    action: 'CAP_SO',
+    loaiSo: 'Văn bản đi',
+    nam: document.getElementById('namDi').value
+  }, res => {
+    if (res.success) {
+      const kyHieu = document.getElementById('kyHieuDi').value;
+      document.getElementById('soDi').value = res.soMoi;
+      document.getElementById('soKyHieuDi').value = res.soMoi + kyHieu;
+      document.getElementById('soHTDi').innerText = res.soMoi;
+      document.getElementById('soTTDi').innerText = Number(res.soMoi) + 1;
+      msg('msgDi', 'Đã cấp số: ' + res.soMoi + kyHieu, 'success');
     }
+  });
+}
 
-    function renderNhatKy(data) {
-      const body = document.getElementById('nhatKyBody');
-      body.innerHTML = '';
-
-      if (!data.length) {
-        body.innerHTML = '<tr><td colspan="8">Không có dữ liệu phù hợp.</td></tr>';
-        return;
-      }
-
-      data.forEach(item => {
-        const tr = document.createElement('tr');
-
-        const showHuyButton = item.trangThai !== 'Đã hủy' && item.soVaKyHieu;
-
-        tr.innerHTML = `
-          <td>${escapeHtml(item.thoiGian)}</td>
-          <td>${escapeHtml(item.trangThai)}</td>
-          <td>${escapeHtml(item.loaiSo)}</td>
-          <td>${escapeHtml(item.nam)}</td>
-          <td><strong>${escapeHtml(item.soVaKyHieu)}</strong></td>
-          <td>${escapeHtml(item.trichYeu)}</td>
-          <td>${escapeHtml(item.lyDo)}</td>
-          <td>
-            ${showHuyButton ? `<button type="button" class="btn-danger" onclick="huyVanBan('${escapeAttr(item.soVaKyHieu)}','${escapeAttr(item.trichYeu)}','${escapeAttr(item.nam)}')">Hủy</button>` : ''}
-          </td>
-        `;
-
-        body.appendChild(tr);
-      });
+function capSoDen() {
+  jsonp({
+    action: 'CAP_SO',
+    loaiSo: 'Văn bản đến',
+    nam: document.getElementById('namDen').value
+  }, res => {
+    if (res.success) {
+      document.getElementById('soDen').value = res.soMoi;
+      document.getElementById('soHTDen').innerText = res.soMoi;
+      document.getElementById('soTTDen').innerText = Number(res.soMoi) + 1;
+      msg('msgDen', 'Đã cấp số đến: ' + res.soMoi, 'success');
     }
+  });
+}
 
-    async function huyVanBan(soVaKyHieu, trichYeu, nam) {
-      const lyDo = prompt('Nhập lý do hủy văn bản ' + soVaKyHieu + ':');
+async function luuVanBanDi() {
+  const so = document.getElementById('soDi').value;
+  if (!so) return msg('msgDi', 'Vui lòng cấp số trước khi lưu.', 'error');
 
-      if (!lyDo || !lyDo.trim()) {
-        alert('Chưa nhập lý do hủy.');
-        return;
-      }
+  const data = {
+    action: 'LUU_VAN_BAN_DI',
+    nam: document.getElementById('namDi').value,
+    soVanBan: so,
+    kyHieu: document.getElementById('kyHieuDi').value,
+    ngayVanBan: document.getElementById('ngayDi').value,
+    trichYeu: document.getElementById('trichYeuDi').value,
+    nguoiKy: document.getElementById('nguoiKyDi').value,
+    soTrang: document.getElementById('soTrangDi').value,
+    soBan: document.getElementById('soBanDi').value,
+    donViNhanBanLuu: document.getElementById('donViNhanBanLuuDi').value,
+    noiNhanVanBan: document.getElementById('noiNhanDi').value,
+    luuHoSoSo: document.getElementById('luuHoSoDi').value,
+    ghiChu: document.getElementById('ghiChuDi').value
+  };
 
-      const data = {
-        action: 'HUY_VAN_BAN_DI',
-        nam: nam || new Date().getFullYear(),
-        soVaKyHieu: soVaKyHieu,
-        trichYeu: trichYeu || '',
-        lyDo: lyDo.trim()
-      };
+  await post(data);
+  msg('msgDi', 'Đã lưu văn bản đi.', 'success');
+}
 
-      try {
-        await fetch(API_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: {
-            'Content-Type': 'text/plain;charset=utf-8'
-          },
-          body: JSON.stringify(data)
-        });
+async function luuVanBanDen() {
+  const so = document.getElementById('soDen').value;
+  if (!so) return msg('msgDen', 'Vui lòng cấp số đến trước khi lưu.', 'error');
 
-        alert('Đã ghi nhận hủy văn bản.');
-        traCuuNhatKy();
+  const data = {
+    action: 'LUU_VAN_BAN_DEN',
+    nam: document.getElementById('namDen').value,
+    soDen: so,
+    ngayDen: document.getElementById('ngayDen').value,
+    luuHoSo: document.getElementById('luuHoSoDen').value,
+    ghiChu: document.getElementById('ghiChuDen').value,
+    tacGia: document.getElementById('tacGiaDen').value,
+    soKyHieuVanBan: document.getElementById('soKyHieuDen').value,
+    ngayVanBan: document.getElementById('ngayVanBanDen').value,
+    trichYeu: document.getElementById('trichYeuDen').value,
+    soTrang: document.getElementById('soTrangDen').value,
+    soBan: document.getElementById('soBanDen').value,
+    donViNhanVanBan: document.getElementById('donViNhanDen').value
+  };
 
-      } catch (error) {
-        alert('Không hủy được văn bản. Vui lòng kiểm tra Apps Script.');
-      }
+  await post(data);
+  msg('msgDen', 'Đã lưu văn bản đến.', 'success');
+}
+
+function traCuuNhatKy() {
+  jsonp({
+    action: 'TRA_CUU_NHAT_KY',
+    tuNgay: document.getElementById('tuNgay').value,
+    denNgay: document.getElementById('denNgay').value,
+    nam: document.getElementById('filterNam').value,
+    loaiSo: document.getElementById('filterLoaiSo').value,
+    trangThai: document.getElementById('filterTrangThai').value,
+    tuKhoa: document.getElementById('filterTuKhoa').value
+  }, res => {
+    if (res.success) {
+      renderNhatKy(res.data || []);
+      msg('msgNhatKy', 'Tìm thấy ' + (res.data || []).length + ' dòng.', 'success');
     }
+  });
+}
 
-    function capNhatSoVaKyHieu() {
-      const soVanBan = soVanBanInput.value;
-      const kyHieu = kyHieuInput.value;
+function renderNhatKy(data) {
+  const body = document.getElementById('bodyNhatKy');
+  body.innerHTML = '';
 
-      if (soVanBan && kyHieu) {
-        soVaKyHieuInput.value = soVanBan + kyHieu;
-      } else {
-        soVaKyHieuInput.value = '';
-      }
-    }
+  if (!data.length) {
+    body.innerHTML = '<tr><td colspan="8">Không có dữ liệu.</td></tr>';
+    return;
+  }
 
-    function jsonpRequest(params, onSuccess, onError) {
-      const callbackName = 'jsonpCallback_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
+  data.forEach(item => {
+    const tr = document.createElement('tr');
+    const canHuy = item.trangThai !== 'Đã hủy';
 
-      params.callback = callbackName;
+    tr.innerHTML = `
+      <td>${esc(item.thoiGian)}</td>
+      <td>${esc(item.trangThai)}</td>
+      <td>${esc(item.loaiSo)}</td>
+      <td>${esc(item.nam)}</td>
+      <td><b>${esc(item.soVaKyHieu)}</b></td>
+      <td>${esc(item.trichYeu)}</td>
+      <td>${esc(item.lyDo)}</td>
+      <td>${canHuy ? `<button class="btn-danger" onclick="huy('${escA(item.loaiSo)}','${escA(item.nam)}','${escA(item.soVaKyHieu)}','${escA(item.trichYeu)}')">Hủy</button>` : ''}</td>
+    `;
+    body.appendChild(tr);
+  });
+}
 
-      const query = Object.keys(params)
-        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key] || ''))
-        .join('&');
+async function huy(loaiSo, nam, soVaKyHieu, trichYeu) {
+  const lyDo = prompt('Nhập lý do hủy:');
+  if (!lyDo) return;
 
-      const script = document.createElement('script');
+  await post({
+    action: 'HUY_VAN_BAN',
+    loaiSo,
+    nam,
+    soVaKyHieu,
+    trichYeu,
+    lyDo
+  });
 
-      window[callbackName] = function(result) {
-        try {
-          onSuccess(result);
-        } finally {
-          delete window[callbackName];
-          script.remove();
-        }
-      };
+  alert('Đã ghi nhận hủy.');
+  traCuuNhatKy();
+}
 
-      script.onerror = function() {
-        delete window[callbackName];
-        script.remove();
-        if (onError) onError();
-      };
+function jsonp(params, callback) {
+  const cb = 'cb_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
+  params.callback = cb;
 
-      script.src = API_URL + '?' + query;
-      document.body.appendChild(script);
-    }
+  const query = Object.keys(params).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k] || '')).join('&');
+  const script = document.createElement('script');
 
-    function showMessage(text, type) {
-      messageBox.innerText = text;
-      messageBox.className = 'message ' + type;
-    }
+  window[cb] = function(res) {
+    callback(res);
+    delete window[cb];
+    script.remove();
+  };
 
-    function showMessageNhatKy(text, type) {
-      const box = document.getElementById('messageNhatKy');
-      box.innerText = text;
-      box.className = 'message ' + type;
-    }
+  script.src = API_URL + '?' + query;
+  document.body.appendChild(script);
+}
 
-    function escapeHtml(text) {
-      if (text === null || text === undefined) return '';
+async function post(data) {
+  await fetch(API_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(data)
+  });
+}
 
-      return String(text)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-    }
+function msg(id, text, type) {
+  const box = document.getElementById(id);
+  box.innerText = text;
+  box.className = 'message ' + type;
+}
 
-    function escapeAttr(text) {
-      if (text === null || text === undefined) return '';
+function esc(v) {
+  return String(v || '').replace(/[&<>"']/g, m => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;'
+  }[m]));
+}
 
-      return String(text)
-        .replace(/\\/g, '\\\\')
-        .replace(/'/g, "\\'")
-        .replace(/"/g, '&quot;')
-        .replace(/\n/g, ' ');
-    }
-
-    window.addEventListener('load', function() {
-      xemSoTiepTheo();
-    });
-  </script>
+function escA(v) {
+  return String(v || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, ' ');
+}
+</script>
 
 </body>
 </html>
