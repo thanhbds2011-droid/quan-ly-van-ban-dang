@@ -286,6 +286,19 @@ cursor:pointer;
 color:#b71c1c;
 
 }
+    .main-tabs {
+  grid-template-columns: 1fr 1fr;
+}
+
+.footer-log-btn {
+  width: auto;
+  min-width: 180px;
+  margin: 0 auto 10px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  background: linear-gradient(135deg, #8b0000, #c62828);
+}
 </style>
   </style>
 </head>
@@ -304,11 +317,10 @@ color:#b71c1c;
 
 <div class="container">
 
-  <div class="tabs">
-    <button class="tab-btn active" onclick="showTab('di')">📄 Văn bản đi</button>
-    <button class="tab-btn" onclick="showTab('den')">📥 Văn bản đến</button>
-    <button class="tab-btn" onclick="showTab('nhatky')">🔎 Nhật ký</button>
-  </div>
+  <div class="tabs main-tabs">
+  <button class="tab-btn active" onclick="showTab('di', this)">📄 Văn bản đi</button>
+  <button class="tab-btn" onclick="showTab('den', this)">📥 Văn bản đến</button>
+</div>
 
   <div id="tab-di" class="card">
     <h3 style="color:#8b0000;margin-top:0;">📄 Đăng ký văn bản đi</h3>
@@ -329,8 +341,6 @@ color:#b71c1c;
         </select>
       </div>
     </div>
-
-    
 
     <div class="so-box">
       <div class="so-card"><div class="label">Số hiện tại</div><div class="value" id="soHTDi">-</div></div>
@@ -387,8 +397,6 @@ color:#b71c1c;
 
     <label>Năm</label>
     <input type="number" id="namDen">
-
-    <button type="button" class="btn-secondary" onclick="xemSo('Văn bản đến','namDen','soHTDen','soTTDen')">Xem số đến tiếp theo</button>
 
     <div class="so-box">
       <div class="so-card"><div class="label">Số đến hiện tại</div><div class="value" id="soHTDen">-</div></div>
@@ -478,38 +486,57 @@ color:#b71c1c;
       </div>
     </div>
 
-    <label>Từ khóa</label>
-    <input id="filterTuKhoa" placeholder="Nhập số, ký hiệu, trích yếu, lý do...">
+    <label>Từ khóa tra cứu</label>
+<input id="filterTuKhoa" placeholder="Nhập số, ký hiệu, trích yếu, lý do...">
 
-    <button onclick="traCuuNhatKy()">Tra cứu</button>
-    <div id="msgNhatKy" class="message"></div>
+<label style="display:flex;align-items:center;gap:8px;margin-top:12px;">
+  <input type="checkbox" id="moRongLoc" style="width:auto;">
+  Mở rộng bộ lọc
+</label>
 
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Thời gian</th>
-            <th>Trạng thái</th>
-            <th>Loại sổ</th>
-            <th>Năm</th>
-            <th>Số và ký hiệu</th>
-            <th>Trích yếu</th>
-            <th>Lý do</th>
-            <th>Thao tác</th>
-          </tr>
-        </thead>
-        <tbody id="bodyNhatKy">
-          <tr><td colspan="8">Chưa tra cứu dữ liệu.</td></tr>
-        </tbody>
-      </table>
+<div id="boLocMoRong" class="hidden">
+
+  <div class="row-3">
+    <div>
+      <label>Từ ngày</label>
+      <input type="date" id="tuNgay">
+    </div>
+
+    <div>
+      <label>Đến ngày</label>
+      <input type="date" id="denNgay">
+    </div>
+
+    <div>
+      <label>Năm</label>
+      <input type="number" id="filterNam">
     </div>
   </div>
 
-  <div class="footer">
-  Phần mềm quản lý văn bản Đảng<br>
-  Căn cứ Quy định số 693-QĐ/VPTW ngày 15/12/2021 về công tác văn thư trong các cơ quan, tổ chức đảng
+  <div class="row">
+    <div>
+      <label>Loại sổ</label>
+      <select id="filterLoaiSo">
+        <option value="">Tất cả</option>
+        <option value="Văn bản đi">Văn bản đi</option>
+        <option value="Văn bản đến">Văn bản đến</option>
+      </select>
+    </div>
+
+    <div>
+      <label>Trạng thái</label>
+      <select id="filterTrangThai">
+        <option value="">Tất cả</option>
+        <option value="Đã cấp số">Đã cấp số</option>
+        <option value="Đã đăng ký">Đã đăng ký</option>
+        <option value="Đã hủy">Đã hủy</option>
+      </select>
+    </div>
+  </div>
+
 </div>
-</div>
+
+<button onclick="traCuuNhatKy()">Tra cứu</button>
 
 <script>
 const API_URL = 'https://script.google.com/macros/s/AKfycbwazhWwdWiojwjLLR_V93HzURX1QIry1Przv8l-9WgsbJY7SgD63ruAL98UdUj4HdKW/exec';
@@ -523,15 +550,19 @@ window.onload = function() {
   xemSo('Văn bản đi','namDi','soHTDi','soTTDi');
   xemSo('Văn bản đến','namDen','soHTDen','soTTDen');
 };
+function showTab(tab, btn) {
+  ['di','den','nhatky'].forEach(x => {
+    document.getElementById('tab-' + x).classList.add('hidden');
+  });
 
-function showTab(tab) {
-  ['di','den','nhatky'].forEach(x => document.getElementById('tab-' + x).classList.add('hidden'));
   document.getElementById('tab-' + tab).classList.remove('hidden');
 
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-}
 
+  if (btn && btn.classList.contains('tab-btn')) {
+    btn.classList.add('active');
+  }
+}
 function xemSo(loaiSo, namId, htId, ttId) {
   jsonp({
     action: 'XEM_SO_TIEP_THEO',
@@ -747,6 +778,9 @@ modal.style.display="none";
 }
 
 }
+  document.getElementById('moRongLoc').addEventListener('change', function() {
+  document.getElementById('boLocMoRong').classList.toggle('hidden', !this.checked);
+});
 </script>
 <div id="aboutModal" class="modal">
 
