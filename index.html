@@ -578,24 +578,21 @@ function capSoDen() {
 }
 
 async function luuVanBanDi() {
-  const so = document.getElementById('soDi').value;
-  if (!so) return msg('msgDi', 'Vui lòng cấp số trước khi lưu.', 'error');
 
   const data = {
-    action: 'LUU_VAN_BAN_DI',
-    nam: document.getElementById('namDi').value,
-    soVanBan: so,
-    kyHieu: document.getElementById('kyHieuDi').value,
-    ngayVanBan: document.getElementById('ngayDi').value,
-    trichYeu: document.getElementById('trichYeuDi').value,
-    nguoiKy: document.getElementById('nguoiKyDi').value,
-    soTrang: document.getElementById('soTrangDi').value,
-    soBan: document.getElementById('soBanDi').value,
-    donViNhanBanLuu: document.getElementById('donViNhanBanLuuDi').value,
-    noiNhanVanBan: document.getElementById('noiNhanDi').value,
-    luuHoSoSo: document.getElementById('luuHoSoDi').value,
-    ghiChu: document.getElementById('ghiChuDi').value
-  };
+  action: 'LUU_VAN_BAN_DI',
+  nam: document.getElementById('namDi').value,
+  kyHieu: document.getElementById('kyHieuDi').value,
+  ngayVanBan: document.getElementById('ngayDi').value,
+  trichYeu: document.getElementById('trichYeuDi').value,
+  nguoiKy: document.getElementById('nguoiKyDi').value,
+  soTrang: document.getElementById('soTrangDi').value,
+  soBan: document.getElementById('soBanDi').value,
+  donViNhanBanLuu: document.getElementById('donViNhanBanLuuDi').value,
+  noiNhanVanBan: document.getElementById('noiNhanDi').value,
+  luuHoSoSo: document.getElementById('luuHoSoDi').value,
+  ghiChu: document.getElementById('ghiChuDi').value
+};
 
   await post(data);
   msg('msgDi', 'Đã lưu văn bản đi.', 'success');
