@@ -1,329 +1,230 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quản lý văn bản Đảng</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quản lý văn bản Đảng</title>
 
-  <style>
-    * { box-sizing: border-box; font-family: Arial, sans-serif; }
-    body { margin: 0; background: #f8f1f1; color: #2b2b2b; }
-
-    .header {
-      background: linear-gradient(135deg, #8b0000, #c62828);
-      color: white;
-      padding: 22px 16px;
-      text-align: center;
-      border-bottom-left-radius: 24px;
-      border-bottom-right-radius: 24px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.25);
-    }
-
-    .header h1 { margin: 0; font-size: 22px; }
-    .header p { margin: 8px 0 0; font-size: 14px; }
-
-    .container { max-width: 900px; margin: 18px auto; padding: 14px; }
-
-    .tabs {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    button {
-      width: 100%;
-      margin-top: 18px;
-      padding: 14px;
-      border: none;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #b71c1c, #d32f2f);
-      color: white;
-      font-size: 15px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .tab-btn {
-      margin-top: 0;
-      background: white;
-      color: #8b0000;
-      border: 1px solid #d6bcbc;
-    }
-
-    .tab-btn.active {
-      background: linear-gradient(135deg, #8b0000, #c62828);
-      color: white;
-    }
-
-    .card {
-      background: white;
-      border-radius: 18px;
-      padding: 18px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-      border-top: 5px solid #b71c1c;
-      margin-bottom: 16px;
-    }
-
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 14px;
-      margin-bottom: 6px;
-      color: #7f0000;
-      font-size: 14px;
-    }
-
-    input, textarea, select {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #d6bcbc;
-      border-radius: 10px;
-      font-size: 15px;
-      outline: none;
-      background: #fffafa;
-    }
-
-    textarea { min-height: 90px; resize: vertical; }
-
-    .row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .row-3 {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 12px;
-    }
-
-    .so-box {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 12px;
-    }
-
-    .so-card {
-      background: #fff7f7;
-      border: 1px solid #e2bdbd;
-      border-radius: 14px;
-      padding: 14px;
-      text-align: center;
-    }
-
-    .so-card .label { color: #666; font-size: 13px; margin: 0 0 6px; }
-    .so-card .value { color: #8b0000; font-size: 26px; font-weight: bold; }
-
-    .cap-so-box {
-      display: grid;
-      grid-template-columns: 1fr 130px;
-      gap: 10px;
-      align-items: end;
-    }
-
-    .btn-small {
-      margin-top: 0;
-      height: 46px;
-      padding: 10px;
-      font-size: 14px;
-    }
-
-    .btn-secondary { background: linear-gradient(135deg, #5d4037, #795548); }
-    .btn-danger { background: #b71c1c; padding: 8px; margin-top: 0; font-size: 13px; }
-
-    .readonly {
-      background: #f1eeee;
-      font-weight: bold;
-      color: #7f0000;
-    }
-
-    .message {
-      display: none;
-      margin-top: 14px;
-      padding: 12px;
-      border-radius: 10px;
-      font-weight: bold;
-      text-align: center;
-    }
-
-    .success { display: block; background: #e8f5e9; color: #1b5e20; border: 1px solid #a5d6a7; }
-    .error { display: block; background: #ffebee; color: #b71c1c; border: 1px solid #ef9a9a; }
-
-    .hidden { display: none; }
-
-    .table-wrap {
-      overflow-x: auto;
-      margin-top: 14px;
-      border: 1px solid #eee;
-      border-radius: 12px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 900px;
-    }
-
-    th, td {
-      padding: 10px;
-      border-bottom: 1px solid #eee;
-      text-align: left;
-      font-size: 13px;
-      vertical-align: top;
-    }
-
-    th { background: #8b0000; color: white; }
-    tr:nth-child(even) { background: #fffafa; }
-
-    .footer { text-align: center; font-size: 12px; color: #777; margin-top: 16px; }
-
-    @media (max-width: 600px) {
-      .tabs, .row, .row-3, .so-box, .cap-so-box { grid-template-columns: 1fr; }
-      .header h1 { font-size: 20px; }
-    }
-    .footer {
-  text-align: center;
-  font-size: 12px;
-  color: #777;
-  margin-top: 16px;
-}
-
-/* ===== Căn cứ pháp lý ===== */
-
-.can-cu {
-  margin: 8px auto 0;
-  max-width: 760px;
-  font-size: 12px;
-  line-height: 1.5;
-  opacity: 0.92;
-}
-    .about-btn{
-
-position:absolute;
-
-right:15px;
-
-top:15px;
-
-width:38px;
-
-height:38px;
-
-border-radius:50%;
-
-background:white;
-
-color:#b71c1c;
-
-font-size:20px;
-
-font-weight:bold;
-
-border:none;
-
-cursor:pointer;
-
-}
+<style>
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{margin:0;background:#f8f1f1;color:#2b2b2b}
 
 .header{
+  position:relative;
+  background:linear-gradient(135deg,#8b0000,#c62828);
+  color:white;
+  padding:22px 16px;
+  text-align:center;
+  border-bottom-left-radius:24px;
+  border-bottom-right-radius:24px;
+  box-shadow:0 4px 14px rgba(0,0,0,.25)
+}
+.header h1{margin:0;font-size:22px}
+.header p{margin:8px 0 0;font-size:14px}
 
-position:relative;
+.about-btn{
+  position:absolute;
+  right:15px;
+  top:15px;
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:white;
+  color:#b71c1c;
+  font-size:20px;
+  font-weight:bold;
+  border:none;
+  cursor:pointer;
+  margin:0;
+  padding:0
+}
 
+.container{max-width:900px;margin:18px auto;padding:14px}
+
+.tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:14px
+}
+
+button{
+  width:100%;
+  margin-top:18px;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(135deg,#b71c1c,#d32f2f);
+  color:white;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer
+}
+
+.tab-btn{
+  margin-top:0;
+  background:white;
+  color:#8b0000;
+  border:1px solid #d6bcbc
+}
+.tab-btn.active{
+  background:linear-gradient(135deg,#8b0000,#c62828);
+  color:white
+}
+
+.card{
+  background:white;
+  border-radius:18px;
+  padding:18px;
+  box-shadow:0 4px 16px rgba(0,0,0,.08);
+  border-top:5px solid #b71c1c;
+  margin-bottom:16px
+}
+
+label{
+  font-weight:bold;
+  display:block;
+  margin-top:14px;
+  margin-bottom:6px;
+  color:#7f0000;
+  font-size:14px
+}
+
+input,textarea,select{
+  width:100%;
+  padding:12px;
+  border:1px solid #d6bcbc;
+  border-radius:10px;
+  font-size:15px;
+  outline:none;
+  background:#fffafa
+}
+textarea{min-height:90px;resize:vertical}
+
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+
+.so-box{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:12px
+}
+.so-card{
+  background:#fff7f7;
+  border:1px solid #e2bdbd;
+  border-radius:14px;
+  padding:14px;
+  text-align:center
+}
+.so-card .label{color:#666;font-size:13px;margin:0 0 6px}
+.so-card .value{color:#8b0000;font-size:26px;font-weight:bold}
+
+.message{
+  display:none;
+  margin-top:14px;
+  padding:12px;
+  border-radius:10px;
+  font-weight:bold;
+  text-align:center
+}
+.success{display:block;background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7}
+.error{display:block;background:#ffebee;color:#b71c1c;border:1px solid #ef9a9a}
+
+.hidden{display:none}
+
+.table-wrap{
+  overflow-x:auto;
+  margin-top:14px;
+  border:1px solid #eee;
+  border-radius:12px
+}
+table{width:100%;border-collapse:collapse;min-width:900px}
+th,td{
+  padding:10px;
+  border-bottom:1px solid #eee;
+  text-align:left;
+  font-size:13px;
+  vertical-align:top
+}
+th{background:#8b0000;color:white}
+tr:nth-child(even){background:#fffafa}
+
+.btn-danger{
+  background:#b71c1c;
+  padding:8px;
+  margin-top:0;
+  font-size:13px
+}
+
+.footer{
+  text-align:center;
+  font-size:12px;
+  color:#777;
+  margin-top:16px
+}
+.footer-log-btn{
+  width:auto;
+  min-width:180px;
+  margin:0 auto 10px;
+  padding:10px 18px;
+  border-radius:999px;
+  font-size:14px;
+  background:linear-gradient(135deg,#8b0000,#c62828)
 }
 
 .modal{
-
-display:none;
-
-position:fixed;
-
-left:0;
-
-top:0;
-
-width:100%;
-
-height:100%;
-
-background:rgba(0,0,0,.5);
-
-z-index:9999;
-
+  display:none;
+  position:fixed;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,.5);
+  z-index:9999
 }
-
 .modal-content{
-
-background:white;
-
-width:90%;
-
-max-width:500px;
-
-margin:80px auto;
-
-padding:25px;
-
-border-radius:15px;
-
-position:relative;
-
+  background:white;
+  width:90%;
+  max-width:500px;
+  margin:80px auto;
+  padding:25px;
+  border-radius:15px;
+  position:relative
 }
-
 .close{
-
-position:absolute;
-
-right:18px;
-
-top:10px;
-
-font-size:28px;
-
-cursor:pointer;
-
-color:#b71c1c;
-
-}
-    .main-tabs {
-  grid-template-columns: 1fr 1fr;
+  position:absolute;
+  right:18px;
+  top:10px;
+  font-size:28px;
+  cursor:pointer;
+  color:#b71c1c
 }
 
-.footer-log-btn {
-  width: auto;
-  min-width: 180px;
-  margin: 0 auto 10px;
-  padding: 10px 18px;
-  border-radius: 999px;
-  font-size: 14px;
-  background: linear-gradient(135deg, #8b0000, #c62828);
+@media(max-width:600px){
+  .tabs,.row,.row-3,.so-box{grid-template-columns:1fr}
+  .header h1{font-size:20px}
 }
 </style>
-  </style>
 </head>
 
 <body>
 
 <div class="header">
-
-    <button class="about-btn" onclick="moGioiThieu()">ⓘ</button>
-
-    <h1>QUẢN LÝ VĂN BẢN ĐẢNG</h1>
-
-    <p>Đăng ký văn bản đi, văn bản đến</p>
-
+  <button class="about-btn" onclick="moGioiThieu()">ⓘ</button>
+  <h1>QUẢN LÝ VĂN BẢN ĐẢNG</h1>
+  <p>Đăng ký văn bản đi, văn bản đến</p>
 </div>
 
 <div class="container">
 
-  <div class="tabs main-tabs">
-  <button class="tab-btn active" onclick="showTab('di', this)">📄 Văn bản đi</button>
-  <button class="tab-btn" onclick="showTab('den', this)">📥 Văn bản đến</button>
-</div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('di',this)">📄 Văn bản đi</button>
+    <button class="tab-btn" onclick="showTab('den',this)">📥 Văn bản đến</button>
+  </div>
 
   <div id="tab-di" class="card">
-    <h3 style="color:#8b0000;margin-top:0;">📄 Đăng ký văn bản đi</h3>
+    <h3 style="color:#8b0000;margin-top:0">📄 Đăng ký văn bản đi</h3>
 
     <div class="row">
       <div>
@@ -343,18 +244,15 @@ color:#b71c1c;
     </div>
 
     <div class="so-box">
-      <div class="so-card"><div class="label">Số hiện tại</div><div class="value" id="soHTDi">-</div></div>
-      <div class="so-card"><div class="label">Số tiếp theo</div><div class="value" id="soTTDi">-</div></div>
+      <div class="so-card">
+        <div class="label">Số hiện tại</div>
+        <div class="value" id="soHTDi">-</div>
+      </div>
+      <div class="so-card">
+        <div class="label">Số sẽ cấp khi lưu</div>
+        <div class="value" id="soTTDi">-</div>
+      </div>
     </div>
-
-    <label>Số văn bản</label>
-    <div class="cap-so-box">
-      <input id="soDi" class="readonly" readonly placeholder="Bấm cấp số">
-      <button type="button" class="btn-small" onclick="capSoDi()">Cấp số</button>
-    </div>
-
-    <label>Số và ký hiệu văn bản</label>
-    <input id="soKyHieuDi" class="readonly" readonly>
 
     <label>Ngày tháng năm văn bản</label>
     <input type="date" id="ngayDi">
@@ -393,20 +291,20 @@ color:#b71c1c;
   </div>
 
   <div id="tab-den" class="card hidden">
-    <h3 style="color:#8b0000;margin-top:0;">📥 Đăng ký văn bản đến</h3>
+    <h3 style="color:#8b0000;margin-top:0">📥 Đăng ký văn bản đến</h3>
 
     <label>Năm</label>
     <input type="number" id="namDen">
 
     <div class="so-box">
-      <div class="so-card"><div class="label">Số đến hiện tại</div><div class="value" id="soHTDen">-</div></div>
-      <div class="so-card"><div class="label">Số đến tiếp theo</div><div class="value" id="soTTDen">-</div></div>
-    </div>
-
-    <label>Số đến</label>
-    <div class="cap-so-box">
-      <input id="soDen" class="readonly" readonly placeholder="Bấm cấp số">
-      <button type="button" class="btn-small" onclick="capSoDen()">Cấp số</button>
+      <div class="so-card">
+        <div class="label">Số đến hiện tại</div>
+        <div class="value" id="soHTDen">-</div>
+      </div>
+      <div class="so-card">
+        <div class="label">Số đến sẽ cấp khi lưu</div>
+        <div class="value" id="soTTDen">-</div>
+      </div>
     </div>
 
     <label>Ngày tháng năm đến</label>
@@ -444,246 +342,227 @@ color:#b71c1c;
     <label>Đơn vị/cá nhân nhận văn bản</label>
     <input id="donViNhanDen">
 
-    <button onclick="luuVanBanDen()">Lưu văn bản đến</button>
+    <button onclick="luuVanBanDen()">Lưu và cấp số văn bản đến</button>
     <div id="msgDen" class="message"></div>
   </div>
 
   <div id="tab-nhatky" class="card hidden">
-    <h3 style="color:#8b0000;margin-top:0;">🔎 Tra cứu nhật ký</h3>
-
-    <div class="row-3">
-      <div>
-        <label>Từ ngày</label>
-        <input type="date" id="tuNgay">
-      </div>
-      <div>
-        <label>Đến ngày</label>
-        <input type="date" id="denNgay">
-      </div>
-      <div>
-        <label>Năm</label>
-        <input type="number" id="filterNam">
-      </div>
-    </div>
-
-    <div class="row">
-      <div>
-        <label>Loại sổ</label>
-        <select id="filterLoaiSo">
-          <option value="">Tất cả</option>
-          <option value="Văn bản đi">Văn bản đi</option>
-          <option value="Văn bản đến">Văn bản đến</option>
-        </select>
-      </div>
-      <div>
-        <label>Trạng thái</label>
-        <select id="filterTrangThai">
-          <option value="">Tất cả</option>
-          <option value="Đã cấp số">Đã cấp số</option>
-          <option value="Đã đăng ký">Đã đăng ký</option>
-          <option value="Đã hủy">Đã hủy</option>
-        </select>
-      </div>
-    </div>
+    <h3 style="color:#8b0000;margin-top:0">🔎 Tra cứu nhật ký</h3>
 
     <label>Từ khóa tra cứu</label>
-<input id="filterTuKhoa" placeholder="Nhập số, ký hiệu, trích yếu, lý do...">
+    <input id="filterTuKhoa" placeholder="Nhập số, ký hiệu, trích yếu, lý do...">
 
-<label style="display:flex;align-items:center;gap:8px;margin-top:12px;">
-  <input type="checkbox" id="moRongLoc" style="width:auto;">
-  Mở rộng bộ lọc
-</label>
+    <label style="display:flex;align-items:center;gap:8px;margin-top:12px">
+      <input type="checkbox" id="moRongLoc" style="width:auto">
+      Mở rộng bộ lọc
+    </label>
 
-<div id="boLocMoRong" class="hidden">
+    <div id="boLocMoRong" class="hidden">
+      <div class="row-3">
+        <div>
+          <label>Từ ngày</label>
+          <input type="date" id="tuNgay">
+        </div>
+        <div>
+          <label>Đến ngày</label>
+          <input type="date" id="denNgay">
+        </div>
+        <div>
+          <label>Năm</label>
+          <input type="number" id="filterNam">
+        </div>
+      </div>
 
-  <div class="row-3">
-    <div>
-      <label>Từ ngày</label>
-      <input type="date" id="tuNgay">
+      <div class="row">
+        <div>
+          <label>Loại sổ</label>
+          <select id="filterLoaiSo">
+            <option value="">Tất cả</option>
+            <option value="Văn bản đi">Văn bản đi</option>
+            <option value="Văn bản đến">Văn bản đến</option>
+          </select>
+        </div>
+        <div>
+          <label>Trạng thái</label>
+          <select id="filterTrangThai">
+            <option value="">Tất cả</option>
+            <option value="Đã đăng ký">Đã đăng ký</option>
+            <option value="Đã hủy">Đã hủy</option>
+          </select>
+        </div>
+      </div>
     </div>
 
-    <div>
-      <label>Đến ngày</label>
-      <input type="date" id="denNgay">
-    </div>
+    <button onclick="traCuuNhatKy()">Tra cứu</button>
+    <div id="msgNhatKy" class="message"></div>
 
-    <div>
-      <label>Năm</label>
-      <input type="number" id="filterNam">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Thời gian</th>
+            <th>Trạng thái</th>
+            <th>Loại sổ</th>
+            <th>Năm</th>
+            <th>Số và ký hiệu</th>
+            <th>Trích yếu</th>
+            <th>Lý do</th>
+            <th>Thao tác</th>
+          </tr>
+        </thead>
+        <tbody id="bodyNhatKy">
+          <tr><td colspan="8">Chưa tra cứu dữ liệu.</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
-  <div class="row">
-    <div>
-      <label>Loại sổ</label>
-      <select id="filterLoaiSo">
-        <option value="">Tất cả</option>
-        <option value="Văn bản đi">Văn bản đi</option>
-        <option value="Văn bản đến">Văn bản đến</option>
-      </select>
-    </div>
-
-    <div>
-      <label>Trạng thái</label>
-      <select id="filterTrangThai">
-        <option value="">Tất cả</option>
-        <option value="Đã cấp số">Đã cấp số</option>
-        <option value="Đã đăng ký">Đã đăng ký</option>
-        <option value="Đã hủy">Đã hủy</option>
-      </select>
-    </div>
+  <div class="footer">
+    <button type="button" class="footer-log-btn" onclick="showTab('nhatky',null)">🔎 Tra cứu nhật ký</button>
+    <div>Phần mềm quản lý văn bản Đảng</div>
   </div>
 
 </div>
 
-<button onclick="traCuuNhatKy()">Tra cứu</button>
+<div id="aboutModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="dongGioiThieu()">&times;</span>
+    <h2>QUẢN LÝ VĂN BẢN ĐẢNG</h2>
+    <p><b>Phiên bản:</b> 1.0</p>
+    <p><b>Căn cứ pháp lý</b></p>
+    <p style="text-align:justify">
+      Quy định số <b>693-QĐ/VPTW</b> ngày <b>15/12/2021</b>
+      của Văn phòng Trung ương Đảng về công tác văn thư trong các cơ quan,
+      tổ chức đảng.
+    </p>
+    <hr>
+    <p>Đơn vị phát triển:<br>Trung tâm Bảo trợ xã hội Tân Hiệp</p>
+  </div>
+</div>
 
 <script>
-const API_URL = 'https://script.google.com/macros/s/AKfycbwazhWwdWiojwjLLR_V93HzURX1QIry1Przv8l-9WgsbJY7SgD63ruAL98UdUj4HdKW/exec';
+const API_URL='https://script.google.com/macros/s/AKfycbwazhWwdWiojwjLLR_V93HzURX1QIry1Przv8l-9WgsbJY7SgD63ruAL98UdUj4HdKW/exec';
 
-window.onload = function() {
-  const y = new Date().getFullYear();
-  document.getElementById('namDi').value = y;
-  document.getElementById('namDen').value = y;
-  document.getElementById('ngayDi').valueAsDate = new Date();
-  document.getElementById('ngayDen').valueAsDate = new Date();
+window.onload=function(){
+  const y=new Date().getFullYear();
+  namDi.value=y;
+  namDen.value=y;
+  ngayDi.valueAsDate=new Date();
+  ngayDen.valueAsDate=new Date();
   xemSo('Văn bản đi','namDi','soHTDi','soTTDi');
   xemSo('Văn bản đến','namDen','soHTDen','soTTDen');
-};
-function showTab(tab, btn) {
-  ['di','den','nhatky'].forEach(x => {
-    document.getElementById('tab-' + x).classList.add('hidden');
+
+  document.getElementById('moRongLoc').addEventListener('change',function(){
+    boLocMoRong.classList.toggle('hidden',!this.checked);
   });
+};
 
-  document.getElementById('tab-' + tab).classList.remove('hidden');
-
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-
-  if (btn && btn.classList.contains('tab-btn')) {
-    btn.classList.add('active');
-  }
+function showTab(tab,btn){
+  ['di','den','nhatky'].forEach(x=>document.getElementById('tab-'+x).classList.add('hidden'));
+  document.getElementById('tab-'+tab).classList.remove('hidden');
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  if(btn&&btn.classList.contains('tab-btn'))btn.classList.add('active');
 }
-function xemSo(loaiSo, namId, htId, ttId) {
+
+function xemSo(loaiSo,namId,htId,ttId){
   jsonp({
-    action: 'XEM_SO_TIEP_THEO',
+    action:'XEM_SO_TIEP_THEO',
     loaiSo,
-    nam: document.getElementById(namId).value
-  }, res => {
-    if (res.success) {
-      document.getElementById(htId).innerText = res.soHienTai;
-      document.getElementById(ttId).innerText = res.soTiepTheo;
+    nam:document.getElementById(namId).value
+  },res=>{
+    if(res.success){
+      document.getElementById(htId).innerText=res.soHienTai;
+      document.getElementById(ttId).innerText=res.soTiepTheo;
     }
   });
 }
 
-function capSoDi() {
+async function luuVanBanDi(){
+  const ngay=ngayDi.value;
+  const trichYeu=trichYeuDi.value.trim();
+  const kyHieu=kyHieuDi.value;
+
+  if(!kyHieu||!ngay||!trichYeu){
+    return msg('msgDi','Vui lòng nhập ký hiệu, ngày văn bản và trích yếu trước khi lưu.','error');
+  }
+
+  await post({
+    action:'LUU_VAN_BAN_DI',
+    nam:namDi.value,
+    kyHieu,
+    ngayVanBan:ngay,
+    trichYeu,
+    nguoiKy:nguoiKyDi.value,
+    soTrang:soTrangDi.value,
+    soBan:soBanDi.value,
+    donViNhanBanLuu:donViNhanBanLuuDi.value,
+    noiNhanVanBan:noiNhanDi.value,
+    luuHoSoSo:luuHoSoDi.value,
+    ghiChu:ghiChuDi.value
+  });
+
+  msg('msgDi','Đã lưu và cấp số văn bản đi.','success');
+  xemSo('Văn bản đi','namDi','soHTDi','soTTDi');
+}
+
+async function luuVanBanDen(){
+  const ngay=ngayDen.value;
+  const trichYeu=trichYeuDen.value.trim();
+
+  if(!ngay||!trichYeu){
+    return msg('msgDen','Vui lòng nhập ngày đến và trích yếu trước khi lưu.','error');
+  }
+
+  await post({
+    action:'LUU_VAN_BAN_DEN',
+    nam:namDen.value,
+    ngayDen:ngay,
+    luuHoSo:luuHoSoDen.value,
+    ghiChu:ghiChuDen.value,
+    tacGia:tacGiaDen.value,
+    soKyHieuVanBan:soKyHieuDen.value,
+    ngayVanBan:ngayVanBanDen.value,
+    trichYeu,
+    soTrang:soTrangDen.value,
+    soBan:soBanDen.value,
+    donViNhanVanBan:donViNhanDen.value
+  });
+
+  msg('msgDen','Đã lưu và cấp số văn bản đến.','success');
+  xemSo('Văn bản đến','namDen','soHTDen','soTTDen');
+}
+
+function traCuuNhatKy(){
   jsonp({
-    action: 'CAP_SO',
-    loaiSo: 'Văn bản đi',
-    nam: document.getElementById('namDi').value
-  }, res => {
-    if (res.success) {
-      const kyHieu = document.getElementById('kyHieuDi').value;
-      document.getElementById('soDi').value = res.soMoi;
-      document.getElementById('soKyHieuDi').value = res.soMoi + kyHieu;
-      document.getElementById('soHTDi').innerText = res.soMoi;
-      document.getElementById('soTTDi').innerText = Number(res.soMoi) + 1;
-      msg('msgDi', 'Đã cấp số: ' + res.soMoi + kyHieu, 'success');
+    action:'TRA_CUU_NHAT_KY',
+    tuNgay:tuNgay.value,
+    denNgay:denNgay.value,
+    nam:filterNam.value,
+    loaiSo:filterLoaiSo.value,
+    trangThai:filterTrangThai.value,
+    tuKhoa:filterTuKhoa.value
+  },res=>{
+    if(res.success){
+      renderNhatKy(res.data||[]);
+      msg('msgNhatKy','Tìm thấy '+(res.data||[]).length+' dòng.','success');
     }
   });
 }
 
-function capSoDen() {
-  jsonp({
-    action: 'CAP_SO',
-    loaiSo: 'Văn bản đến',
-    nam: document.getElementById('namDen').value
-  }, res => {
-    if (res.success) {
-      document.getElementById('soDen').value = res.soMoi;
-      document.getElementById('soHTDen').innerText = res.soMoi;
-      document.getElementById('soTTDen').innerText = Number(res.soMoi) + 1;
-      msg('msgDen', 'Đã cấp số đến: ' + res.soMoi, 'success');
-    }
-  });
-}
+function renderNhatKy(data){
+  const body=bodyNhatKy;
+  body.innerHTML='';
 
-async function luuVanBanDi() {
-
-  const data = {
-  action: 'LUU_VAN_BAN_DI',
-  nam: document.getElementById('namDi').value,
-  kyHieu: document.getElementById('kyHieuDi').value,
-  ngayVanBan: document.getElementById('ngayDi').value,
-  trichYeu: document.getElementById('trichYeuDi').value,
-  nguoiKy: document.getElementById('nguoiKyDi').value,
-  soTrang: document.getElementById('soTrangDi').value,
-  soBan: document.getElementById('soBanDi').value,
-  donViNhanBanLuu: document.getElementById('donViNhanBanLuuDi').value,
-  noiNhanVanBan: document.getElementById('noiNhanDi').value,
-  luuHoSoSo: document.getElementById('luuHoSoDi').value,
-  ghiChu: document.getElementById('ghiChuDi').value
-};
-
-  await post(data);
-  msg('msgDi', 'Đã lưu văn bản đi.', 'success');
-}
-
-async function luuVanBanDen() {
-  const so = document.getElementById('soDen').value;
-  if (!so) return msg('msgDen', 'Vui lòng cấp số đến trước khi lưu.', 'error');
-
-  const data = {
-    action: 'LUU_VAN_BAN_DEN',
-    nam: document.getElementById('namDen').value,
-    soDen: so,
-    ngayDen: document.getElementById('ngayDen').value,
-    luuHoSo: document.getElementById('luuHoSoDen').value,
-    ghiChu: document.getElementById('ghiChuDen').value,
-    tacGia: document.getElementById('tacGiaDen').value,
-    soKyHieuVanBan: document.getElementById('soKyHieuDen').value,
-    ngayVanBan: document.getElementById('ngayVanBanDen').value,
-    trichYeu: document.getElementById('trichYeuDen').value,
-    soTrang: document.getElementById('soTrangDen').value,
-    soBan: document.getElementById('soBanDen').value,
-    donViNhanVanBan: document.getElementById('donViNhanDen').value
-  };
-
-  await post(data);
-  msg('msgDen', 'Đã lưu văn bản đến.', 'success');
-}
-
-function traCuuNhatKy() {
-  jsonp({
-    action: 'TRA_CUU_NHAT_KY',
-    tuNgay: document.getElementById('tuNgay').value,
-    denNgay: document.getElementById('denNgay').value,
-    nam: document.getElementById('filterNam').value,
-    loaiSo: document.getElementById('filterLoaiSo').value,
-    trangThai: document.getElementById('filterTrangThai').value,
-    tuKhoa: document.getElementById('filterTuKhoa').value
-  }, res => {
-    if (res.success) {
-      renderNhatKy(res.data || []);
-      msg('msgNhatKy', 'Tìm thấy ' + (res.data || []).length + ' dòng.', 'success');
-    }
-  });
-}
-
-function renderNhatKy(data) {
-  const body = document.getElementById('bodyNhatKy');
-  body.innerHTML = '';
-
-  if (!data.length) {
-    body.innerHTML = '<tr><td colspan="8">Không có dữ liệu.</td></tr>';
+  if(!data.length){
+    body.innerHTML='<tr><td colspan="8">Không có dữ liệu.</td></tr>';
     return;
   }
 
-  data.forEach(item => {
-    const tr = document.createElement('tr');
-    const canHuy = item.trangThai !== 'Đã hủy';
+  data.forEach(item=>{
+    const tr=document.createElement('tr');
+    const canHuy=item.trangThai!=='Đã hủy';
 
-    tr.innerHTML = `
+    tr.innerHTML=`
       <td>${esc(item.thoiGian)}</td>
       <td>${esc(item.trangThai)}</td>
       <td>${esc(item.loaiSo)}</td>
@@ -691,130 +570,72 @@ function renderNhatKy(data) {
       <td><b>${esc(item.soVaKyHieu)}</b></td>
       <td>${esc(item.trichYeu)}</td>
       <td>${esc(item.lyDo)}</td>
-      <td>${canHuy ? `<button class="btn-danger" onclick="huy('${escA(item.loaiSo)}','${escA(item.nam)}','${escA(item.soVaKyHieu)}','${escA(item.trichYeu)}')">Hủy</button>` : ''}</td>
+      <td>${canHuy?`<button class="btn-danger" onclick="huy('${escA(item.loaiSo)}','${escA(item.nam)}','${escA(item.soVaKyHieu)}','${escA(item.trichYeu)}')">Hủy</button>`:''}</td>
     `;
     body.appendChild(tr);
   });
 }
 
-async function huy(loaiSo, nam, soVaKyHieu, trichYeu) {
-  const lyDo = prompt('Nhập lý do hủy:');
-  if (!lyDo) return;
+async function huy(loaiSo,nam,soVaKyHieu,trichYeu){
+  const lyDo=prompt('Nhập lý do hủy:');
+  if(!lyDo)return;
 
-  await post({
-    action: 'HUY_VAN_BAN',
-    loaiSo,
-    nam,
-    soVaKyHieu,
-    trichYeu,
-    lyDo
-  });
-
+  await post({action:'HUY_VAN_BAN',loaiSo,nam,soVaKyHieu,trichYeu,lyDo});
   alert('Đã ghi nhận hủy.');
   traCuuNhatKy();
 }
 
-function jsonp(params, callback) {
-  const cb = 'cb_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
-  params.callback = cb;
+function jsonp(params,callback){
+  const cb='cb_'+Date.now()+'_'+Math.floor(Math.random()*10000);
+  params.callback=cb;
+  const query=Object.keys(params).map(k=>encodeURIComponent(k)+'='+encodeURIComponent(params[k]||'')).join('&');
+  const script=document.createElement('script');
 
-  const query = Object.keys(params).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k] || '')).join('&');
-  const script = document.createElement('script');
-
-  window[cb] = function(res) {
+  window[cb]=function(res){
     callback(res);
     delete window[cb];
     script.remove();
   };
 
-  script.src = API_URL + '?' + query;
+  script.src=API_URL+'?'+query;
   document.body.appendChild(script);
 }
 
-async function post(data) {
-  await fetch(API_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-    body: JSON.stringify(data)
+async function post(data){
+  await fetch(API_URL,{
+    method:'POST',
+    mode:'no-cors',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify(data)
   });
 }
 
-function msg(id, text, type) {
-  const box = document.getElementById(id);
-  box.innerText = text;
-  box.className = 'message ' + type;
+function msg(id,text,type){
+  const box=document.getElementById(id);
+  box.innerText=text;
+  box.className='message '+type;
 }
 
-function esc(v) {
-  return String(v || '').replace(/[&<>"']/g, m => ({
-    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;'
-  }[m]));
+function esc(v){
+  return String(v||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 }
 
-function escA(v) {
-  return String(v || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, ' ');
+function escA(v){
+  return String(v||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,' ');
 }
-  function moGioiThieu(){
 
-document.getElementById("aboutModal").style.display="block";
-
+function moGioiThieu(){
+  aboutModal.style.display='block';
 }
 
 function dongGioiThieu(){
-
-document.getElementById("aboutModal").style.display="none";
-
+  aboutModal.style.display='none';
 }
 
 window.onclick=function(event){
-
-let modal=document.getElementById("aboutModal");
-
-if(event.target==modal){
-
-modal.style.display="none";
-
-}
-
-}
-  document.getElementById('moRongLoc').addEventListener('change', function() {
-  document.getElementById('boLocMoRong').classList.toggle('hidden', !this.checked);
-});
+  if(event.target===aboutModal) aboutModal.style.display='none';
+};
 </script>
-<div id="aboutModal" class="modal">
 
-    <div class="modal-content">
-
-        <span class="close" onclick="dongGioiThieu()">&times;</span>
-
-        <h2>QUẢN LÝ VĂN BẢN ĐẢNG</h2>
-
-        <p><b>Phiên bản:</b> 1.0</p>
-
-        <p><b>Căn cứ pháp lý</b></p>
-
-        <p style="text-align:justify">
-
-        Quy định số <b>693-QĐ/VPTW</b> ngày <b>15/12/2021</b>
-        của Văn phòng Trung ương Đảng
-        về công tác văn thư trong các cơ quan,
-        tổ chức đảng.
-
-        </p>
-
-        <hr>
-
-        <p>
-
-        Đơn vị phát triển:<br>
-
-        Trung tâm Bảo trợ xã hội Tân Hiệp
-
-        </p>
-
-    </div>
-
-</div>
 </body>
 </html>
