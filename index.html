@@ -6,439 +6,314 @@
 <title>Quản lý văn bản Đảng</title>
 
 <style>
-* {
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{margin:0;background:#f8f1f1;color:#2b2b2b}
+
+.header{
+  position:relative;
+  padding:22px 16px;
+  color:#fff;
+  text-align:center;
+  background:linear-gradient(135deg,#8b0000,#c62828);
+  border-bottom-left-radius:24px;
+  border-bottom-right-radius:24px;
+  box-shadow:0 4px 14px rgba(0,0,0,.25)
+}
+.header h1{margin:0;font-size:22px}
+.header p{margin:8px 0 0;font-size:14px}
+
+.about-btn{
+  position:absolute;
+  top:15px;
+  right:15px;
+  width:38px;
+  height:38px;
+  margin:0;
+  padding:0;
+  border:none;
+  border-radius:50%;
+  color:#b71c1c;
+  background:#fff;
+  font-size:20px;
+  font-weight:bold;
+  cursor:pointer
 }
 
-body {
-  margin: 0;
-  background: #f8f1f1;
-  color: #2b2b2b;
+.container{max-width:900px;margin:18px auto;padding:14px}
+
+.tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:14px
 }
 
-.header {
-  position: relative;
-  background: linear-gradient(135deg, #8b0000, #c62828);
-  color: white;
-  padding: 22px 16px;
-  text-align: center;
-  border-bottom-left-radius: 24px;
-  border-bottom-right-radius: 24px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+button{
+  width:100%;
+  margin-top:18px;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  color:#fff;
+  background:linear-gradient(135deg,#b71c1c,#d32f2f);
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer
+}
+button:disabled{opacity:.65;cursor:not-allowed}
+
+.tab-btn{
+  margin-top:0;
+  color:#8b0000;
+  background:#fff;
+  border:1px solid #d6bcbc
+}
+.tab-btn.active{
+  color:#fff;
+  background:linear-gradient(135deg,#8b0000,#c62828)
 }
 
-.header h1 {
-  margin: 0;
-  font-size: 22px;
+.card{
+  padding:18px;
+  margin-bottom:16px;
+  background:#fff;
+  border-top:5px solid #b71c1c;
+  border-radius:18px;
+  box-shadow:0 4px 16px rgba(0,0,0,.08)
 }
 
-.header p {
-  margin: 8px 0 0;
-  font-size: 14px;
+label{
+  display:block;
+  margin-top:14px;
+  margin-bottom:6px;
+  color:#7f0000;
+  font-size:14px;
+  font-weight:bold
 }
 
-.about-btn {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  width: 38px;
-  height: 38px;
-  margin: 0;
-  padding: 0;
-  border: none;
-  border-radius: 50%;
-  background: white;
-  color: #b71c1c;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
+input,textarea,select{
+  width:100%;
+  padding:12px;
+  border:1px solid #d6bcbc;
+  border-radius:10px;
+  background:#fffafa;
+  font-size:15px;
+  outline:none
+}
+textarea{min-height:90px;resize:vertical}
+
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+
+.so-box{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:12px
+}
+.so-card{
+  padding:14px;
+  text-align:center;
+  border:1px solid #e2bdbd;
+  border-radius:14px;
+  background:#fff7f7
+}
+.so-card .label{margin:0 0 6px;color:#666;font-size:13px}
+.so-card .value{color:#8b0000;font-size:26px;font-weight:bold}
+
+.message{
+  display:none;
+  padding:12px;
+  margin-top:14px;
+  border-radius:10px;
+  font-weight:bold;
+  text-align:center
+}
+.success{
+  display:block;
+  color:#1b5e20;
+  border:1px solid #a5d6a7;
+  background:#e8f5e9
+}
+.error{
+  display:block;
+  color:#b71c1c;
+  border:1px solid #ef9a9a;
+  background:#ffebee
 }
 
-.container {
-  max-width: 900px;
-  margin: 18px auto;
-  padding: 14px;
+.hidden{display:none!important}
+
+.table-wrap{
+  overflow-x:auto;
+  margin-top:14px;
+  border:1px solid #eee;
+  border-radius:12px
+}
+table{width:100%;min-width:900px;border-collapse:collapse}
+th,td{
+  padding:10px;
+  border-bottom:1px solid #eee;
+  font-size:13px;
+  text-align:left;
+  vertical-align:top
+}
+th{color:#fff;background:#8b0000}
+tr:nth-child(even){background:#fffafa}
+
+.btn-danger{
+  padding:8px;
+  margin-top:0;
+  background:#b71c1c;
+  font-size:13px
 }
 
-.tabs {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 14px;
+.footer{
+  margin-top:18px;
+  color:#777;
+  font-size:12px;
+  text-align:center
+}
+.footer-log-btn{
+  width:auto;
+  min-width:150px;
+  padding:10px 20px;
+  margin:0 auto 10px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#8b0000,#c62828);
+  font-size:14px
 }
 
-button {
-  width: 100%;
-  margin-top: 18px;
-  padding: 14px;
-  border: none;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #b71c1c, #d32f2f);
-  color: white;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
+.pdf-action{text-align:center;margin-top:16px}
+.pdf-action button{
+  width:auto;
+  min-width:250px;
+  margin:0 auto;
+  background:linear-gradient(135deg,#5d4037,#795548)
 }
 
-button:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
+.modal{
+  display:none;
+  position:fixed;
+  z-index:9999;
+  inset:0;
+  background:rgba(0,0,0,.5)
+}
+.modal-content{
+  position:relative;
+  width:90%;
+  max-width:500px;
+  padding:25px;
+  margin:80px auto;
+  border-radius:15px;
+  background:#fff
+}
+.close{
+  position:absolute;
+  top:10px;
+  right:18px;
+  color:#b71c1c;
+  font-size:28px;
+  cursor:pointer
 }
 
-.tab-btn {
-  margin-top: 0;
-  background: white;
-  color: #8b0000;
-  border: 1px solid #d6bcbc;
+/* Xem sổ và in / lưu PDF */
+#printSection{
+  position:fixed;
+  z-index:10000;
+  inset:0;
+  overflow:auto;
+  padding:18px;
+  background:#e4e4e4
 }
 
-.tab-btn.active {
-  background: linear-gradient(135deg, #8b0000, #c62828);
-  color: white;
+.print-toolbar{
+  display:flex;
+  max-width:1200px;
+  gap:10px;
+  margin:0 auto 12px
+}
+.print-toolbar button{margin:0}
+
+.print-page{
+  width:100%;
+  max-width:1200px;
+  padding:8px;
+  margin:0 auto 30px;
+  background:#fff
 }
 
-.card {
-  background: white;
-  border-top: 5px solid #b71c1c;
-  border-radius: 18px;
-  padding: 18px;
-  margin-bottom: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+.print-table{
+  width:100%;
+  min-width:0;
+  border-collapse:collapse;
+  table-layout:fixed;
+  font-size:11px
 }
-
-label {
-  display: block;
-  margin-top: 14px;
-  margin-bottom: 6px;
-  color: #7f0000;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-input,
-textarea,
-select {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #d6bcbc;
-  border-radius: 10px;
-  background: #fffafa;
-  font-size: 15px;
-  outline: none;
-}
-
-textarea {
-  min-height: 90px;
-  resize: vertical;
-}
-
-.row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.row-3 {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 12px;
-}
-
-.so-box {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 12px;
-}
-
-.so-card {
-  border: 1px solid #e2bdbd;
-  border-radius: 14px;
-  padding: 14px;
-  background: #fff7f7;
-  text-align: center;
-}
-
-.so-card .label {
-  margin: 0 0 6px;
-  color: #666;
-  font-size: 13px;
-}
-
-.so-card .value {
-  color: #8b0000;
-  font-size: 26px;
-  font-weight: bold;
-}
-
-.message {
-  display: none;
-  margin-top: 14px;
-  padding: 12px;
-  border-radius: 10px;
-  font-weight: bold;
-  text-align: center;
-}
-
-.success {
-  display: block;
-  border: 1px solid #a5d6a7;
-  background: #e8f5e9;
-  color: #1b5e20;
-}
-
-.error {
-  display: block;
-  border: 1px solid #ef9a9a;
-  background: #ffebee;
-  color: #b71c1c;
-}
-
-.hidden {
-  display: none !important;
-}
-
-.table-wrap {
-  overflow-x: auto;
-  margin-top: 14px;
-  border: 1px solid #eee;
-  border-radius: 12px;
-}
-
-table {
-  width: 100%;
-  min-width: 900px;
-  border-collapse: collapse;
-}
-
-th,
-td {
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-  font-size: 13px;
-  text-align: left;
-  vertical-align: top;
-}
-
-th {
-  background: #8b0000;
-  color: white;
-}
-
-tr:nth-child(even) {
-  background: #fffafa;
-}
-
-.btn-danger {
-  margin-top: 0;
-  padding: 8px;
-  background: #b71c1c;
-  font-size: 13px;
-}
-
-.footer {
-  margin-top: 18px;
-  color: #777;
-  font-size: 12px;
-  text-align: center;
-}
-
-.footer-log-btn {
-  width: auto;
-  min-width: 150px;
-  margin: 0 auto 10px;
-  padding: 10px 20px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #8b0000, #c62828);
-  font-size: 14px;
-}
-
-.pdf-action {
-  margin-top: 16px;
-  text-align: center;
-}
-
-.pdf-action button {
-  width: auto;
-  min-width: 250px;
-  margin: 0 auto;
-  background: linear-gradient(135deg, #5d4037, #795548);
-}
-
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 9999;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-}
-
-.modal-content {
-  position: relative;
-  width: 90%;
-  max-width: 500px;
-  margin: 80px auto;
-  padding: 25px;
-  border-radius: 15px;
-  background: white;
-}
-
-.close {
-  position: absolute;
-  top: 10px;
-  right: 18px;
-  color: #b71c1c;
-  font-size: 28px;
-  cursor: pointer;
-}
-
-/* ===== Phần xem và xuất PDF ===== */
-
-.print-toolbar {
-  display: flex;
-  max-width: 1200px;
-  gap: 10px;
-  margin: 15px auto;
-  padding: 0 10px;
-}
-
-.print-toolbar button {
-  margin-top: 0;
-}
-
-.print-page {
-  max-width: 1200px;
-  margin: 0 auto 30px;
-  padding: 0;
-  background: white;
-}
-
-.print-page h2 {
-  margin: 0 0 6px;
-  text-align: center;
-  font-size: 18px;
-}
-
-.print-page p {
-  margin: 0 0 15px;
-  font-size: 12px;
-  text-align: center;
-}
-
-.print-table {
-  width: 100%;
-  min-width: 0;
-  border-collapse: collapse;
-  table-layout: fixed;
-  font-size: 11px;
-}
-
 .print-table th,
-.print-table td {
-  padding: 5px;
-  border: 1px solid #000;
-  color: black;
-  background: white;
-  line-height: 1.25;
-  text-align: center;
-  vertical-align: middle;
-  white-space: normal;
-  overflow-wrap: break-word;
-  word-break: break-word;
+.print-table td{
+  padding:5px;
+  color:#000;
+  border:1px solid #000;
+  background:#fff;
+  line-height:1.25;
+  text-align:center;
+  vertical-align:middle;
+  overflow-wrap:break-word;
+  word-break:break-word;
+  white-space:normal
 }
-
 .print-table td:nth-child(3),
 .print-table td:nth-child(7),
 .print-table td:nth-child(8),
-.print-table td:nth-child(10) {
-  text-align: left;
+.print-table td:nth-child(10){text-align:left}
+
+.print-table th:nth-child(1),.print-table td:nth-child(1){width:10%}
+.print-table th:nth-child(2),.print-table td:nth-child(2){width:10%}
+.print-table th:nth-child(3),.print-table td:nth-child(3){width:22%}
+.print-table th:nth-child(4),.print-table td:nth-child(4){width:9%}
+.print-table th:nth-child(5),.print-table td:nth-child(5){width:5%}
+.print-table th:nth-child(6),.print-table td:nth-child(6){width:5%}
+.print-table th:nth-child(7),.print-table td:nth-child(7){width:12%}
+.print-table th:nth-child(8),.print-table td:nth-child(8){width:12%}
+.print-table th:nth-child(9),.print-table td:nth-child(9){width:7%}
+.print-table th:nth-child(10),.print-table td:nth-child(10){width:8%}
+
+@media(max-width:600px){
+  .tabs,.row,.row-3,.so-box{grid-template-columns:1fr}
+  .header h1{font-size:20px}
+  #printSection{padding:8px}
+  .print-toolbar{flex-direction:column}
 }
 
-.print-table th:nth-child(1),
-.print-table td:nth-child(1) { width: 10%; }
+@media print{
+  @page{size:A4 landscape;margin:7mm}
 
-.print-table th:nth-child(2),
-.print-table td:nth-child(2) { width: 10%; }
-
-.print-table th:nth-child(3),
-.print-table td:nth-child(3) { width: 22%; }
-
-.print-table th:nth-child(4),
-.print-table td:nth-child(4) { width: 9%; }
-
-.print-table th:nth-child(5),
-.print-table td:nth-child(5) { width: 5%; }
-
-.print-table th:nth-child(6),
-.print-table td:nth-child(6) { width: 5%; }
-
-.print-table th:nth-child(7),
-.print-table td:nth-child(7) { width: 12%; }
-
-.print-table th:nth-child(8),
-.print-table td:nth-child(8) { width: 12%; }
-
-.print-table th:nth-child(9),
-.print-table td:nth-child(9) { width: 7%; }
-
-.print-table th:nth-child(10),
-.print-table td:nth-child(10) { width: 8%; }
-
-@media (max-width: 600px) {
-  .tabs,
-  .row,
-  .row-3,
-  .so-box {
-    grid-template-columns: 1fr;
-  }
-
-  .header h1 {
-    font-size: 20px;
-  }
-}
-
-@media print {
-  @page {
-    size: A4 landscape;
-    margin: 10mm;
-  }
-
-  body {
-    background: white;
-  }
+  body{background:#fff}
 
   .header,
   .container,
   .modal,
-  .print-toolbar {
-    display: none !important;
+  .print-toolbar{display:none!important}
+
+  #printSection{
+    display:block!important;
+    position:static;
+    padding:0;
+    background:#fff
   }
 
-  #printSection {
-    display: block !important;
+  .print-page{
+    max-width:none;
+    padding:0;
+    margin:0
   }
 
-  .print-page {
-    max-width: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .print-table {
-    font-size: 9.5px;
-  }
-
-  .print-table thead {
-    display: table-header-group;
-  }
-
-  .print-table tr {
-    page-break-inside: avoid;
-    break-inside: avoid;
+  .print-table{font-size:9.5px}
+  .print-table thead{display:table-header-group}
+  .print-table tr{
+    page-break-inside:avoid;
+    break-inside:avoid
   }
 }
 </style>
@@ -455,8 +330,8 @@ tr:nth-child(even) {
 <div class="container">
 
   <div class="tabs">
-    <button type="button" class="tab-btn active" onclick="showTab('di', this)">📄 Văn bản đi</button>
-    <button type="button" class="tab-btn" onclick="showTab('den', this)">📥 Văn bản đến</button>
+    <button type="button" class="tab-btn active" onclick="showTab('di',this)">📄 Văn bản đi</button>
+    <button type="button" class="tab-btn" onclick="showTab('den',this)">📥 Văn bản đến</button>
   </div>
 
   <div id="tab-di" class="card">
@@ -467,7 +342,6 @@ tr:nth-child(even) {
         <label>Năm</label>
         <input type="number" id="namDi">
       </div>
-
       <div>
         <label>Ký hiệu</label>
         <select id="kyHieuDi">
@@ -485,7 +359,6 @@ tr:nth-child(even) {
         <div class="label">Số hiện tại</div>
         <div class="value" id="soHTDi">-</div>
       </div>
-
       <div class="so-card">
         <div class="label">Số sẽ cấp khi lưu</div>
         <div class="value" id="soTTDi">-</div>
@@ -506,7 +379,6 @@ tr:nth-child(even) {
         <label>Số trang</label>
         <input type="number" id="soTrangDi">
       </div>
-
       <div>
         <label>Số bản</label>
         <input type="number" id="soBanDi">
@@ -540,7 +412,6 @@ tr:nth-child(even) {
         <div class="label">Số đến hiện tại</div>
         <div class="value" id="soHTDen">-</div>
       </div>
-
       <div class="so-card">
         <div class="label">Số đến sẽ cấp khi lưu</div>
         <div class="value" id="soTTDen">-</div>
@@ -573,7 +444,6 @@ tr:nth-child(even) {
         <label>Số trang</label>
         <input type="number" id="soTrangDen">
       </div>
-
       <div>
         <label>Số bản</label>
         <input type="number" id="soBanDen">
@@ -604,12 +474,10 @@ tr:nth-child(even) {
           <label>Từ ngày</label>
           <input type="date" id="tuNgay">
         </div>
-
         <div>
           <label>Đến ngày</label>
           <input type="date" id="denNgay">
         </div>
-
         <div>
           <label>Năm</label>
           <input type="number" id="filterNam">
@@ -625,7 +493,6 @@ tr:nth-child(even) {
             <option value="Văn bản đến">Văn bản đến</option>
           </select>
         </div>
-
         <div>
           <label>Trạng thái</label>
           <select id="filterTrangThai">
@@ -641,7 +508,7 @@ tr:nth-child(even) {
     <div id="msgNhatKy" class="message"></div>
 
     <div id="pdfAction" class="pdf-action hidden">
-      <button type="button" onclick="moSoVanBanDi()">🖨️ Xem / Xuất PDF sổ văn bản đi</button>
+      <button type="button" onclick="moSoVanBanDi()">🖨️ Xem sổ / In - Lưu PDF</button>
     </div>
 
     <div class="table-wrap">
@@ -658,32 +525,27 @@ tr:nth-child(even) {
             <th>Thao tác</th>
           </tr>
         </thead>
-
         <tbody id="bodyNhatKy">
-          <tr>
-            <td colspan="8">Chưa có dữ liệu.</td>
-          </tr>
+          <tr><td colspan="8">Chưa có dữ liệu.</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
   <div class="footer">
-    <button type="button" class="footer-log-btn" onclick="showTab('nhatky', null)">📒 Nhật ký</button>
+    <button type="button" class="footer-log-btn" onclick="showTab('nhatky',null)">📒 Nhật ký</button>
     <div>Phần mềm quản lý văn bản Đảng</div>
   </div>
-
 </div>
 
 <div id="printSection" class="hidden">
   <div class="print-toolbar">
-    <button type="button" onclick="window.print()">🖨️ Xuất PDF</button>
+    <button type="button" onclick="window.print()">🖨️ In / Lưu PDF</button>
     <button type="button" onclick="dongSoVanBanDi()">Đóng</button>
   </div>
 
   <div class="print-page">
-
-  <table class="print-table">
+    <table class="print-table">
       <thead>
         <tr>
           <th>Số và ký hiệu văn bản</th>
@@ -710,7 +572,6 @@ tr:nth-child(even) {
           <th>(10)</th>
         </tr>
       </thead>
-
       <tbody id="printBody"></tbody>
     </table>
   </div>
@@ -719,23 +580,16 @@ tr:nth-child(even) {
 <div id="aboutModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="dongGioiThieu()">&times;</span>
-
     <h2>QUẢN LÝ VĂN BẢN ĐẢNG</h2>
     <p><b>Phiên bản:</b> 1.0</p>
     <p><b>Căn cứ pháp lý</b></p>
-
     <p style="text-align:justify">
       Quy định số <b>693-QĐ/VPTW</b> ngày <b>15/12/2021</b>
       của Văn phòng Trung ương Đảng về công tác văn thư trong các cơ quan,
       tổ chức đảng.
     </p>
-
     <hr>
-
-    <p>
-      Đơn vị phát triển:<br>
-      Trung tâm Bảo trợ xã hội Tân Hiệp
-    </p>
+    <p>Đơn vị phát triển:<br>Trung tâm Bảo trợ xã hội Tân Hiệp</p>
   </div>
 </div>
 
@@ -751,10 +605,10 @@ function el(id) {
 }
 
 function initApp() {
-  const currentYear = new Date().getFullYear();
+  const year = new Date().getFullYear();
 
-  el('namDi').value = currentYear;
-  el('namDen').value = currentYear;
+  el('namDi').value = year;
+  el('namDen').value = year;
   el('ngayDi').value = todayYmd();
   el('ngayDen').value = todayYmd();
 
@@ -803,16 +657,11 @@ function showTab(tab, button) {
   }
 
   if (tab === 'nhatky') {
-    khoiTaoNhatKy();
+    moNhatKy();
   }
-
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
 }
 
-function khoiTaoNhatKy() {
+function moNhatKy() {
   el('filterTuKhoa').value = '';
   el('tuNgay').value = '';
   el('denNgay').value = '';
@@ -821,7 +670,6 @@ function khoiTaoNhatKy() {
   el('filterTrangThai').value = '';
   el('moRongLoc').checked = false;
   el('boLocMoRong').classList.add('hidden');
-  el('pdfAction').classList.add('hidden');
 
   taiNhatKy(false);
 }
@@ -851,13 +699,12 @@ function xemSo(loaiSo, namId, hienTaiId, tiepTheoId) {
 }
 
 async function luuVanBanDi() {
+  const button = el('btnLuuDi');
   const ngayVanBan = el('ngayDi').value;
   const trichYeu = el('trichYeuDi').value.trim();
-  const kyHieu = el('kyHieuDi').value;
-  const button = el('btnLuuDi');
 
-  if (!kyHieu || !ngayVanBan || !trichYeu) {
-    msg('msgDi', 'Vui lòng nhập ký hiệu, ngày văn bản và trích yếu trước khi lưu.', 'error');
+  if (!ngayVanBan || !trichYeu) {
+    msg('msgDi', 'Vui lòng nhập ngày văn bản và trích yếu trước khi lưu.', 'error');
     return;
   }
 
@@ -868,7 +715,7 @@ async function luuVanBanDi() {
     await post({
       action: 'LUU_VAN_BAN_DI',
       nam: el('namDi').value,
-      kyHieu: kyHieu,
+      kyHieu: el('kyHieuDi').value,
       ngayVanBan: ngayVanBan,
       trichYeu: trichYeu,
       nguoiKy: el('nguoiKyDi').value,
@@ -880,11 +727,10 @@ async function luuVanBanDi() {
       ghiChu: el('ghiChuDi').value
     });
 
-    await sleep(700);
-
-    msg('msgDi', 'Đã gửi yêu cầu lưu văn bản đi và cấp số.', 'success');
-    resetFormVanBanDi();
+    await sleep(900);
+    resetVanBanDi();
     xemSo('Văn bản đi', 'namDi', 'soHTDi', 'soTTDi');
+    msg('msgDi', 'Đã lưu văn bản đi và cấp số mới.', 'success');
 
   } catch (error) {
     msg('msgDi', 'Không gửi được dữ liệu. Vui lòng kiểm tra kết nối.', 'error');
@@ -896,9 +742,9 @@ async function luuVanBanDi() {
 }
 
 async function luuVanBanDen() {
+  const button = el('btnLuuDen');
   const ngayDen = el('ngayDen').value;
   const trichYeu = el('trichYeuDen').value.trim();
-  const button = el('btnLuuDen');
 
   if (!ngayDen || !trichYeu) {
     msg('msgDen', 'Vui lòng nhập ngày đến và trích yếu trước khi lưu.', 'error');
@@ -924,11 +770,10 @@ async function luuVanBanDen() {
       donViNhanVanBan: el('donViNhanDen').value
     });
 
-    await sleep(700);
-
-    msg('msgDen', 'Đã gửi yêu cầu lưu văn bản đến và cấp số.', 'success');
-    resetFormVanBanDen();
+    await sleep(900);
+    resetVanBanDen();
     xemSo('Văn bản đến', 'namDen', 'soHTDen', 'soTTDen');
+    msg('msgDen', 'Đã lưu văn bản đến và cấp số mới.', 'success');
 
   } catch (error) {
     msg('msgDen', 'Không gửi được dữ liệu. Vui lòng kiểm tra kết nối.', 'error');
@@ -939,7 +784,7 @@ async function luuVanBanDen() {
   }
 }
 
-function resetFormVanBanDi() {
+function resetVanBanDi() {
   el('ngayDi').value = todayYmd();
   el('trichYeuDi').value = '';
   el('nguoiKyDi').value = '';
@@ -951,7 +796,7 @@ function resetFormVanBanDi() {
   el('ghiChuDi').value = '';
 }
 
-function resetFormVanBanDen() {
+function resetVanBanDen() {
   el('ngayDen').value = todayYmd();
   el('luuHoSoDen').value = '';
   el('ghiChuDen').value = '';
@@ -969,14 +814,13 @@ function timKiemNhatKy() {
 }
 
 function taiNhatKy(laTimKiem) {
+  const filters = getFilters();
   const button = el('btnTimKiem');
 
   if (laTimKiem) {
     button.disabled = true;
     button.innerText = 'Đang tìm kiếm...';
   }
-
-  const filters = getFilters();
 
   jsonp({
     action: 'TRA_CUU_NHAT_KY',
@@ -986,21 +830,21 @@ function taiNhatKy(laTimKiem) {
 
     renderNhatKy(data);
 
+    const coVanBanDi = data.some(function(item) {
+      return item.loaiSo === 'Văn bản đi';
+    });
+
+    el('pdfAction').classList.toggle('hidden', !coVanBanDi);
+
     if (laTimKiem) {
       lastSearchFilters = filters;
-
-      const coVanBanDi = data.some(function(item) {
-        return item.loaiSo === 'Văn bản đi';
-      });
-
-      el('pdfAction').classList.toggle('hidden', !coVanBanDi);
-
-      msg(
-        'msgNhatKy',
-        'Tìm thấy ' + data.length + ' dòng dữ liệu.',
-        'success'
-      );
-
+      msg('msgNhatKy', 'Tìm thấy ' + data.length + ' dòng dữ liệu.', 'success');
+      button.disabled = false;
+      button.innerText = 'Tìm kiếm';
+    }
+  }, function() {
+    if (laTimKiem) {
+      msg('msgNhatKy', 'Không kết nối được Apps Script.', 'error');
       button.disabled = false;
       button.innerText = 'Tìm kiếm';
     }
@@ -1016,23 +860,8 @@ function renderNhatKy(data) {
     return;
   }
 
-  const danhSachDaHuy = new Set(
-    data
-      .filter(function(item) {
-        return item.trangThai === 'Đã hủy';
-      })
-      .map(function(item) {
-        return item.loaiSo + '|' + item.nam + '|' + item.soVaKyHieu;
-      })
-  );
-
   data.forEach(function(item) {
-    const key = item.loaiSo + '|' + item.nam + '|' + item.soVaKyHieu;
-
-    const coTheHuy =
-      item.trangThai === 'Đã đăng ký' &&
-      !danhSachDaHuy.has(key) &&
-      item.soVaKyHieu;
+    const coTheHuy = item.trangThai === 'Đã đăng ký' && !item.daHuy;
 
     const tr = document.createElement('tr');
 
@@ -1045,11 +874,7 @@ function renderNhatKy(data) {
       <td>${esc(item.trichYeu)}</td>
       <td>${esc(item.lyDo)}</td>
       <td>
-        ${
-          coTheHuy
-            ? `<button type="button" class="btn-danger" onclick="huyVanBan('${escA(item.loaiSo)}','${escA(item.nam)}','${escA(item.soVaKyHieu)}','${escA(item.trichYeu)}')">Hủy</button>`
-            : ''
-        }
+        ${coTheHuy ? `<button type="button" class="btn-danger" onclick="huyVanBan('${escA(item.loaiSo)}','${escA(item.nam)}','${escA(item.soVaKyHieu)}','${escA(item.trichYeu)}')">Hủy</button>` : ''}
       </td>
     `;
 
@@ -1062,28 +887,21 @@ async function huyVanBan(loaiSo, nam, soVaKyHieu, trichYeu) {
 
   if (!lyDo || !lyDo.trim()) return;
 
-  try {
-    await post({
-      action: 'HUY_VAN_BAN',
-      loaiSo: loaiSo,
-      nam: nam,
-      soVaKyHieu: soVaKyHieu,
-      trichYeu: trichYeu,
-      lyDo: lyDo.trim()
-    });
+  await post({
+    action: 'HUY_VAN_BAN',
+    loaiSo: loaiSo,
+    nam: nam,
+    soVaKyHieu: soVaKyHieu,
+    trichYeu: trichYeu,
+    lyDo: lyDo.trim()
+  });
 
-    await sleep(500);
-
-    alert('Đã gửi yêu cầu ghi nhận hủy văn bản.');
-    timKiemNhatKy();
-
-  } catch (error) {
-    alert('Không gửi được yêu cầu hủy văn bản.');
-  }
+  await sleep(700);
+  timKiemNhatKy();
 }
 
 function moSoVanBanDi() {
-  const filters = lastSearchFilters || {};
+  const filters = lastSearchFilters || getFilters();
 
   jsonp({
     action: 'LAY_DANH_SACH_VAN_BAN_DI',
@@ -1093,17 +911,15 @@ function moSoVanBanDi() {
     tuKhoa: filters.tuKhoa || ''
   }, function(result) {
     if (!result.success) {
-      alert(result.message || 'Không lấy được dữ liệu văn bản đi.');
+      alert(result.message || 'Không lấy được dữ liệu sổ văn bản đi.');
       return;
     }
 
     renderSoVanBanDi(result.data || []);
     el('printSection').classList.remove('hidden');
 
-    window.scrollTo({
-      top: el('printSection').offsetTop,
-      behavior: 'smooth'
-    });
+  }, function() {
+    alert('Không kết nối được Apps Script để lấy sổ văn bản đi.');
   });
 }
 
@@ -1114,18 +930,6 @@ function dongSoVanBanDi() {
 function renderSoVanBanDi(data) {
   const body = el('printBody');
   body.innerHTML = '';
-
-  const filters = lastSearchFilters || {};
-  const subtitle = [];
-
-  if (filters.nam) subtitle.push('Năm ' + filters.nam);
-  if (filters.tuNgay) subtitle.push('Từ ngày ' + formatYmd(filters.tuNgay));
-  if (filters.denNgay) subtitle.push('Đến ngày ' + formatYmd(filters.denNgay));
-  if (filters.tuKhoa) subtitle.push('Từ khóa: ' + filters.tuKhoa);
-
-  el('printSubTitle').innerText = subtitle.length
-    ? subtitle.join(' | ')
-    : 'Danh sách văn bản đi';
 
   if (!data.length) {
     body.innerHTML = '<tr><td colspan="10">Không có văn bản đi phù hợp.</td></tr>';
@@ -1152,9 +956,8 @@ function renderSoVanBanDi(data) {
   });
 }
 
-function jsonp(params, callback) {
+function jsonp(params, success, error) {
   const callbackName = 'cb_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
-
   params.callback = callbackName;
 
   const query = Object.keys(params)
@@ -1167,7 +970,7 @@ function jsonp(params, callback) {
 
   window[callbackName] = function(result) {
     try {
-      callback(result);
+      success(result);
     } finally {
       delete window[callbackName];
       script.remove();
@@ -1177,6 +980,7 @@ function jsonp(params, callback) {
   script.onerror = function() {
     delete window[callbackName];
     script.remove();
+    if (error) error();
   };
 
   script.src = API_URL + '?' + query;
@@ -1209,22 +1013,10 @@ function dongGioiThieu() {
 }
 
 function todayYmd() {
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-
-  return year + '-' + month + '-' + day;
-}
-
-function formatYmd(value) {
-  if (!value) return '';
-
-  const parts = value.split('-');
-
-  if (parts.length !== 3) return value;
-
-  return parts[2] + '/' + parts[1] + '/' + parts[0];
+  const d = new Date();
+  return d.getFullYear() + '-' +
+    String(d.getMonth() + 1).padStart(2, '0') + '-' +
+    String(d.getDate()).padStart(2, '0');
 }
 
 function sleep(ms) {
