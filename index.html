@@ -6,316 +6,439 @@
 <title>Quản lý văn bản Đảng</title>
 
 <style>
-*{box-sizing:border-box;font-family:Arial,sans-serif}
-body{margin:0;background:#f8f1f1;color:#2b2b2b}
-
-.header{
-  position:relative;
-  background:linear-gradient(135deg,#8b0000,#c62828);
-  color:white;
-  padding:22px 16px;
-  text-align:center;
-  border-bottom-left-radius:24px;
-  border-bottom-right-radius:24px;
-  box-shadow:0 4px 14px rgba(0,0,0,.25)
-}
-.header h1{margin:0;font-size:22px}
-.header p{margin:8px 0 0;font-size:14px}
-
-.about-btn{
-  position:absolute;
-  right:15px;
-  top:15px;
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  background:white;
-  color:#b71c1c;
-  font-size:20px;
-  font-weight:bold;
-  border:none;
-  cursor:pointer;
-  margin:0;
-  padding:0
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
-.container{max-width:900px;margin:18px auto;padding:14px}
-
-.tabs{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-bottom:14px
+body {
+  margin: 0;
+  background: #f8f1f1;
+  color: #2b2b2b;
 }
 
-button{
-  width:100%;
-  margin-top:18px;
-  padding:14px;
-  border:none;
-  border-radius:12px;
-  background:linear-gradient(135deg,#b71c1c,#d32f2f);
-  color:white;
-  font-size:15px;
-  font-weight:bold;
-  cursor:pointer
+.header {
+  position: relative;
+  background: linear-gradient(135deg, #8b0000, #c62828);
+  color: white;
+  padding: 22px 16px;
+  text-align: center;
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
 }
 
-.tab-btn{
-  margin-top:0;
-  background:white;
-  color:#8b0000;
-  border:1px solid #d6bcbc
-}
-.tab-btn.active{
-  background:linear-gradient(135deg,#8b0000,#c62828);
-  color:white
+.header h1 {
+  margin: 0;
+  font-size: 22px;
 }
 
-.card{
-  background:white;
-  border-radius:18px;
-  padding:18px;
-  box-shadow:0 4px 16px rgba(0,0,0,.08);
-  border-top:5px solid #b71c1c;
-  margin-bottom:16px
+.header p {
+  margin: 8px 0 0;
+  font-size: 14px;
 }
 
-label{
-  font-weight:bold;
-  display:block;
-  margin-top:14px;
-  margin-bottom:6px;
-  color:#7f0000;
-  font-size:14px
+.about-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 38px;
+  height: 38px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: white;
+  color: #b71c1c;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
-input,textarea,select{
-  width:100%;
-  padding:12px;
-  border:1px solid #d6bcbc;
-  border-radius:10px;
-  font-size:15px;
-  outline:none;
-  background:#fffafa
-}
-textarea{min-height:90px;resize:vertical}
-
-.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-
-.so-box{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  margin-top:12px
-}
-.so-card{
-  background:#fff7f7;
-  border:1px solid #e2bdbd;
-  border-radius:14px;
-  padding:14px;
-  text-align:center
-}
-.so-card .label{color:#666;font-size:13px;margin:0 0 6px}
-.so-card .value{color:#8b0000;font-size:26px;font-weight:bold}
-
-.message{
-  display:none;
-  margin-top:14px;
-  padding:12px;
-  border-radius:10px;
-  font-weight:bold;
-  text-align:center
-}
-.success{display:block;background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7}
-.error{display:block;background:#ffebee;color:#b71c1c;border:1px solid #ef9a9a}
-
-.hidden{display:none}
-
-.table-wrap{
-  overflow-x:auto;
-  margin-top:14px;
-  border:1px solid #eee;
-  border-radius:12px
-}
-table{width:100%;border-collapse:collapse;min-width:900px}
-th,td{
-  padding:10px;
-  border-bottom:1px solid #eee;
-  text-align:left;
-  font-size:13px;
-  vertical-align:top
-}
-th{background:#8b0000;color:white}
-tr:nth-child(even){background:#fffafa}
-
-.btn-danger{
-  background:#b71c1c;
-  padding:8px;
-  margin-top:0;
-  font-size:13px
+.container {
+  max-width: 900px;
+  margin: 18px auto;
+  padding: 14px;
 }
 
-.footer{
-  text-align:center;
-  font-size:12px;
-  color:#777;
-  margin-top:16px
-}
-.footer-log-btn{
-  width:auto;
-  min-width:180px;
-  margin:0 auto 10px;
-  padding:10px 18px;
-  border-radius:999px;
-  font-size:14px;
-  background:linear-gradient(135deg,#8b0000,#c62828)
+.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
 }
 
-.modal{
-  display:none;
-  position:fixed;
-  left:0;
-  top:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,.5);
-  z-index:9999
-}
-.modal-content{
-  background:white;
-  width:90%;
-  max-width:500px;
-  margin:80px auto;
-  padding:25px;
-  border-radius:15px;
-  position:relative
-}
-.close{
-  position:absolute;
-  right:18px;
-  top:10px;
-  font-size:28px;
-  cursor:pointer;
-  color:#b71c1c
+button {
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #b71c1c, #d32f2f);
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
-/* ===== Xem và xuất PDF ===== */
-
-.print-toolbar{
-  max-width:1200px;
-  margin:15px auto;
-  display:flex;
-  gap:10px;
-  padding:0 10px
+button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
-.print-toolbar button{
-  margin-top:0
+.tab-btn {
+  margin-top: 0;
+  background: white;
+  color: #8b0000;
+  border: 1px solid #d6bcbc;
 }
 
-.print-page{
-  background:white;
-  max-width:1200px;
-  margin:0 auto 30px;
-  padding:20px
+.tab-btn.active {
+  background: linear-gradient(135deg, #8b0000, #c62828);
+  color: white;
 }
 
-.print-page h2{
-  text-align:center;
-  margin:0 0 15px;
-  font-size:18px
+.card {
+  background: white;
+  border-top: 5px solid #b71c1c;
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
-.print-table{
-  width:100%;
-  border-collapse:collapse;
-  table-layout:fixed;
-  font-size:11px;
-  min-width:0
+label {
+  display: block;
+  margin-top: 14px;
+  margin-bottom: 6px;
+  color: #7f0000;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d6bcbc;
+  border-radius: 10px;
+  background: #fffafa;
+  font-size: 15px;
+  outline: none;
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.row-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+
+.so-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.so-card {
+  border: 1px solid #e2bdbd;
+  border-radius: 14px;
+  padding: 14px;
+  background: #fff7f7;
+  text-align: center;
+}
+
+.so-card .label {
+  margin: 0 0 6px;
+  color: #666;
+  font-size: 13px;
+}
+
+.so-card .value {
+  color: #8b0000;
+  font-size: 26px;
+  font-weight: bold;
+}
+
+.message {
+  display: none;
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.success {
+  display: block;
+  border: 1px solid #a5d6a7;
+  background: #e8f5e9;
+  color: #1b5e20;
+}
+
+.error {
+  display: block;
+  border: 1px solid #ef9a9a;
+  background: #ffebee;
+  color: #b71c1c;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  margin-top: 14px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+}
+
+table {
+  width: 100%;
+  min-width: 900px;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  font-size: 13px;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: #8b0000;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background: #fffafa;
+}
+
+.btn-danger {
+  margin-top: 0;
+  padding: 8px;
+  background: #b71c1c;
+  font-size: 13px;
+}
+
+.footer {
+  margin-top: 18px;
+  color: #777;
+  font-size: 12px;
+  text-align: center;
+}
+
+.footer-log-btn {
+  width: auto;
+  min-width: 150px;
+  margin: 0 auto 10px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #8b0000, #c62828);
+  font-size: 14px;
+}
+
+.pdf-action {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.pdf-action button {
+  width: auto;
+  min-width: 250px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #5d4037, #795548);
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 500px;
+  margin: 80px auto;
+  padding: 25px;
+  border-radius: 15px;
+  background: white;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 18px;
+  color: #b71c1c;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+/* ===== Phần xem và xuất PDF ===== */
+
+.print-toolbar {
+  display: flex;
+  max-width: 1200px;
+  gap: 10px;
+  margin: 15px auto;
+  padding: 0 10px;
+}
+
+.print-toolbar button {
+  margin-top: 0;
+}
+
+.print-page {
+  max-width: 1200px;
+  margin: 0 auto 30px;
+  padding: 20px;
+  background: white;
+}
+
+.print-page h2 {
+  margin: 0 0 6px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.print-page p {
+  margin: 0 0 15px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.print-table {
+  width: 100%;
+  min-width: 0;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 11px;
 }
 
 .print-table th,
-.print-table td{
-  border:1px solid #000;
-  padding:5px;
-  vertical-align:middle;
-  text-align:center;
-  word-wrap:break-word;
-  overflow-wrap:break-word;
-  white-space:normal;
-  line-height:1.25
-}
-
-.print-table th{
-  font-weight:bold;
-  background:white;
-  color:black
+.print-table td {
+  padding: 5px;
+  border: 1px solid #000;
+  color: black;
+  background: white;
+  line-height: 1.25;
+  text-align: center;
+  vertical-align: middle;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .print-table td:nth-child(3),
 .print-table td:nth-child(7),
 .print-table td:nth-child(8),
-.print-table td:nth-child(10){
-  text-align:left
+.print-table td:nth-child(10) {
+  text-align: left;
 }
 
-.print-table th:nth-child(1),.print-table td:nth-child(1){width:10%}
-.print-table th:nth-child(2),.print-table td:nth-child(2){width:10%}
-.print-table th:nth-child(3),.print-table td:nth-child(3){width:22%}
-.print-table th:nth-child(4),.print-table td:nth-child(4){width:9%}
-.print-table th:nth-child(5),.print-table td:nth-child(5){width:5%}
-.print-table th:nth-child(6),.print-table td:nth-child(6){width:5%}
-.print-table th:nth-child(7),.print-table td:nth-child(7){width:12%}
-.print-table th:nth-child(8),.print-table td:nth-child(8){width:12%}
-.print-table th:nth-child(9),.print-table td:nth-child(9){width:7%}
-.print-table th:nth-child(10),.print-table td:nth-child(10){width:8%}
+.print-table th:nth-child(1),
+.print-table td:nth-child(1) { width: 10%; }
 
-@media(max-width:600px){
-  .tabs,.row,.row-3,.so-box{grid-template-columns:1fr}
-  .header h1{font-size:20px}
-}
+.print-table th:nth-child(2),
+.print-table td:nth-child(2) { width: 10%; }
 
-@media print{
-  @page{
-    size:A4 landscape;
-    margin:10mm
+.print-table th:nth-child(3),
+.print-table td:nth-child(3) { width: 22%; }
+
+.print-table th:nth-child(4),
+.print-table td:nth-child(4) { width: 9%; }
+
+.print-table th:nth-child(5),
+.print-table td:nth-child(5) { width: 5%; }
+
+.print-table th:nth-child(6),
+.print-table td:nth-child(6) { width: 5%; }
+
+.print-table th:nth-child(7),
+.print-table td:nth-child(7) { width: 12%; }
+
+.print-table th:nth-child(8),
+.print-table td:nth-child(8) { width: 12%; }
+
+.print-table th:nth-child(9),
+.print-table td:nth-child(9) { width: 7%; }
+
+.print-table th:nth-child(10),
+.print-table td:nth-child(10) { width: 8%; }
+
+@media (max-width: 600px) {
+  .tabs,
+  .row,
+  .row-3,
+  .so-box {
+    grid-template-columns: 1fr;
   }
 
-  body{
-    background:white
+  .header h1 {
+    font-size: 20px;
+  }
+}
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 10mm;
+  }
+
+  body {
+    background: white;
   }
 
   .header,
   .container,
   .modal,
-  .print-toolbar{
-    display:none!important
+  .print-toolbar {
+    display: none !important;
   }
 
-  #printSection{
-    display:block!important
+  #printSection {
+    display: block !important;
   }
 
-  .print-page{
-    max-width:none;
-    margin:0;
-    padding:0
+  .print-page {
+    max-width: none;
+    margin: 0;
+    padding: 0;
   }
 
-  .print-table{
-    font-size:10px;
-    page-break-inside:auto
+  .print-table {
+    font-size: 9.5px;
   }
 
-  .print-table tr{
-    page-break-inside:avoid;
-    page-break-after:auto
+  .print-table thead {
+    display: table-header-group;
   }
 
-  .print-table thead{
-    display:table-header-group
+  .print-table tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
 }
 </style>
@@ -324,7 +447,7 @@ tr:nth-child(even){background:#fffafa}
 <body>
 
 <div class="header">
-  <button class="about-btn" onclick="moGioiThieu()">ⓘ</button>
+  <button type="button" class="about-btn" onclick="moGioiThieu()">ⓘ</button>
   <h1>QUẢN LÝ VĂN BẢN ĐẢNG</h1>
   <p>Đăng ký văn bản đi, văn bản đến</p>
 </div>
@@ -332,8 +455,8 @@ tr:nth-child(even){background:#fffafa}
 <div class="container">
 
   <div class="tabs">
-    <button class="tab-btn active" onclick="showTab('di',this)">📄 Văn bản đi</button>
-    <button class="tab-btn" onclick="showTab('den',this)">📥 Văn bản đến</button>
+    <button type="button" class="tab-btn active" onclick="showTab('di', this)">📄 Văn bản đi</button>
+    <button type="button" class="tab-btn" onclick="showTab('den', this)">📥 Văn bản đến</button>
   </div>
 
   <div id="tab-di" class="card">
@@ -344,6 +467,7 @@ tr:nth-child(even){background:#fffafa}
         <label>Năm</label>
         <input type="number" id="namDi">
       </div>
+
       <div>
         <label>Ký hiệu</label>
         <select id="kyHieuDi">
@@ -361,6 +485,7 @@ tr:nth-child(even){background:#fffafa}
         <div class="label">Số hiện tại</div>
         <div class="value" id="soHTDi">-</div>
       </div>
+
       <div class="so-card">
         <div class="label">Số sẽ cấp khi lưu</div>
         <div class="value" id="soTTDi">-</div>
@@ -381,6 +506,7 @@ tr:nth-child(even){background:#fffafa}
         <label>Số trang</label>
         <input type="number" id="soTrangDi">
       </div>
+
       <div>
         <label>Số bản</label>
         <input type="number" id="soBanDi">
@@ -399,7 +525,7 @@ tr:nth-child(even){background:#fffafa}
     <label>Ghi chú</label>
     <textarea id="ghiChuDi"></textarea>
 
-    <button onclick="luuVanBanDi()">Lưu và cấp số văn bản đi</button>
+    <button type="button" id="btnLuuDi" onclick="luuVanBanDi()">Lưu và cấp số văn bản đi</button>
     <div id="msgDi" class="message"></div>
   </div>
 
@@ -414,6 +540,7 @@ tr:nth-child(even){background:#fffafa}
         <div class="label">Số đến hiện tại</div>
         <div class="value" id="soHTDen">-</div>
       </div>
+
       <div class="so-card">
         <div class="label">Số đến sẽ cấp khi lưu</div>
         <div class="value" id="soTTDen">-</div>
@@ -446,6 +573,7 @@ tr:nth-child(even){background:#fffafa}
         <label>Số trang</label>
         <input type="number" id="soTrangDen">
       </div>
+
       <div>
         <label>Số bản</label>
         <input type="number" id="soBanDen">
@@ -455,15 +583,15 @@ tr:nth-child(even){background:#fffafa}
     <label>Đơn vị/cá nhân nhận văn bản</label>
     <input id="donViNhanDen">
 
-    <button onclick="luuVanBanDen()">Lưu và cấp số văn bản đến</button>
+    <button type="button" id="btnLuuDen" onclick="luuVanBanDen()">Lưu và cấp số văn bản đến</button>
     <div id="msgDen" class="message"></div>
   </div>
 
   <div id="tab-nhatky" class="card hidden">
-    <h3 style="color:#8b0000;margin-top:0">🔎 Tra cứu nhật ký</h3>
+    <h3 style="color:#8b0000;margin-top:0">📒 Nhật ký</h3>
 
-    <label>Từ khóa tra cứu</label>
-    <input id="filterTuKhoa" placeholder="Nhập số, ký hiệu, trích yếu, lý do...">
+    <label>Từ khóa tìm kiếm</label>
+    <input id="filterTuKhoa" placeholder="Nhập số, ký hiệu, trích yếu hoặc lý do...">
 
     <label style="display:flex;align-items:center;gap:8px;margin-top:12px">
       <input type="checkbox" id="moRongLoc" style="width:auto">
@@ -476,10 +604,12 @@ tr:nth-child(even){background:#fffafa}
           <label>Từ ngày</label>
           <input type="date" id="tuNgay">
         </div>
+
         <div>
           <label>Đến ngày</label>
           <input type="date" id="denNgay">
         </div>
+
         <div>
           <label>Năm</label>
           <input type="number" id="filterNam">
@@ -495,6 +625,7 @@ tr:nth-child(even){background:#fffafa}
             <option value="Văn bản đến">Văn bản đến</option>
           </select>
         </div>
+
         <div>
           <label>Trạng thái</label>
           <select id="filterTrangThai">
@@ -506,8 +637,12 @@ tr:nth-child(even){background:#fffafa}
       </div>
     </div>
 
-    <button onclick="traCuuNhatKy()">Tra cứu</button>
+    <button type="button" id="btnTimKiem" onclick="timKiemNhatKy()">Tìm kiếm</button>
     <div id="msgNhatKy" class="message"></div>
+
+    <div id="pdfAction" class="pdf-action hidden">
+      <button type="button" onclick="moSoVanBanDi()">🖨️ Xem / Xuất PDF sổ văn bản đi</button>
+    </div>
 
     <div class="table-wrap">
       <table>
@@ -523,16 +658,18 @@ tr:nth-child(even){background:#fffafa}
             <th>Thao tác</th>
           </tr>
         </thead>
+
         <tbody id="bodyNhatKy">
-          <tr><td colspan="8">Chưa tra cứu dữ liệu.</td></tr>
+          <tr>
+            <td colspan="8">Chưa có dữ liệu.</td>
+          </tr>
         </tbody>
       </table>
     </div>
   </div>
 
   <div class="footer">
-    <button type="button" class="footer-log-btn" onclick="showTab('nhatky',null)">🔎 Tra cứu nhật ký</button>
-    <button type="button" class="footer-log-btn" onclick="moSoVanBanDi()">🖨️ Xem / Xuất PDF sổ văn bản đi</button>
+    <button type="button" class="footer-log-btn" onclick="showTab('nhatky', null)">📒 Nhật ký</button>
     <div>Phần mềm quản lý văn bản Đảng</div>
   </div>
 
@@ -540,12 +677,13 @@ tr:nth-child(even){background:#fffafa}
 
 <div id="printSection" class="hidden">
   <div class="print-toolbar">
-    <button onclick="window.print()">🖨️ Xuất PDF</button>
-    <button onclick="dongSoVanBanDi()">Đóng</button>
+    <button type="button" onclick="window.print()">🖨️ Xuất PDF</button>
+    <button type="button" onclick="dongSoVanBanDi()">Đóng</button>
   </div>
 
   <div class="print-page">
     <h2>SỔ ĐĂNG KÝ VĂN BẢN ĐI</h2>
+    <p id="printSubTitle">Danh sách văn bản đi</p>
 
     <table class="print-table">
       <thead>
@@ -574,6 +712,7 @@ tr:nth-child(even){background:#fffafa}
           <th>(10)</th>
         </tr>
       </thead>
+
       <tbody id="printBody"></tbody>
     </table>
   </div>
@@ -582,142 +721,324 @@ tr:nth-child(even){background:#fffafa}
 <div id="aboutModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="dongGioiThieu()">&times;</span>
+
     <h2>QUẢN LÝ VĂN BẢN ĐẢNG</h2>
     <p><b>Phiên bản:</b> 1.0</p>
     <p><b>Căn cứ pháp lý</b></p>
+
     <p style="text-align:justify">
       Quy định số <b>693-QĐ/VPTW</b> ngày <b>15/12/2021</b>
       của Văn phòng Trung ương Đảng về công tác văn thư trong các cơ quan,
       tổ chức đảng.
     </p>
+
     <hr>
-    <p>Đơn vị phát triển:<br>Trung tâm Bảo trợ xã hội Tân Hiệp</p>
+
+    <p>
+      Đơn vị phát triển:<br>
+      Trung tâm Bảo trợ xã hội Tân Hiệp
+    </p>
   </div>
 </div>
 
 <script>
-const API_URL='https://script.google.com/macros/s/AKfycbwazhWwdWiojwjLLR_V93HzURX1QIry1Przv8l-9WgsbJY7SgD63ruAL98UdUj4HdKW/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbwazhWwdWiojwjLLR_V93HzURX1QIry1Przv8l-9WgsbJY7SgD63ruAL98UdUj4HdKW/exec';
 
-window.onload=function(){
-  const y=new Date().getFullYear();
-  namDi.value=y;
-  namDen.value=y;
-  ngayDi.valueAsDate=new Date();
-  ngayDen.valueAsDate=new Date();
-  xemSo('Văn bản đi','namDi','soHTDi','soTTDi');
-  xemSo('Văn bản đến','namDen','soHTDen','soTTDen');
+let lastSearchFilters = {};
 
-  document.getElementById('moRongLoc').addEventListener('change',function(){
-    boLocMoRong.classList.toggle('hidden',!this.checked);
-  });
-};
+document.addEventListener('DOMContentLoaded', initApp);
 
-function showTab(tab,btn){
-  ['di','den','nhatky'].forEach(x=>document.getElementById('tab-'+x).classList.add('hidden'));
-  document.getElementById('tab-'+tab).classList.remove('hidden');
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  if(btn&&btn.classList.contains('tab-btn'))btn.classList.add('active');
+function el(id) {
+  return document.getElementById(id);
 }
 
-function xemSo(loaiSo,namId,htId,ttId){
-  jsonp({
-    action:'XEM_SO_TIEP_THEO',
-    loaiSo,
-    nam:document.getElementById(namId).value
-  },res=>{
-    if(res.success){
-      document.getElementById(htId).innerText=res.soHienTai;
-      document.getElementById(ttId).innerText=res.soTiepTheo;
+function initApp() {
+  const currentYear = new Date().getFullYear();
+
+  el('namDi').value = currentYear;
+  el('namDen').value = currentYear;
+  el('ngayDi').value = todayYmd();
+  el('ngayDen').value = todayYmd();
+
+  xemSo('Văn bản đi', 'namDi', 'soHTDi', 'soTTDi');
+  xemSo('Văn bản đến', 'namDen', 'soHTDen', 'soTTDen');
+
+  el('namDi').addEventListener('change', function() {
+    xemSo('Văn bản đi', 'namDi', 'soHTDi', 'soTTDi');
+  });
+
+  el('namDen').addEventListener('change', function() {
+    xemSo('Văn bản đến', 'namDen', 'soHTDen', 'soTTDen');
+  });
+
+  el('moRongLoc').addEventListener('change', function() {
+    el('boLocMoRong').classList.toggle('hidden', !this.checked);
+  });
+
+  el('filterTuKhoa').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      timKiemNhatKy();
+    }
+  });
+
+  window.addEventListener('click', function(event) {
+    if (event.target === el('aboutModal')) {
+      dongGioiThieu();
     }
   });
 }
 
-async function luuVanBanDi(){
-  const ngay=ngayDi.value;
-  const trichYeu=trichYeuDi.value.trim();
-  const kyHieu=kyHieuDi.value;
-
-  if(!kyHieu||!ngay||!trichYeu){
-    return msg('msgDi','Vui lòng nhập ký hiệu, ngày văn bản và trích yếu trước khi lưu.','error');
-  }
-
-  await post({
-    action:'LUU_VAN_BAN_DI',
-    nam:namDi.value,
-    kyHieu,
-    ngayVanBan:ngay,
-    trichYeu,
-    nguoiKy:nguoiKyDi.value,
-    soTrang:soTrangDi.value,
-    soBan:soBanDi.value,
-    donViNhanBanLuu:donViNhanBanLuuDi.value,
-    noiNhanVanBan:noiNhanDi.value,
-    luuHoSoSo:luuHoSoDi.value,
-    ghiChu:ghiChuDi.value
+function showTab(tab, button) {
+  ['di', 'den', 'nhatky'].forEach(function(item) {
+    el('tab-' + item).classList.add('hidden');
   });
 
-  msg('msgDi','Đã lưu và cấp số văn bản đi.','success');
-  xemSo('Văn bản đi','namDi','soHTDi','soTTDi');
-}
+  el('tab-' + tab).classList.remove('hidden');
 
-async function luuVanBanDen(){
-  const ngay=ngayDen.value;
-  const trichYeu=trichYeuDen.value.trim();
-
-  if(!ngay||!trichYeu){
-    return msg('msgDen','Vui lòng nhập ngày đến và trích yếu trước khi lưu.','error');
-  }
-
-  await post({
-    action:'LUU_VAN_BAN_DEN',
-    nam:namDen.value,
-    ngayDen:ngay,
-    luuHoSo:luuHoSoDen.value,
-    ghiChu:ghiChuDen.value,
-    tacGia:tacGiaDen.value,
-    soKyHieuVanBan:soKyHieuDen.value,
-    ngayVanBan:ngayVanBanDen.value,
-    trichYeu,
-    soTrang:soTrangDen.value,
-    soBan:soBanDen.value,
-    donViNhanVanBan:donViNhanDen.value
+  document.querySelectorAll('.tab-btn').forEach(function(btn) {
+    btn.classList.remove('active');
   });
 
-  msg('msgDen','Đã lưu và cấp số văn bản đến.','success');
-  xemSo('Văn bản đến','namDen','soHTDen','soTTDen');
+  if (button && button.classList.contains('tab-btn')) {
+    button.classList.add('active');
+  }
+
+  if (tab === 'nhatky') {
+    khoiTaoNhatKy();
+  }
+
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
 }
 
-function traCuuNhatKy(){
+function khoiTaoNhatKy() {
+  el('filterTuKhoa').value = '';
+  el('tuNgay').value = '';
+  el('denNgay').value = '';
+  el('filterNam').value = '';
+  el('filterLoaiSo').value = '';
+  el('filterTrangThai').value = '';
+  el('moRongLoc').checked = false;
+  el('boLocMoRong').classList.add('hidden');
+  el('pdfAction').classList.add('hidden');
+
+  taiNhatKy(false);
+}
+
+function getFilters() {
+  return {
+    tuNgay: el('tuNgay').value,
+    denNgay: el('denNgay').value,
+    nam: el('filterNam').value,
+    loaiSo: el('filterLoaiSo').value,
+    trangThai: el('filterTrangThai').value,
+    tuKhoa: el('filterTuKhoa').value.trim()
+  };
+}
+
+function xemSo(loaiSo, namId, hienTaiId, tiepTheoId) {
   jsonp({
-    action:'TRA_CUU_NHAT_KY',
-    tuNgay:tuNgay.value,
-    denNgay:denNgay.value,
-    nam:filterNam.value,
-    loaiSo:filterLoaiSo.value,
-    trangThai:filterTrangThai.value,
-    tuKhoa:filterTuKhoa.value
-  },res=>{
-    if(res.success){
-      renderNhatKy(res.data||[]);
-      msg('msgNhatKy','Tìm thấy '+(res.data||[]).length+' dòng.','success');
-    }
+    action: 'XEM_SO_TIEP_THEO',
+    loaiSo: loaiSo,
+    nam: el(namId).value
+  }, function(result) {
+    if (!result.success) return;
+
+    el(hienTaiId).innerText = result.soHienTai;
+    el(tiepTheoId).innerText = result.soTiepTheo;
   });
 }
 
-function renderNhatKy(data){
-  const body=bodyNhatKy;
-  body.innerHTML='';
+async function luuVanBanDi() {
+  const ngayVanBan = el('ngayDi').value;
+  const trichYeu = el('trichYeuDi').value.trim();
+  const kyHieu = el('kyHieuDi').value;
+  const button = el('btnLuuDi');
 
-  if(!data.length){
-    body.innerHTML='<tr><td colspan="8">Không có dữ liệu.</td></tr>';
+  if (!kyHieu || !ngayVanBan || !trichYeu) {
+    msg('msgDi', 'Vui lòng nhập ký hiệu, ngày văn bản và trích yếu trước khi lưu.', 'error');
     return;
   }
 
-  data.forEach(item=>{
-    const tr=document.createElement('tr');
-    const canHuy=item.trangThai!=='Đã hủy';
+  button.disabled = true;
+  button.innerText = 'Đang lưu...';
 
-    tr.innerHTML=`
+  try {
+    await post({
+      action: 'LUU_VAN_BAN_DI',
+      nam: el('namDi').value,
+      kyHieu: kyHieu,
+      ngayVanBan: ngayVanBan,
+      trichYeu: trichYeu,
+      nguoiKy: el('nguoiKyDi').value,
+      soTrang: el('soTrangDi').value,
+      soBan: el('soBanDi').value,
+      donViNhanBanLuu: el('donViNhanBanLuuDi').value,
+      noiNhanVanBan: el('noiNhanDi').value,
+      luuHoSoSo: el('luuHoSoDi').value,
+      ghiChu: el('ghiChuDi').value
+    });
+
+    await sleep(700);
+
+    msg('msgDi', 'Đã gửi yêu cầu lưu văn bản đi và cấp số.', 'success');
+    resetFormVanBanDi();
+    xemSo('Văn bản đi', 'namDi', 'soHTDi', 'soTTDi');
+
+  } catch (error) {
+    msg('msgDi', 'Không gửi được dữ liệu. Vui lòng kiểm tra kết nối.', 'error');
+
+  } finally {
+    button.disabled = false;
+    button.innerText = 'Lưu và cấp số văn bản đi';
+  }
+}
+
+async function luuVanBanDen() {
+  const ngayDen = el('ngayDen').value;
+  const trichYeu = el('trichYeuDen').value.trim();
+  const button = el('btnLuuDen');
+
+  if (!ngayDen || !trichYeu) {
+    msg('msgDen', 'Vui lòng nhập ngày đến và trích yếu trước khi lưu.', 'error');
+    return;
+  }
+
+  button.disabled = true;
+  button.innerText = 'Đang lưu...';
+
+  try {
+    await post({
+      action: 'LUU_VAN_BAN_DEN',
+      nam: el('namDen').value,
+      ngayDen: ngayDen,
+      luuHoSo: el('luuHoSoDen').value,
+      ghiChu: el('ghiChuDen').value,
+      tacGia: el('tacGiaDen').value,
+      soKyHieuVanBan: el('soKyHieuDen').value,
+      ngayVanBan: el('ngayVanBanDen').value,
+      trichYeu: trichYeu,
+      soTrang: el('soTrangDen').value,
+      soBan: el('soBanDen').value,
+      donViNhanVanBan: el('donViNhanDen').value
+    });
+
+    await sleep(700);
+
+    msg('msgDen', 'Đã gửi yêu cầu lưu văn bản đến và cấp số.', 'success');
+    resetFormVanBanDen();
+    xemSo('Văn bản đến', 'namDen', 'soHTDen', 'soTTDen');
+
+  } catch (error) {
+    msg('msgDen', 'Không gửi được dữ liệu. Vui lòng kiểm tra kết nối.', 'error');
+
+  } finally {
+    button.disabled = false;
+    button.innerText = 'Lưu và cấp số văn bản đến';
+  }
+}
+
+function resetFormVanBanDi() {
+  el('ngayDi').value = todayYmd();
+  el('trichYeuDi').value = '';
+  el('nguoiKyDi').value = '';
+  el('soTrangDi').value = '';
+  el('soBanDi').value = '';
+  el('donViNhanBanLuuDi').value = '';
+  el('noiNhanDi').value = '';
+  el('luuHoSoDi').value = '';
+  el('ghiChuDi').value = '';
+}
+
+function resetFormVanBanDen() {
+  el('ngayDen').value = todayYmd();
+  el('luuHoSoDen').value = '';
+  el('ghiChuDen').value = '';
+  el('tacGiaDen').value = '';
+  el('soKyHieuDen').value = '';
+  el('ngayVanBanDen').value = '';
+  el('trichYeuDen').value = '';
+  el('soTrangDen').value = '';
+  el('soBanDen').value = '';
+  el('donViNhanDen').value = '';
+}
+
+function timKiemNhatKy() {
+  taiNhatKy(true);
+}
+
+function taiNhatKy(laTimKiem) {
+  const button = el('btnTimKiem');
+
+  if (laTimKiem) {
+    button.disabled = true;
+    button.innerText = 'Đang tìm kiếm...';
+  }
+
+  const filters = getFilters();
+
+  jsonp({
+    action: 'TRA_CUU_NHAT_KY',
+    ...filters
+  }, function(result) {
+    const data = result.success ? (result.data || []) : [];
+
+    renderNhatKy(data);
+
+    if (laTimKiem) {
+      lastSearchFilters = filters;
+
+      const coVanBanDi = data.some(function(item) {
+        return item.loaiSo === 'Văn bản đi';
+      });
+
+      el('pdfAction').classList.toggle('hidden', !coVanBanDi);
+
+      msg(
+        'msgNhatKy',
+        'Tìm thấy ' + data.length + ' dòng dữ liệu.',
+        'success'
+      );
+
+      button.disabled = false;
+      button.innerText = 'Tìm kiếm';
+    }
+  });
+}
+
+function renderNhatKy(data) {
+  const body = el('bodyNhatKy');
+  body.innerHTML = '';
+
+  if (!data.length) {
+    body.innerHTML = '<tr><td colspan="8">Không có dữ liệu phù hợp.</td></tr>';
+    return;
+  }
+
+  const danhSachDaHuy = new Set(
+    data
+      .filter(function(item) {
+        return item.trangThai === 'Đã hủy';
+      })
+      .map(function(item) {
+        return item.loaiSo + '|' + item.nam + '|' + item.soVaKyHieu;
+      })
+  );
+
+  data.forEach(function(item) {
+    const key = item.loaiSo + '|' + item.nam + '|' + item.soVaKyHieu;
+
+    const coTheHuy =
+      item.trangThai === 'Đã đăng ký' &&
+      !danhSachDaHuy.has(key) &&
+      item.soVaKyHieu;
+
+    const tr = document.createElement('tr');
+
+    tr.innerHTML = `
       <td>${esc(item.thoiGian)}</td>
       <td>${esc(item.trangThai)}</td>
       <td>${esc(item.loaiSo)}</td>
@@ -725,57 +1046,98 @@ function renderNhatKy(data){
       <td><b>${esc(item.soVaKyHieu)}</b></td>
       <td>${esc(item.trichYeu)}</td>
       <td>${esc(item.lyDo)}</td>
-      <td>${canHuy?`<button class="btn-danger" onclick="huy('${escA(item.loaiSo)}','${escA(item.nam)}','${escA(item.soVaKyHieu)}','${escA(item.trichYeu)}')">Hủy</button>`:''}</td>
+      <td>
+        ${
+          coTheHuy
+            ? `<button type="button" class="btn-danger" onclick="huyVanBan('${escA(item.loaiSo)}','${escA(item.nam)}','${escA(item.soVaKyHieu)}','${escA(item.trichYeu)}')">Hủy</button>`
+            : ''
+        }
+      </td>
     `;
+
     body.appendChild(tr);
   });
 }
 
-async function huy(loaiSo,nam,soVaKyHieu,trichYeu){
-  const lyDo=prompt('Nhập lý do hủy:');
-  if(!lyDo)return;
+async function huyVanBan(loaiSo, nam, soVaKyHieu, trichYeu) {
+  const lyDo = prompt('Nhập lý do hủy văn bản:');
 
-  await post({action:'HUY_VAN_BAN',loaiSo,nam,soVaKyHieu,trichYeu,lyDo});
-  alert('Đã ghi nhận hủy.');
-  traCuuNhatKy();
+  if (!lyDo || !lyDo.trim()) return;
+
+  try {
+    await post({
+      action: 'HUY_VAN_BAN',
+      loaiSo: loaiSo,
+      nam: nam,
+      soVaKyHieu: soVaKyHieu,
+      trichYeu: trichYeu,
+      lyDo: lyDo.trim()
+    });
+
+    await sleep(500);
+
+    alert('Đã gửi yêu cầu ghi nhận hủy văn bản.');
+    timKiemNhatKy();
+
+  } catch (error) {
+    alert('Không gửi được yêu cầu hủy văn bản.');
+  }
 }
 
-function moSoVanBanDi(){
+function moSoVanBanDi() {
+  const filters = lastSearchFilters || {};
+
   jsonp({
-    action:'LAY_DANH_SACH_VAN_BAN_DI'
-  },res=>{
-    if(!res.success){
-      alert('Không lấy được dữ liệu sổ văn bản đi.');
+    action: 'LAY_DANH_SACH_VAN_BAN_DI',
+    tuNgay: filters.tuNgay || '',
+    denNgay: filters.denNgay || '',
+    nam: filters.nam || '',
+    tuKhoa: filters.tuKhoa || ''
+  }, function(result) {
+    if (!result.success) {
+      alert(result.message || 'Không lấy được dữ liệu văn bản đi.');
       return;
     }
 
-    renderSoVanBanDi(res.data||[]);
-    printSection.classList.remove('hidden');
+    renderSoVanBanDi(result.data || []);
+    el('printSection').classList.remove('hidden');
 
     window.scrollTo({
-      top:printSection.offsetTop,
-      behavior:'smooth'
+      top: el('printSection').offsetTop,
+      behavior: 'smooth'
     });
   });
 }
 
-function dongSoVanBanDi(){
-  printSection.classList.add('hidden');
+function dongSoVanBanDi() {
+  el('printSection').classList.add('hidden');
 }
 
-function renderSoVanBanDi(data){
-  const body=printBody;
-  body.innerHTML='';
+function renderSoVanBanDi(data) {
+  const body = el('printBody');
+  body.innerHTML = '';
 
-  if(!data.length){
-    body.innerHTML='<tr><td colspan="10">Chưa có dữ liệu.</td></tr>';
+  const filters = lastSearchFilters || {};
+  const subtitle = [];
+
+  if (filters.nam) subtitle.push('Năm ' + filters.nam);
+  if (filters.tuNgay) subtitle.push('Từ ngày ' + formatYmd(filters.tuNgay));
+  if (filters.denNgay) subtitle.push('Đến ngày ' + formatYmd(filters.denNgay));
+  if (filters.tuKhoa) subtitle.push('Từ khóa: ' + filters.tuKhoa);
+
+  el('printSubTitle').innerText = subtitle.length
+    ? subtitle.join(' | ')
+    : 'Danh sách văn bản đi';
+
+  if (!data.length) {
+    body.innerHTML = '<tr><td colspan="10">Không có văn bản đi phù hợp.</td></tr>';
     return;
   }
 
-  data.forEach(item=>{
-    const tr=document.createElement('tr');
+  data.forEach(function(item) {
+    const tr = document.createElement('tr');
 
-    tr.innerHTML=`
+    tr.innerHTML = `
       <td>${esc(item.soKyHieu)}</td>
       <td>${esc(item.ngayVanBan)}</td>
       <td>${esc(item.trichYeu)}</td>
@@ -792,56 +1154,105 @@ function renderSoVanBanDi(data){
   });
 }
 
-function jsonp(params,callback){
-  const cb='cb_'+Date.now()+'_'+Math.floor(Math.random()*10000);
-  params.callback=cb;
-  const query=Object.keys(params).map(k=>encodeURIComponent(k)+'='+encodeURIComponent(params[k]||'')).join('&');
-  const script=document.createElement('script');
+function jsonp(params, callback) {
+  const callbackName = 'cb_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
 
-  window[cb]=function(res){
-    callback(res);
-    delete window[cb];
+  params.callback = callbackName;
+
+  const query = Object.keys(params)
+    .map(function(key) {
+      return encodeURIComponent(key) + '=' + encodeURIComponent(params[key] || '');
+    })
+    .join('&');
+
+  const script = document.createElement('script');
+
+  window[callbackName] = function(result) {
+    try {
+      callback(result);
+    } finally {
+      delete window[callbackName];
+      script.remove();
+    }
+  };
+
+  script.onerror = function() {
+    delete window[callbackName];
     script.remove();
   };
 
-  script.src=API_URL+'?'+query;
+  script.src = API_URL + '?' + query;
   document.body.appendChild(script);
 }
 
-async function post(data){
-  await fetch(API_URL,{
-    method:'POST',
-    mode:'no-cors',
-    headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify(data)
+async function post(data) {
+  await fetch(API_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'text/plain;charset=utf-8'
+    },
+    body: JSON.stringify(data)
   });
 }
 
-function msg(id,text,type){
-  const box=document.getElementById(id);
-  box.innerText=text;
-  box.className='message '+type;
+function msg(id, text, type) {
+  const box = el(id);
+  box.innerText = text;
+  box.className = 'message ' + type;
 }
 
-function esc(v){
-  return String(v||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+function moGioiThieu() {
+  el('aboutModal').style.display = 'block';
 }
 
-function escA(v){
-  return String(v||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,' ');
+function dongGioiThieu() {
+  el('aboutModal').style.display = 'none';
 }
 
-function moGioiThieu(){
-  aboutModal.style.display='block';
+function todayYmd() {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return year + '-' + month + '-' + day;
 }
 
-function dongGioiThieu(){
-  aboutModal.style.display='none';
+function formatYmd(value) {
+  if (!value) return '';
+
+  const parts = value.split('-');
+
+  if (parts.length !== 3) return value;
+
+  return parts[2] + '/' + parts[1] + '/' + parts[0];
 }
 
-window.onclick=function(event){
-  if(event.target===aboutModal) aboutModal.style.display='none';
-};
+function sleep(ms) {
+  return new Promise(function(resolve) {
+    setTimeout(resolve, ms);
+  });
+}
+
+function esc(value) {
+  return String(value || '').replace(/[&<>"']/g, function(char) {
+    return {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;'
+    }[char];
+  });
+}
+
+function escA(value) {
+  return String(value || '')
+    .replace(/\\/g, '\\\\')
+    .replace(/'/g, "\\'")
+    .replace(/\n/g, ' ');
+}
 </script>
 
 </body>
