@@ -199,6 +199,93 @@
   line-height: 1.5;
   opacity: 0.92;
 }
+    .about-btn{
+
+position:absolute;
+
+right:15px;
+
+top:15px;
+
+width:38px;
+
+height:38px;
+
+border-radius:50%;
+
+background:white;
+
+color:#b71c1c;
+
+font-size:20px;
+
+font-weight:bold;
+
+border:none;
+
+cursor:pointer;
+
+}
+
+.header{
+
+position:relative;
+
+}
+
+.modal{
+
+display:none;
+
+position:fixed;
+
+left:0;
+
+top:0;
+
+width:100%;
+
+height:100%;
+
+background:rgba(0,0,0,.5);
+
+z-index:9999;
+
+}
+
+.modal-content{
+
+background:white;
+
+width:90%;
+
+max-width:500px;
+
+margin:80px auto;
+
+padding:25px;
+
+border-radius:15px;
+
+position:relative;
+
+}
+
+.close{
+
+position:absolute;
+
+right:18px;
+
+top:10px;
+
+font-size:28px;
+
+cursor:pointer;
+
+color:#b71c1c;
+
+}
 </style>
   </style>
 </head>
@@ -206,9 +293,13 @@
 <body>
 
 <div class="header">
-  <h1>QUẢN LÝ VĂN BẢN ĐẢNG</h1>
-  <p>Đăng ký văn bản đi, văn bản đến và tra cứu nhật ký</p>
-<p class="can-cu">Căn cứ Quy định số 693-QĐ/VPTW ngày 15/12/2021 về công tác văn thư trong các cơ quan, tổ chức đảng</p>
+
+    <button class="about-btn" onclick="moGioiThieu()">ⓘ</button>
+
+    <h1>QUẢN LÝ VĂN BẢN ĐẢNG</h1>
+
+    <p>Đăng ký văn bản đi, văn bản đến</p>
+
 </div>
 
 <div class="container">
@@ -636,7 +727,63 @@ function esc(v) {
 function escA(v) {
   return String(v || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, ' ');
 }
-</script>
+  function moGioiThieu(){
 
+document.getElementById("aboutModal").style.display="block";
+
+}
+
+function dongGioiThieu(){
+
+document.getElementById("aboutModal").style.display="none";
+
+}
+
+window.onclick=function(event){
+
+let modal=document.getElementById("aboutModal");
+
+if(event.target==modal){
+
+modal.style.display="none";
+
+}
+
+}
+</script>
+<div id="aboutModal" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close" onclick="dongGioiThieu()">&times;</span>
+
+        <h2>QUẢN LÝ VĂN BẢN ĐẢNG</h2>
+
+        <p><b>Phiên bản:</b> 1.0</p>
+
+        <p><b>Căn cứ pháp lý</b></p>
+
+        <p style="text-align:justify">
+
+        Quy định số <b>693-QĐ/VPTW</b> ngày <b>15/12/2021</b>
+        của Văn phòng Trung ương Đảng
+        về công tác văn thư trong các cơ quan,
+        tổ chức đảng.
+
+        </p>
+
+        <hr>
+
+        <p>
+
+        Đơn vị phát triển:<br>
+
+        Trung tâm Bảo trợ xã hội Tân Hiệp
+
+        </p>
+
+    </div>
+
+</div>
 </body>
 </html>
