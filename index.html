@@ -345,6 +345,34 @@ tr:nth-child(even) {
   background: linear-gradient(135deg, #5d4037, #795548);
 }
 
+
+.file-link {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #fff3e0;
+  color: #5d4037;
+  font-weight: bold;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.file-link:hover {
+  background: #ffe0b2;
+}
+
+.help-text {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+input[type="file"] {
+  padding: 10px;
+  background: #fff;
+}
+
 /* ===== MODAL ===== */
 
 .modal {
@@ -463,6 +491,39 @@ tr:nth-child(even) {
 
 .print-table th:nth-child(10),
 .print-table td:nth-child(10) { width: 8%; }
+
+
+
+.print-den th:nth-child(1),
+.print-den td:nth-child(1) { width: 9%; }
+.print-den th:nth-child(2),
+.print-den td:nth-child(2) { width: 6%; }
+.print-den th:nth-child(3),
+.print-den td:nth-child(3) { width: 8%; }
+.print-den th:nth-child(4),
+.print-den td:nth-child(4) { width: 8%; }
+.print-den th:nth-child(5),
+.print-den td:nth-child(5) { width: 10%; }
+.print-den th:nth-child(6),
+.print-den td:nth-child(6) { width: 11%; }
+.print-den th:nth-child(7),
+.print-den td:nth-child(7) { width: 9%; }
+.print-den th:nth-child(8),
+.print-den td:nth-child(8) { width: 22%; }
+.print-den th:nth-child(9),
+.print-den td:nth-child(9) { width: 5%; }
+.print-den th:nth-child(10),
+.print-den td:nth-child(10) { width: 5%; }
+.print-den th:nth-child(11),
+.print-den td:nth-child(11) { width: 7%; }
+
+.print-den td:nth-child(3),
+.print-den td:nth-child(4),
+.print-den td:nth-child(5),
+.print-den td:nth-child(8),
+.print-den td:nth-child(11) {
+  text-align: left;
+}
 
 /* ===== LAPTOP / MÀN HÌNH VỪA ===== */
 
@@ -735,6 +796,10 @@ tr:nth-child(even) {
     <label>Ghi chú</label>
     <textarea id="ghiChuDi"></textarea>
 
+    <label>File PDF văn bản nếu có</label>
+    <input type="file" id="pdfDi" accept="application/pdf">
+    <div class="help-text">Khi lưu, file được đặt tên theo số và ký hiệu văn bản để tiện tra cứu.</div>
+
     <button type="button" id="btnLuuDi" onclick="luuVanBanDi()">Lưu và cấp số văn bản đi</button>
     <div id="msgDi" class="message"></div>
   </div>
@@ -791,6 +856,10 @@ tr:nth-child(even) {
     <label>Đơn vị/cá nhân nhận văn bản</label>
     <input id="donViNhanDen">
 
+    <label>File PDF văn bản đến nếu có</label>
+    <input type="file" id="pdfDen" accept="application/pdf">
+    <div class="help-text">Khi lưu, file được đặt tên theo số đến và số ký hiệu văn bản để tiện mở xem.</div>
+
     <button type="button" id="btnLuuDen" onclick="luuVanBanDen()">Lưu và cấp số văn bản đến</button>
     <div id="msgDen" class="message"></div>
   </div>
@@ -846,7 +915,8 @@ tr:nth-child(even) {
     <div id="msgNhatKy" class="message"></div>
 
     <div id="pdfAction" class="pdf-action hidden">
-      <button type="button" onclick="moSoVanBanDi()">🖨️ Xem sổ / In - Lưu PDF</button>
+      <button type="button" id="btnPdfDi" class="hidden" onclick="moSoVanBanDi()">🖨️ Xem sổ văn bản đi / In - Lưu PDF</button>
+      <button type="button" id="btnPdfDen" class="hidden" onclick="moSoVanBanDen()">🖨️ Xem sổ văn bản đến / In - Lưu PDF</button>
     </div>
 
     <div class="table-wrap">
@@ -860,11 +930,12 @@ tr:nth-child(even) {
             <th>Số và ký hiệu</th>
             <th>Trích yếu</th>
             <th>Lý do</th>
+            <th>File PDF</th>
             <th>Thao tác</th>
           </tr>
         </thead>
         <tbody id="bodyNhatKy">
-          <tr><td colspan="8">Chưa có dữ liệu.</td></tr>
+          <tr><td colspan="9">Chưa có dữ liệu.</td></tr>
         </tbody>
       </table>
     </div>
@@ -879,37 +950,12 @@ tr:nth-child(even) {
 <div id="printSection" class="hidden">
   <div class="print-toolbar">
     <button type="button" onclick="window.print()">🖨️ In / Lưu PDF</button>
-    <button type="button" onclick="dongSoVanBanDi()">Đóng</button>
+    <button type="button" onclick="dongSoIn()">Đóng</button>
   </div>
 
   <div class="print-page">
-    <table class="print-table">
-      <thead>
-        <tr>
-          <th>Số và ký hiệu văn bản</th>
-          <th>Ngày tháng năm văn bản</th>
-          <th>Tên loại và trích yếu nội dung văn bản</th>
-          <th>Người ký</th>
-          <th>Số trang</th>
-          <th>Số bản</th>
-          <th>Đơn vị/cá nhân nhận bản lưu</th>
-          <th>Nơi nhận văn bản</th>
-          <th>Lưu hồ sơ số</th>
-          <th>Ghi chú</th>
-        </tr>
-        <tr>
-          <th>(1)</th>
-          <th>(2)</th>
-          <th>(3)</th>
-          <th>(4)</th>
-          <th>(5)</th>
-          <th>(6)</th>
-          <th>(7)</th>
-          <th>(8)</th>
-          <th>(9)</th>
-          <th>(10)</th>
-        </tr>
-      </thead>
+    <table id="printTable" class="print-table print-di">
+      <thead id="printHead"></thead>
       <tbody id="printBody"></tbody>
     </table>
   </div>
@@ -932,7 +978,7 @@ tr:nth-child(even) {
 </div>
 
 <script>
-const API_URL = 'https://script.google.com/macros/s/AKfycbwazhWwdWiojwjLLR_V93HzURX1QIry1Przv8l-9WgsbJY7SgD63ruAL98UdUj4HdKW/exec';
+const DATA_SERVICE_URL = 'https://script.google.com/macros/s/AKfycbwazhWwdWiojwjLLR_V93HzURX1QIry1Przv8l-9WgsbJY7SgD63ruAL98UdUj4HdKW/exec';
 
 let lastSearchFilters = {};
 
@@ -1050,6 +1096,8 @@ async function luuVanBanDi() {
   button.innerText = 'Đang lưu...';
 
   try {
+    const pdf = await layPdfTuInput('pdfDi');
+
     await post({
       action: 'LUU_VAN_BAN_DI',
       nam: el('namDi').value,
@@ -1062,7 +1110,10 @@ async function luuVanBanDi() {
       donViNhanBanLuu: el('donViNhanBanLuuDi').value,
       noiNhanVanBan: el('noiNhanDi').value,
       luuHoSoSo: el('luuHoSoDi').value,
-      ghiChu: el('ghiChuDi').value
+      ghiChu: el('ghiChuDi').value,
+      pdfBase64: pdf.pdfBase64,
+      pdfMimeType: pdf.pdfMimeType,
+      pdfName: pdf.pdfName
     });
 
     await sleep(900);
@@ -1071,7 +1122,7 @@ async function luuVanBanDi() {
     msg('msgDi', 'Đã lưu văn bản đi và cấp số mới.', 'success');
 
   } catch (error) {
-    msg('msgDi', 'Không gửi được dữ liệu. Vui lòng kiểm tra kết nối.', 'error');
+    msg('msgDi', error.message || 'Không gửi được dữ liệu. Vui lòng kiểm tra kết nối.', 'error');
 
   } finally {
     button.disabled = false;
@@ -1093,6 +1144,8 @@ async function luuVanBanDen() {
   button.innerText = 'Đang lưu...';
 
   try {
+    const pdf = await layPdfTuInput('pdfDen');
+
     await post({
       action: 'LUU_VAN_BAN_DEN',
       nam: el('namDen').value,
@@ -1105,7 +1158,10 @@ async function luuVanBanDen() {
       trichYeu: trichYeu,
       soTrang: el('soTrangDen').value,
       soBan: el('soBanDen').value,
-      donViNhanVanBan: el('donViNhanDen').value
+      donViNhanVanBan: el('donViNhanDen').value,
+      pdfBase64: pdf.pdfBase64,
+      pdfMimeType: pdf.pdfMimeType,
+      pdfName: pdf.pdfName
     });
 
     await sleep(900);
@@ -1114,7 +1170,7 @@ async function luuVanBanDen() {
     msg('msgDen', 'Đã lưu văn bản đến và cấp số mới.', 'success');
 
   } catch (error) {
-    msg('msgDen', 'Không gửi được dữ liệu. Vui lòng kiểm tra kết nối.', 'error');
+    msg('msgDen', error.message || 'Không gửi được dữ liệu. Vui lòng kiểm tra kết nối.', 'error');
 
   } finally {
     button.disabled = false;
@@ -1132,6 +1188,7 @@ function resetVanBanDi() {
   el('noiNhanDi').value = '';
   el('luuHoSoDi').value = '';
   el('ghiChuDi').value = '';
+  el('pdfDi').value = '';
 }
 
 function resetVanBanDen() {
@@ -1145,6 +1202,50 @@ function resetVanBanDen() {
   el('soTrangDen').value = '';
   el('soBanDen').value = '';
   el('donViNhanDen').value = '';
+  el('pdfDen').value = '';
+}
+
+
+function layPdfTuInput(inputId) {
+  const input = el(inputId);
+  const file = input.files && input.files[0];
+
+  if (!file) {
+    return Promise.resolve({
+      pdfBase64: '',
+      pdfMimeType: '',
+      pdfName: ''
+    });
+  }
+
+  if (file.type !== 'application/pdf') {
+    return Promise.reject(new Error('Chỉ được chọn file PDF.'));
+  }
+
+  if (file.size > 8 * 1024 * 1024) {
+    return Promise.reject(new Error('File PDF không nên vượt quá 8MB.'));
+  }
+
+  return new Promise(function(resolve, reject) {
+    const reader = new FileReader();
+
+    reader.onload = function() {
+      const result = String(reader.result || '');
+      const base64 = result.split(',')[1] || '';
+
+      resolve({
+        pdfBase64: base64,
+        pdfMimeType: file.type,
+        pdfName: file.name
+      });
+    };
+
+    reader.onerror = function() {
+      reject(new Error('Không đọc được file PDF.'));
+    };
+
+    reader.readAsDataURL(file);
+  });
 }
 
 function timKiemNhatKy() {
@@ -1172,17 +1273,24 @@ function taiNhatKy(laTimKiem) {
       return item.loaiSo === 'Văn bản đi';
     });
 
-    el('pdfAction').classList.toggle('hidden', !coVanBanDi);
+    const coVanBanDen = data.some(function(item) {
+      return item.loaiSo === 'Văn bản đến';
+    });
+
+    el('pdfAction').classList.toggle('hidden', !(coVanBanDi || coVanBanDen));
+    el('btnPdfDi').classList.toggle('hidden', !coVanBanDi);
+    el('btnPdfDen').classList.toggle('hidden', !coVanBanDen);
+
+    lastSearchFilters = filters;
 
     if (laTimKiem) {
-      lastSearchFilters = filters;
       msg('msgNhatKy', 'Tìm thấy ' + data.length + ' văn bản.', 'success');
       button.disabled = false;
       button.innerText = 'Tìm kiếm';
     }
   }, function() {
     if (laTimKiem) {
-      msg('msgNhatKy', 'Không kết nối được Apps Script.', 'error');
+      msg('msgNhatKy', 'Không kết nối được hệ thống dữ liệu. Vui lòng thử lại.', 'error');
       button.disabled = false;
       button.innerText = 'Tìm kiếm';
     }
@@ -1194,7 +1302,7 @@ function renderNhatKy(data) {
   body.innerHTML = '';
 
   if (!data.length) {
-    body.innerHTML = '<tr><td colspan="8">Không có dữ liệu phù hợp.</td></tr>';
+    body.innerHTML = '<tr><td colspan="9">Không có dữ liệu phù hợp.</td></tr>';
     return;
   }
 
@@ -1211,6 +1319,13 @@ function renderNhatKy(data) {
       <td><b>${esc(item.soVaKyHieu)}</b></td>
       <td>${esc(item.trichYeu)}</td>
       <td>${esc(item.lyDo)}</td>
+      <td>
+        ${
+          item.fileUrl
+            ? `<a class="file-link" href="${escA(item.fileUrl)}" target="_blank" rel="noopener">Mở PDF</a>`
+            : ''
+        }
+      </td>
       <td>
         ${coTheHuy ? `<button type="button" class="btn-danger" onclick="huyVanBan('${escA(item.loaiSo)}','${escA(item.nam)}','${escA(item.soVaKyHieu)}','${escA(item.trichYeu)}')">Hủy</button>` : ''}
       </td>
@@ -1257,15 +1372,90 @@ function moSoVanBanDi() {
     el('printSection').classList.remove('hidden');
 
   }, function() {
-    alert('Không kết nối được Apps Script để lấy sổ văn bản đi.');
+    alert('Không kết nối được hệ thống dữ liệu để lấy sổ văn bản đi.');
   });
 }
 
-function dongSoVanBanDi() {
+function dongSoIn() {
   el('printSection').classList.add('hidden');
 }
 
+
+function moSoVanBanDen() {
+  const filters = lastSearchFilters || getFilters();
+
+  jsonp({
+    action: 'LAY_DANH_SACH_VAN_BAN_DEN',
+    tuNgay: filters.tuNgay || '',
+    denNgay: filters.denNgay || '',
+    nam: filters.nam || '',
+    tuKhoa: filters.tuKhoa || ''
+  }, function(result) {
+    if (!result.success) {
+      alert(result.message || 'Không lấy được dữ liệu sổ văn bản đến.');
+      return;
+    }
+
+    renderSoVanBanDen(result.data || []);
+    el('printSection').classList.remove('hidden');
+
+  }, function() {
+    alert('Không kết nối được hệ thống dữ liệu để lấy sổ văn bản đến.');
+  });
+}
+
+function setPrintHeadVanBanDi() {
+  el('printTable').className = 'print-table print-di';
+  el('printHead').innerHTML = `
+    <tr>
+      <th>Số và ký hiệu văn bản</th>
+      <th>Ngày tháng năm văn bản</th>
+      <th>Tên loại và trích yếu nội dung văn bản</th>
+      <th>Người ký</th>
+      <th>Số trang</th>
+      <th>Số bản</th>
+      <th>Đơn vị/cá nhân nhận bản lưu</th>
+      <th>Nơi nhận văn bản</th>
+      <th>Lưu hồ sơ số</th>
+      <th>Ghi chú</th>
+    </tr>
+    <tr>
+      <th>(1)</th>
+      <th>(2)</th>
+      <th>(3)</th>
+      <th>(4)</th>
+      <th>(5)</th>
+      <th>(6)</th>
+      <th>(7)</th>
+      <th>(8)</th>
+      <th>(9)</th>
+      <th>(10)</th>
+    </tr>
+  `;
+}
+
+function setPrintHeadVanBanDen() {
+  el('printTable').className = 'print-table print-den';
+  el('printHead').innerHTML = `
+    <tr>
+      <th>Ngày tháng năm đến</th>
+      <th>Số đến</th>
+      <th>Lưu hồ sơ</th>
+      <th>Ghi chú</th>
+      <th>Tác giả</th>
+      <th>Số và ký hiệu văn bản</th>
+      <th>Ngày tháng năm văn bản</th>
+      <th>Tên loại và trích yếu nội dung văn bản</th>
+      <th>Số trang</th>
+      <th>Số bản</th>
+      <th>Đơn vị/cá nhân nhận văn bản</th>
+    </tr>
+  `;
+}
+
 function renderSoVanBanDi(data) {
+  setPrintHeadVanBanDi();
+
   const body = el('printBody');
   body.innerHTML = '';
 
@@ -1288,6 +1478,39 @@ function renderSoVanBanDi(data) {
       <td>${esc(item.noiNhan)}</td>
       <td>${esc(item.luuHoSoSo)}</td>
       <td>${esc(item.ghiChu)}</td>
+    `;
+
+    body.appendChild(tr);
+  });
+}
+
+
+function renderSoVanBanDen(data) {
+  setPrintHeadVanBanDen();
+
+  const body = el('printBody');
+  body.innerHTML = '';
+
+  if (!data.length) {
+    body.innerHTML = '<tr><td colspan="11">Không có văn bản đến phù hợp.</td></tr>';
+    return;
+  }
+
+  data.forEach(function(item) {
+    const tr = document.createElement('tr');
+
+    tr.innerHTML = `
+      <td>${esc(item.ngayDen)}</td>
+      <td>${esc(item.soDen)}</td>
+      <td>${esc(item.luuHoSo)}</td>
+      <td>${esc(item.ghiChu)}</td>
+      <td>${esc(item.tacGia)}</td>
+      <td>${esc(item.soKyHieuVanBan)}</td>
+      <td>${esc(item.ngayVanBan)}</td>
+      <td>${esc(item.trichYeu)}</td>
+      <td>${esc(item.soTrang)}</td>
+      <td>${esc(item.soBan)}</td>
+      <td>${esc(item.donViNhanVanBan)}</td>
     `;
 
     body.appendChild(tr);
@@ -1321,12 +1544,12 @@ function jsonp(params, success, error) {
     if (error) error();
   };
 
-  script.src = API_URL + '?' + query;
+  script.src = DATA_SERVICE_URL + '?' + query;
   document.body.appendChild(script);
 }
 
 async function post(data) {
-  await fetch(API_URL, {
+  await fetch(DATA_SERVICE_URL, {
     method: 'POST',
     mode: 'no-cors',
     headers: {
