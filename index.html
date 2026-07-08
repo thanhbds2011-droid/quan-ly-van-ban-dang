@@ -744,11 +744,10 @@ input[type="file"] {
       <div>
         <label>Ký hiệu</label>
         <select id="kyHieuDi">
-          <option value="/CV-ĐU">/CV-ĐU</option>
-          <option value="/QĐ-ĐU">/QĐ-ĐU</option>
-          <option value="/KH-ĐU">/KH-ĐU</option>
-          <option value="/TB-ĐU">/TB-ĐU</option>
-          <option value="/GM-ĐU">/GM-ĐU</option>
+          <option value="-CV/ĐBBPTH">-CV/ĐBBPTH</option>
+          <option value="-TB/ĐBBPTH">-TB/ĐBBPTH</option>
+          <option value="-QĐ/ĐBBPTH">-QĐ/ĐBBPTH</option>
+          <option value="-KH/ĐBBPTH">-KH/ĐBBPTH</option>
         </select>
       </div>
     </div>
@@ -771,7 +770,11 @@ input[type="file"] {
     <textarea id="trichYeuDi"></textarea>
 
     <label>Người ký</label>
-    <input id="nguoiKyDi">
+    <select id="nguoiKyDi">
+      <option value="">-- Chọn người ký --</option>
+      <option value="Nguyễn Văn Nam">Nguyễn Văn Nam</option>
+      <option value="Nguyễn Đình Bắc">Nguyễn Đình Bắc</option>
+    </select>
 
     <div class="row">
       <div>
