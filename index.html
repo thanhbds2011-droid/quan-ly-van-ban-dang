@@ -332,16 +332,39 @@ tr:nth-child(even) {
   box-shadow: 0 7px 18px rgba(183, 28, 28, 0.22);
 }
 
-/* ===== NÚT PDF ===== */
+/* ===== KHU VỰC CHỌN SỔ ĐỂ IN / LƯU PDF ===== */
 
 .pdf-action {
   margin-top: 16px;
-  text-align: center;
+  padding: 14px;
+  border: 1px solid #ead0c8;
+  border-radius: 14px;
+  background: #fff8f6;
+  box-shadow: 0 6px 16px rgba(90, 0, 0, 0.08);
+}
+
+.print-choice-row {
+  display: grid;
+  grid-template-columns: 1fr 230px;
+  gap: 12px;
+  align-items: end;
+}
+
+.pdf-action label {
+  margin-top: 0;
+  text-align: left;
+}
+
+.pdf-action select {
+  height: 46px;
+  background: #fff;
 }
 
 .pdf-action button {
   width: 100%;
-  margin: 0 auto;
+  height: 46px;
+  margin: 0;
+  padding: 0 14px;
   background: linear-gradient(135deg, #5d4037, #795548);
 }
 
@@ -665,6 +688,19 @@ input[type="file"] {
     padding: 8px;
   }
 
+  .print-choice-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .pdf-action {
+    padding: 12px;
+  }
+
+  .pdf-action button {
+    width: 100%;
+  }
+
   .print-toolbar {
     flex-direction: column;
   }
@@ -918,8 +954,17 @@ input[type="file"] {
     <div id="msgNhatKy" class="message"></div>
 
     <div id="pdfAction" class="pdf-action hidden">
-      <button type="button" id="btnPdfDi" class="hidden" onclick="moSoVanBanDi()">🖨️ Xem sổ văn bản đi / In - Lưu PDF</button>
-      <button type="button" id="btnPdfDen" class="hidden" onclick="moSoVanBanDen()">🖨️ Xem sổ văn bản đến / In - Lưu PDF</button>
+      <div class="print-choice-row">
+        <div>
+          <label>Chọn sổ cần xem/in</label>
+          <select id="chonSoIn">
+            <option value="">-- Chọn loại sổ --</option>
+            <option value="di">Sổ văn bản đi</option>
+            <option value="den">Sổ văn bản đến</option>
+          </select>
+        </div>
+        <button type="button" id="btnInSo" onclick="inSoDaChon()">🖨️ Xem / In - Lưu PDF</button>
+      </div>
     </div>
 
     <div class="table-wrap">
@@ -1280,9 +1325,7 @@ function taiNhatKy(laTimKiem) {
       return item.loaiSo === 'Văn bản đến';
     });
 
-    el('pdfAction').classList.toggle('hidden', !(coVanBanDi || coVanBanDen));
-    el('btnPdfDi').classList.toggle('hidden', !coVanBanDi);
-    el('btnPdfDen').classList.toggle('hidden', !coVanBanDen);
+    capNhatVungChonSoIn(coVanBanDi, coVanBanDen, filters);
 
     lastSearchFilters = filters;
 
@@ -1354,6 +1397,65 @@ async function huyVanBan(loaiSo, nam, soVaKyHieu, trichYeu) {
 
   await sleep(700);
   timKiemNhatKy();
+}
+
+function capNhatVungChonSoIn(coVanBanDi, coVanBanDen, filters) {
+  const khuVuc = el('pdfAction');
+  const select = el('chonSoIn');
+  const optDi = select.querySelector('option[value="di"]');
+  const optDen = select.querySelector('option[value="den"]');
+
+  khuVuc.classList.toggle('hidden', !(coVanBanDi || coVanBanDen));
+
+  optDi.hidden = !coVanBanDi;
+  optDi.disabled = !coVanBanDi;
+  optDen.hidden = !coVanBanDen;
+  optDen.disabled = !coVanBanDen;
+
+  if (!coVanBanDi && !coVanBanDen) {
+    select.value = '';
+    return;
+  }
+
+  if (filters.loaiSo === 'Văn bản đi' && coVanBanDi) {
+    select.value = 'di';
+    return;
+  }
+
+  if (filters.loaiSo === 'Văn bản đến' && coVanBanDen) {
+    select.value = 'den';
+    return;
+  }
+
+  if (coVanBanDi && !coVanBanDen) {
+    select.value = 'di';
+    return;
+  }
+
+  if (!coVanBanDi && coVanBanDen) {
+    select.value = 'den';
+    return;
+  }
+
+  select.value = '';
+}
+
+function inSoDaChon() {
+  const luaChon = el('chonSoIn').value;
+
+  if (!luaChon) {
+    msg('msgNhatKy', 'Vui lòng chọn sổ cần xem/in.', 'error');
+    return;
+  }
+
+  if (luaChon === 'di') {
+    moSoVanBanDi();
+    return;
+  }
+
+  if (luaChon === 'den') {
+    moSoVanBanDen();
+  }
 }
 
 function moSoVanBanDi() {
