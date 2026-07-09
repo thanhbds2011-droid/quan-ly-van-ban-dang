@@ -959,6 +959,15 @@ input[type="file"] {
           </select>
         </div>
       </div>
+
+      <label>Lọc theo số ký hiệu</label>
+      <select id="filterKyHieu">
+        <option value="">Tất cả ký hiệu</option>
+        <option value="CV">Công văn - CV</option>
+        <option value="TB">Thông báo - TB</option>
+        <option value="QD">Quyết định - QĐ</option>
+        <option value="KH">Kế hoạch - KH</option>
+      </select>
     </div>
 
     <button type="button" id="btnTimKiem" onclick="timKiemNhatKy()">Tìm kiếm</button>
@@ -1111,6 +1120,7 @@ function moNhatKy() {
   el('filterNam').value = '';
   el('filterLoaiSo').value = '';
   el('filterTrangThai').value = '';
+  el('filterKyHieu').value = '';
   el('moRongLoc').checked = false;
   el('boLocMoRong').classList.add('hidden');
 
@@ -1124,6 +1134,7 @@ function getFilters() {
     nam: el('filterNam').value,
     loaiSo: el('filterLoaiSo').value,
     trangThai: el('filterTrangThai').value,
+    kyHieu: el('filterKyHieu').value,
     tuKhoa: el('filterTuKhoa').value.trim()
   };
 }
@@ -1324,7 +1335,8 @@ function taiNhatKy(laTimKiem) {
     action: 'TRA_CUU_NHAT_KY',
     ...filters
   }, function(result) {
-    const data = result.success ? (result.data || []) : [];
+    const rawData = result.success ? (result.data || []) : [];
+    const data = locTheoKyHieuNhatKy(rawData, filters.kyHieu);
 
     renderNhatKy(data);
 
@@ -1352,6 +1364,63 @@ function taiNhatKy(laTimKiem) {
       button.innerText = 'Tìm kiếm';
     }
   });
+}
+
+
+function locTheoKyHieuNhatKy(data, kyHieu) {
+  if (!kyHieu) return data;
+
+  return data.filter(function(item) {
+    return coDungLoaiKyHieu(
+      [item.soVaKyHieu, item.trichYeu].join(' '),
+      kyHieu
+    );
+  });
+}
+
+function locTheoKyHieuSoIn(data, kyHieu, loaiSo) {
+  if (!kyHieu) return data;
+
+  return data.filter(function(item) {
+    const text = loaiSo === 'den'
+      ? [item.soKyHieuVanBan, item.trichYeu].join(' ')
+      : [item.soKyHieu, item.trichYeu].join(' ');
+
+    return coDungLoaiKyHieu(text, kyHieu);
+  });
+}
+
+function coDungLoaiKyHieu(text, kyHieu) {
+  const t = boDauTiengViet(text).toUpperCase();
+  const k = boDauTiengViet(kyHieu).toUpperCase();
+
+  if (!k) return true;
+
+  if (k === 'CV') {
+    return t.includes('-CV/') || t.includes('/CV-') || t.includes(' CV ') || t.includes('CONG VAN');
+  }
+
+  if (k === 'TB') {
+    return t.includes('-TB/') || t.includes('/TB-') || t.includes(' TB ') || t.includes('THONG BAO');
+  }
+
+  if (k === 'QD') {
+    return t.includes('-QD/') || t.includes('/QD-') || t.includes(' QD ') || t.includes('QUYET DINH');
+  }
+
+  if (k === 'KH') {
+    return t.includes('-KH/') || t.includes('/KH-') || t.includes(' KH ') || t.includes('KE HOACH');
+  }
+
+  return t.includes(k);
+}
+
+function boDauTiengViet(value) {
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd')
+    .replace(/Đ/g, 'D');
 }
 
 function renderNhatKy(data) {
@@ -1484,7 +1553,8 @@ function moSoVanBanDi() {
       return;
     }
 
-    renderSoVanBanDi(result.data || []);
+    const data = locTheoKyHieuSoIn(result.data || [], filters.kyHieu, 'di');
+    renderSoVanBanDi(data);
     el('printSection').classList.remove('hidden');
 
   }, function() {
@@ -1512,7 +1582,8 @@ function moSoVanBanDen() {
       return;
     }
 
-    renderSoVanBanDen(result.data || []);
+    const data = locTheoKyHieuSoIn(result.data || [], filters.kyHieu, 'den');
+    renderSoVanBanDen(data);
     el('printSection').classList.remove('hidden');
 
   }, function() {
