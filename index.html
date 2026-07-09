@@ -795,10 +795,10 @@ input[type="file"] {
           <option value="-TB/ĐBBPTH">-TB/ĐBBPTH</option>
           <option value="-QĐ/ĐBBPTH">-QĐ/ĐBBPTH</option>
           <option value="-KH/ĐBBPTH">-KH/ĐBBPTH</option>
-          <option value="-BC/ĐBBPTH">-BC/ĐBBPTH</option>
-          <option value="-NQ/ĐBBPTH">-NQ/ĐBBPTH</option>
-          <option value="-CTr/ĐBBPTH">-Ctr/ĐBBPTH</option>
           <option value="-TTr/ĐBBPTH">-TTr/ĐBBPTH</option>
+          <option value="-NQ/ĐBBPTH">-NQ/ĐBBPTH</option>
+          <option value="-BC/ĐBBPTH">-BC/ĐBBPTH</option>
+          <option value="-CCt/ĐBBPTH">-CCt/ĐBBPTH</option>
         </select>
       </div>
     </div>
@@ -971,6 +971,10 @@ input[type="file"] {
         <option value="TB">Thông báo - TB</option>
         <option value="QD">Quyết định - QĐ</option>
         <option value="KH">Kế hoạch - KH</option>
+        <option value="TTR">Tờ trình - TTr</option>
+        <option value="NQ">Nghị quyết - NQ</option>
+        <option value="BC">Báo cáo - BC</option>
+        <option value="CCT">CCt - CCt</option>
       </select>
     </div>
 
@@ -1375,10 +1379,9 @@ function locTheoKyHieuNhatKy(data, kyHieu) {
   if (!kyHieu) return data;
 
   return data.filter(function(item) {
-    return coDungLoaiKyHieu(
-      [item.soVaKyHieu, item.trichYeu].join(' '),
-      kyHieu
-    );
+    // Chỉ lọc theo cột Số và ký hiệu, không lọc theo trích yếu.
+    // Tránh trường hợp văn bản CV có trích yếu bắt đầu bằng "Kế hoạch..." vẫn bị đưa vào bộ lọc KH.
+    return coDungLoaiKyHieu(item.soVaKyHieu, kyHieu);
   });
 }
 
@@ -1386,11 +1389,12 @@ function locTheoKyHieuSoIn(data, kyHieu, loaiSo) {
   if (!kyHieu) return data;
 
   return data.filter(function(item) {
-    const text = loaiSo === 'den'
-      ? [item.soKyHieuVanBan, item.trichYeu].join(' ')
-      : [item.soKyHieu, item.trichYeu].join(' ');
+    // Sổ in cũng chỉ lọc theo số/ký hiệu, không lọc theo trích yếu.
+    const soKyHieu = loaiSo === 'den'
+      ? item.soKyHieuVanBan
+      : item.soKyHieu;
 
-    return coDungLoaiKyHieu(text, kyHieu);
+    return coDungLoaiKyHieu(soKyHieu, kyHieu);
   });
 }
 
@@ -1399,24 +1403,13 @@ function coDungLoaiKyHieu(text, kyHieu) {
   const k = boDauTiengViet(kyHieu).toUpperCase();
 
   if (!k) return true;
+  if (!t) return false;
 
-  if (k === 'CV') {
-    return t.includes('-CV/') || t.includes('/CV-') || t.includes(' CV ') || t.includes('CONG VAN');
-  }
-
-  if (k === 'TB') {
-    return t.includes('-TB/') || t.includes('/TB-') || t.includes(' TB ') || t.includes('THONG BAO');
-  }
-
-  if (k === 'QD') {
-    return t.includes('-QD/') || t.includes('/QD-') || t.includes(' QD ') || t.includes('QUYET DINH');
-  }
-
-  if (k === 'KH') {
-    return t.includes('-KH/') || t.includes('/KH-') || t.includes(' KH ') || t.includes('KE HOACH');
-  }
-
-  return t.includes(k);
+  // Nhận đúng ký hiệu nằm giữa các dấu phân cách như:
+  // 67/KH-ĐU, 68/CV-ĐU, 69-TB/ĐBBPTH, 70-QD/ĐBBPTH, 71-QĐ/ĐBBPTH.
+  // Không nhận theo trích yếu nên "Kế hoạch..." trong nội dung sẽ không làm CV lọt vào bộ lọc KH.
+  const pattern = new RegExp('(^|[^A-Z0-9])' + k + '([^A-Z0-9]|$)');
+  return pattern.test(t);
 }
 
 function boDauTiengViet(value) {
