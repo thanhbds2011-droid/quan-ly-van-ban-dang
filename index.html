@@ -762,6 +762,28 @@ input[type="file"] {
     break-inside: avoid;
   }
 }
+  /* ===== NÚT LƯU VÀ CẤP SỐ - CĂN GIỮA ===== */
+
+#btnLuuDi,
+#btnLuuDen {
+  display: block;
+  width: min(100%, 520px);
+  max-width: 520px;
+  margin: 24px auto 0;
+  padding: 15px 24px;
+  border-radius: 14px;
+  text-align: center;
+}
+
+/* Trên điện thoại: nút tự full ngang cho dễ bấm */
+@media (max-width: 600px) {
+  #btnLuuDi,
+  #btnLuuDen {
+    width: 100%;
+    max-width: none;
+    margin-top: 20px;
+  }
+}
 </style>
 </head>
 
