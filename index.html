@@ -18,933 +18,440 @@
 
 <style>
 :root {
-  --red-dark: #8b0000;
-  --red-main: #b71c1c;
-  --red-light: #d32f2f;
-  --bg: #fbf3f3;
-  --card: #ffffff;
-  --border: #e2bdbd;
-  --text: #2b2b2b;
-  --muted: #777;
-  --radius: 18px;
-  --app-width: 860px;
-  --shadow: 0 10px 28px rgba(90, 0, 0, 0.12);
+  --brand-900: #7f0000;
+  --brand-800: #970808;
+  --brand-700: #b11217;
+  --brand-600: #cf2027;
+  --brand-050: #fff3f3;
+  --ink-900: #1f1f1f;
+  --ink-700: #3f3f46;
+  --ink-500: #71717a;
+  --line: #ead1d1;
+  --line-strong: #d9a8a8;
+  --surface: #ffffff;
+  --surface-soft: #fffafa;
+  --bg: #fbf0f0;
+  --success-bg: #e8f5e9;
+  --success-text: #1b5e20;
+  --warning-bg: #fff4df;
+  --warning-text: #6d4c41;
+  --danger-bg: #fff0f0;
+  --danger-text: #a80710;
+  --shadow-sm: 0 6px 18px rgba(127, 0, 0, 0.08);
+  --shadow-md: 0 18px 42px rgba(127, 0, 0, 0.14);
+  --radius-lg: 22px;
+  --radius-md: 16px;
+  --radius-sm: 12px;
+  --page: 1120px;
 }
 
-* {
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
+* { box-sizing: border-box; }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  background: linear-gradient(180deg, #fff8f8 0%, var(--bg) 100%);
-  color: var(--text);
+  min-height: 100vh;
+  color: var(--ink-900);
+  font-family: Arial, "Helvetica Neue", sans-serif;
+  background:
+    radial-gradient(circle at 8% 0%, rgba(177, 18, 23, .10), transparent 30%),
+    radial-gradient(circle at 92% 4%, rgba(127, 0, 0, .08), transparent 28%),
+    linear-gradient(180deg, #fffafa 0%, var(--bg) 100%);
 }
+
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+
+.hidden { display: none !important; }
 
 /* ===== HEADER ===== */
-
-.header {
-  position: relative;
-  background: linear-gradient(135deg, var(--red-dark), var(--red-light));
-  color: white;
-  padding: 24px 16px 26px;
-  text-align: center;
-  border-bottom-left-radius: 26px;
-  border-bottom-right-radius: 26px;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: linear-gradient(135deg, var(--brand-900), var(--brand-600));
+  color: #fff;
+  box-shadow: 0 10px 26px rgba(60, 0, 0, .24);
+  border-bottom-left-radius: 28px;
+  border-bottom-right-radius: 28px;
 }
 
-.header h1 {
+.header-inner {
+  width: min(var(--page), calc(100% - 32px));
+  min-height: 116px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+}
+
+.brand-mark {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.12);
+  display: grid;
+  place-items: center;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.24);
+  overflow: hidden;
+}
+
+.brand-mark img { width: 44px; height: 44px; object-fit: contain; }
+
+.brand-title h1 {
   margin: 0;
-  font-size: 24px;
-  letter-spacing: 0.3px;
+  font-size: 25px;
+  line-height: 1.15;
+  letter-spacing: .4px;
+  text-transform: uppercase;
 }
 
-.header p {
-  margin: 8px 0 0;
+.brand-title p {
+  margin: 7px 0 0;
   font-size: 14px;
-  opacity: 0.95;
+  color: rgba(255,255,255,.88);
 }
 
 .about-btn {
-  position: absolute;
-  top: 16px;
-  right: 18px;
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 42px;
   margin: 0;
-  padding: 0;
-  border: none;
-  border-radius: 50%;
-  background: white;
-  color: var(--red-main);
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  border: 0;
+  border-radius: 999px;
+  color: var(--brand-800);
+  background: #fff;
+  font-size: 22px;
+  font-weight: 800;
+  box-shadow: 0 8px 20px rgba(0,0,0,.20);
 }
-
-/* ===== BỐ CỤC CHUNG CHO LAPTOP ===== */
 
 .container {
-  width: min(var(--app-width), calc(100% - 32px));
-  margin: 22px auto;
-  padding: 0;
+  width: min(var(--page), calc(100% - 32px));
+  margin: 26px auto 28px;
+  padding-bottom: 18px;
 }
 
-.tabs,
-.card,
-.footer {
-  width: 100%;
-  max-width: var(--app-width);
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* ===== TAB VĂN BẢN ĐI / VĂN BẢN ĐẾN ===== */
-
-.tabs {
+/* ===== NAV ===== */
+.top-nav {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 14px;
-  margin-bottom: 16px;
-}
-
-button {
-  width: 100%;
-  margin-top: 18px;
-  padding: 14px 18px;
-  border: none;
-  border-radius: 13px;
-  background: linear-gradient(135deg, var(--red-main), var(--red-light));
-  color: white;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
-}
-
-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(183, 28, 28, 0.22);
-}
-
-button:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
+  margin-bottom: 18px;
 }
 
 .tab-btn {
-  margin-top: 0;
-  background: white;
-  color: var(--red-dark);
-  border: 1px solid var(--border);
-  box-shadow: 0 5px 14px rgba(90, 0, 0, 0.08);
+  width: 100%;
+  min-height: 54px;
+  margin: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 16px;
+  background: rgba(255,255,255,.92);
+  color: var(--brand-900);
+  font-weight: 800;
+  box-shadow: var(--shadow-sm);
+  transition: transform .14s ease, box-shadow .14s ease, background .14s ease;
 }
 
-.tab-btn.active {
-  background: linear-gradient(135deg, var(--red-dark), var(--red-light));
-  color: white;
-}
+.tab-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.tab-btn.active { background: linear-gradient(135deg, var(--brand-900), var(--brand-600)); color: #fff; }
 
-/* ===== KHUNG FORM ===== */
-
+/* ===== CARDS ===== */
 .card {
-  background: var(--card);
-  border-top: 5px solid var(--red-main);
-  border-radius: var(--radius);
+  background: rgba(255,255,255,.96);
+  border: 1px solid rgba(217,168,168,.78);
+  border-top: 5px solid var(--brand-700);
+  border-radius: var(--radius-lg);
   padding: 24px;
-  margin-bottom: 18px;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-md);
 }
 
-.card h3 {
-  margin-top: 0 !important;
-  margin-bottom: 18px;
-  color: var(--red-dark) !important;
-  font-size: 19px;
-}
-
-/* ===== FORM ===== */
-
-label {
-  display: block;
-  margin-top: 14px;
-  margin-bottom: 7px;
-  color: var(--red-dark);
-  font-size: 14px;
-  font-weight: bold;
-}
-
-input,
-textarea,
-select {
-  width: 100%;
-  padding: 12px 13px;
-  border: 1px solid var(--border);
-  border-radius: 11px;
-  background: #fffafa;
-  color: var(--text);
-  font-size: 15px;
-  outline: none;
-  transition: border-color 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: var(--red-main);
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(183, 28, 28, 0.12);
-}
-
-textarea {
-  min-height: 92px;
-  resize: vertical;
-  line-height: 1.45;
-}
-
-.row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-.row-3 {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 16px;
-}
-
-/* ===== SỐ HIỆN TẠI / SỐ SẼ CẤP ===== */
-
-.so-box {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin: 14px 0 6px;
-}
-
-.so-card {
-  background: linear-gradient(180deg, #fffafa, #fff4f4);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 16px;
-  text-align: center;
-}
-
-.so-card .label {
-  margin: 0 0 6px;
-  color: #666;
-  font-size: 13px;
-  font-weight: normal;
-}
-
-.so-card .value {
-  color: var(--red-dark);
-  font-size: 30px;
-  font-weight: bold;
-  line-height: 1;
-}
-
-/* ===== THÔNG BÁO ===== */
-
-.message {
-  display: none;
-  margin-top: 14px;
-  padding: 12px;
-  border-radius: 11px;
-  font-weight: bold;
-  text-align: center;
-}
-
-.success {
-  display: block;
-  background: #e8f5e9;
-  color: #1b5e20;
-  border: 1px solid #a5d6a7;
-}
-
-.error {
-  display: block;
-  background: #ffebee;
-  color: #b71c1c;
-  border: 1px solid #ef9a9a;
-}
-
-.hidden {
-  display: none !important;
-}
-
-/* ===== BẢNG NHẬT KÝ ===== */
-
-.table-wrap {
-  overflow-x: auto;
-  margin-top: 16px;
-  border: 1px solid #eee;
-  border-radius: 13px;
-}
-
-table {
-  width: 100%;
-  min-width: 900px;
-  border-collapse: collapse;
-}
-
-th,
-td {
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-  font-size: 13px;
-  text-align: left;
-  vertical-align: top;
-}
-
-th {
-  background: var(--red-dark);
-  color: white;
-}
-
-tr:nth-child(even) {
-  background: #fffafa;
-}
-
-.btn-danger {
-  margin-top: 0;
-  padding: 8px;
-  background: var(--red-main);
-  font-size: 13px;
-}
-
-/* ===== FOOTER / NÚT NHẬT KÝ ===== */
-
-.footer {
-  margin-top: 18px;
-  padding-bottom: 24px;
-  color: var(--muted);
-  font-size: 12px;
-  text-align: center;
-}
-
-.footer-log-btn {
-  display: block;
-  width: 100%;
-  min-width: 0;
-  margin: 0 auto 10px;
-  padding: 14px 18px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, var(--red-dark), var(--red-light));
-  font-size: 16px;
-  box-shadow: 0 7px 18px rgba(183, 28, 28, 0.22);
-}
-
-/* ===== KHU VỰC CHỌN SỔ ĐỂ IN / LƯU PDF ===== */
-
-.pdf-action {
-  margin-top: 16px;
-  padding: 14px;
-  border: 1px solid #ead0c8;
-  border-radius: 14px;
-  background: #fff8f6;
-  box-shadow: 0 6px 16px rgba(90, 0, 0, 0.08);
-}
-
-.print-choice-row {
-  display: grid;
-  grid-template-columns: 1fr 230px;
-  gap: 12px;
-  align-items: end;
-}
-
-.pdf-action label {
-  margin-top: 0;
-  text-align: left;
-}
-
-.pdf-action select {
-  height: 46px;
-  background: #fff;
-}
-
-.pdf-action button {
-  width: 100%;
-  height: 46px;
-  margin: 0;
-  padding: 0 14px;
-  background: linear-gradient(135deg, #5d4037, #795548);
-}
-
-
-.file-link {
-  display: inline-block;
-  padding: 6px 10px;
-  border-radius: 8px;
-  background: #fff3e0;
-  color: #5d4037;
-  font-weight: bold;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.file-link:hover {
-  background: #ffe0b2;
-}
-
-.help-text {
-  margin-top: 6px;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.45;
-}
-
-input[type="file"] {
-  padding: 10px;
-  background: #fff;
-}
-
-/* ===== MODAL ===== */
-
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 9999;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.52);
-}
-
-.modal-content {
-  position: relative;
-  width: 90%;
-  max-width: 520px;
-  margin: 80px auto;
-  padding: 26px;
-  border-radius: 18px;
-  background: white;
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
-}
-
-.close {
-  position: absolute;
-  top: 10px;
-  right: 18px;
-  color: var(--red-main);
-  font-size: 28px;
-  cursor: pointer;
-}
-
-/* ===== XEM SỔ / PDF ===== */
-
-#printSection {
-  position: fixed;
-  z-index: 10000;
-  inset: 0;
-  overflow: auto;
-  padding: 18px;
-  background: #e4e4e4;
-}
-
-.print-toolbar {
-  display: flex;
-  max-width: 1200px;
-  gap: 10px;
-  margin: 0 auto 12px;
-}
-
-.print-toolbar button {
-  margin: 0;
-}
-
-.print-page {
-  width: 100%;
-  max-width: 1200px;
-  padding: 8px;
-  margin: 0 auto 30px;
-  background: white;
-}
-
-.print-table {
-  width: 100%;
-  min-width: 0;
-  border-collapse: collapse;
-  table-layout: fixed;
-  font-size: 11px;
-}
-
-.print-table th,
-.print-table td {
-  padding: 5px;
-  color: #000;
-  border: 1px solid #000;
-  background: #fff;
-  line-height: 1.25;
-  text-align: center;
-  vertical-align: middle;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  white-space: normal;
-}
-
-.print-table td:nth-child(3),
-.print-table td:nth-child(7),
-.print-table td:nth-child(8),
-.print-table td:nth-child(10) {
-  text-align: left;
-}
-
-.print-table th:nth-child(1),
-.print-table td:nth-child(1) { width: 10%; }
-
-.print-table th:nth-child(2),
-.print-table td:nth-child(2) { width: 10%; }
-
-.print-table th:nth-child(3),
-.print-table td:nth-child(3) { width: 22%; }
-
-.print-table th:nth-child(4),
-.print-table td:nth-child(4) { width: 9%; }
-
-.print-table th:nth-child(5),
-.print-table td:nth-child(5) { width: 5%; }
-
-.print-table th:nth-child(6),
-.print-table td:nth-child(6) { width: 5%; }
-
-.print-table th:nth-child(7),
-.print-table td:nth-child(7) { width: 12%; }
-
-.print-table th:nth-child(8),
-.print-table td:nth-child(8) { width: 12%; }
-
-.print-table th:nth-child(9),
-.print-table td:nth-child(9) { width: 7%; }
-
-.print-table th:nth-child(10),
-.print-table td:nth-child(10) { width: 8%; }
-
-
-
-.print-den th:nth-child(1),
-.print-den td:nth-child(1) { width: 9%; }
-.print-den th:nth-child(2),
-.print-den td:nth-child(2) { width: 6%; }
-.print-den th:nth-child(3),
-.print-den td:nth-child(3) { width: 8%; }
-.print-den th:nth-child(4),
-.print-den td:nth-child(4) { width: 8%; }
-.print-den th:nth-child(5),
-.print-den td:nth-child(5) { width: 10%; }
-.print-den th:nth-child(6),
-.print-den td:nth-child(6) { width: 11%; }
-.print-den th:nth-child(7),
-.print-den td:nth-child(7) { width: 9%; }
-.print-den th:nth-child(8),
-.print-den td:nth-child(8) { width: 22%; }
-.print-den th:nth-child(9),
-.print-den td:nth-child(9) { width: 5%; }
-.print-den th:nth-child(10),
-.print-den td:nth-child(10) { width: 5%; }
-.print-den th:nth-child(11),
-.print-den td:nth-child(11) { width: 7%; }
-
-.print-den td:nth-child(3),
-.print-den td:nth-child(4),
-.print-den td:nth-child(5),
-.print-den td:nth-child(8),
-.print-den td:nth-child(11) {
-  text-align: left;
-}
-
-/* ===== LAPTOP / MÀN HÌNH VỪA ===== */
-
-@media (min-width: 901px) and (max-width: 1366px) {
-  :root {
-    --app-width: 860px;
-  }
-
-  .container {
-    margin-top: 20px;
-  }
-}
-
-/* ===== MÀN HÌNH LỚN ===== */
-
-@media (min-width: 1367px) {
-  :root {
-    --app-width: 920px;
-  }
-
-  #tab-nhatky.card {
-    max-width: 1180px;
-  }
-
-  #tab-nhatky.card + .footer {
-    max-width: 1180px;
-  }
-}
-
-/* ===== ĐIỆN THOẠI ===== */
-
-@media (max-width: 600px) {
-  :root {
-    --app-width: 100%;
-  }
-
-  body {
-    background: #fff7f7;
-  }
-
-  .header {
-    padding: 20px 48px 22px 16px;
-    border-bottom-left-radius: 22px;
-    border-bottom-right-radius: 22px;
-  }
-
-  .header h1 {
-    font-size: 19px;
-    line-height: 1.3;
-  }
-
-  .header p {
-    font-size: 13px;
-  }
-
-  .about-btn {
-    top: 14px;
-    right: 12px;
-    width: 34px;
-    height: 34px;
-    font-size: 18px;
-  }
-
-  .container {
-    width: 100%;
-    margin: 12px auto;
-    padding: 0 10px 20px;
-  }
-
-  .tabs {
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 12px;
-  }
-
-  .tab-btn {
-    padding: 12px 8px;
-    font-size: 14px;
-    border-radius: 12px;
-  }
-
-  .card {
-    padding: 16px;
-    border-radius: 16px;
-    box-shadow: 0 5px 16px rgba(90, 0, 0, 0.1);
-  }
-
-  .row,
-  .row-3,
-  .so-box {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-
-  input,
-  textarea,
-  select {
-    font-size: 16px;
-    padding: 12px;
-  }
-
-  textarea {
-    min-height: 86px;
-  }
-
-  .so-card {
-    padding: 13px;
-  }
-
-  .so-card .value {
-    font-size: 28px;
-  }
-
-  button {
-    padding: 14px;
-    font-size: 15px;
-  }
-
-  .footer {
-    width: 100%;
-    margin-top: 18px;
-    padding-bottom: 18px;
-  }
-
-  .footer-log-btn {
-    width: 100%;
-    min-width: 0;
-    padding: 13px 16px;
-    font-size: 15px;
-    border-radius: 12px;
-  }
-
-  .modal-content {
-    margin: 60px auto;
-    padding: 22px;
-  }
-
-  #printSection {
-    padding: 8px;
-  }
-
-  .print-choice-row {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .pdf-action {
-    padding: 12px;
-  }
-
-  .pdf-action button {
-    width: 100%;
-  }
-
-  .print-toolbar {
-    flex-direction: column;
-  }
-}
-
-/* ===== IN / LƯU PDF ===== */
-
-@media print {
-  @page {
-    size: A4 landscape;
-    margin: 7mm;
-  }
-
-  body {
-    background: white;
-  }
-
-  .header,
-  .container,
-  .modal,
-  .print-toolbar {
-    display: none !important;
-  }
-
-  #printSection {
-    display: block !important;
-    position: static;
-    padding: 0;
-    background: white;
-  }
-
-  .print-page {
-    max-width: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .print-table {
-    font-size: 9.5px;
-  }
-
-  .print-table thead {
-    display: table-header-group;
-  }
-
-  .print-table tr {
-    page-break-inside: avoid;
-    break-inside: avoid;
-  }
-}
-  /* ===== NÚT LƯU VÀ CẤP SỐ - CĂN GIỮA ===== */
-
-#btnLuuDi,
-#btnLuuDen {
-  display: block;
-  width: min(100%, 520px);
-  max-width: 520px;
-  margin: 24px auto 0;
-  padding: 15px 24px;
-  border-radius: 14px;
-  text-align: center;
-}
-
-/* Trên điện thoại: nút tự full ngang cho dễ bấm */
-@media (max-width: 600px) {
-  #btnLuuDi,
-  #btnLuuDen {
-    width: 100%;
-    max-width: none;
-    margin-top: 20px;
-  }
-}
-
-/* ===== NHẬT KÝ SỬ DỤNG THỰC TẾ - DESKTOP / MOBILE ===== */
-
-.log-table th:nth-child(8),
-.log-table td:nth-child(8) {
-  position: sticky;
-  right: 0;
-  z-index: 2;
-  background: #fff;
-  text-align: center;
-  min-width: 88px;
-}
-
-.log-table th:nth-child(8) {
-  background: var(--red-dark);
-  color: white;
-  z-index: 3;
-}
-
-.action-cell {
-  text-align: center;
-  white-space: nowrap;
-}
-
-.btn-huy {
-  width: auto;
-  min-width: 66px;
-  margin: 0;
-  padding: 9px 12px;
-  border-radius: 999px;
-}
-
-.row-cancelled {
-  background: #fff7f7 !important;
-  color: #555;
-}
-
-.row-cancelled td {
-  opacity: 0.92;
-}
-
-.status-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 84px;
-  padding: 6px 9px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: bold;
-  line-height: 1.2;
-  white-space: nowrap;
-}
-
-.status-active {
-  background: #e8f5e9;
-  color: #1b5e20;
-}
-
-.status-cancelled {
-  background: #ffebee;
-  color: #b71c1c;
-}
-
-.mobile-log-list {
-  display: none;
-}
-
-.empty-mobile {
-  padding: 16px;
-  border: 1px dashed var(--border);
-  border-radius: 14px;
-  color: var(--muted);
-  text-align: center;
-}
-
-.log-card {
-  padding: 14px;
-  margin-top: 12px;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background: #fff;
-  box-shadow: 0 5px 16px rgba(90, 0, 0, 0.08);
-}
-
-.log-card-cancelled {
-  background: #fff7f7;
-}
-
-.log-card-top {
+.card-head {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 10px;
+  gap: 16px;
+  margin-bottom: 18px;
 }
 
-.log-number {
-  color: var(--red-dark);
-  font-size: 15px;
-  font-weight: bold;
+.card-head h2 {
+  margin: 0;
+  color: var(--brand-900);
+  font-size: 22px;
+  line-height: 1.2;
 }
 
-.log-meta {
-  margin-top: 4px;
-  color: var(--muted);
-  font-size: 12px;
-}
-
-.log-title {
-  margin-top: 10px;
-  line-height: 1.45;
+.card-head p {
+  margin: 6px 0 0;
+  color: var(--ink-500);
   font-size: 14px;
 }
 
-.log-info {
-  display: grid;
-  gap: 6px;
-  margin-top: 10px;
-  color: #555;
-  font-size: 12px;
+.module-badge {
+  flex: 0 0 auto;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: var(--brand-050);
+  color: var(--brand-900);
+  border: 1px solid var(--line);
+  font-size: 13px;
+  font-weight: 800;
 }
 
-.log-card-actions {
+.form-section {
+  margin-top: 16px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: linear-gradient(180deg, #fff, var(--surface-soft));
+}
+
+.section-title {
   display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 14px;
+  color: var(--brand-900);
+  font-weight: 900;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: .2px;
+}
+
+.section-title .step {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: var(--brand-900);
+  color: #fff;
+  font-size: 13px;
+}
+
+.grid-2, .row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.grid-3, .row-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+
+label {
+  display: block;
+  margin: 0 0 7px;
+  color: var(--brand-900);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+input, textarea, select {
+  width: 100%;
+  border: 1px solid var(--line-strong);
+  border-radius: 13px;
+  background: #fff;
+  color: var(--ink-900);
+  padding: 12px 13px;
+  outline: none;
+  transition: border-color .14s ease, box-shadow .14s ease, background .14s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--brand-600);
+  box-shadow: 0 0 0 4px rgba(207,32,39,.12);
+  background: #fff;
+}
+
+textarea { min-height: 96px; resize: vertical; line-height: 1.45; }
+
+.so-box { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.so-card {
+  min-height: 92px;
+  padding: 16px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  border: 1px solid var(--line-strong);
+  border-radius: 17px;
+  background: linear-gradient(180deg, #fffafa, #fff4f4);
+}
+.so-card .label { margin: 0 0 8px; color: var(--ink-500); font-size: 13px; font-weight: 600; }
+.so-card .value { color: var(--brand-900); font-size: 32px; line-height: 1; font-weight: 900; }
+
+.help-text { margin-top: 7px; color: var(--ink-500); font-size: 13px; }
+.file-input { padding: 10px; background: #fff; }
+
+.action-bar {
+  display: flex;
+  justify-content: center;
+  margin-top: 22px;
+}
+
+.primary-btn, .search-btn, #btnLuuDi, #btnLuuDen, #btnTimKiem {
+  border: 0;
+  border-radius: 15px;
+  background: linear-gradient(135deg, var(--brand-800), var(--brand-600));
+  color: #fff;
+  font-weight: 900;
+  min-height: 50px;
+  box-shadow: 0 10px 24px rgba(177,18,23,.18);
+  transition: transform .14s ease, box-shadow .14s ease, opacity .14s ease;
+}
+.primary-btn:hover, .search-btn:hover, #btnLuuDi:hover, #btnLuuDen:hover, #btnTimKiem:hover { transform: translateY(-1px); box-shadow: 0 14px 28px rgba(177,18,23,.25); }
+button:disabled { opacity: .65; cursor: not-allowed; transform: none !important; }
+
+#btnLuuDi, #btnLuuDen {
+  display: block;
+  width: min(100%, 520px);
+  margin: 0 auto;
+  padding: 0 22px;
+}
+#btnTimKiem { width: 100%; margin-top: 16px; }
+
+.message { display: none; margin-top: 14px; padding: 12px 14px; border-radius: 13px; text-align: center; font-weight: 800; }
+.success { display: block; background: var(--success-bg); color: var(--success-text); border: 1px solid #a5d6a7; }
+.error { display: block; background: var(--danger-bg); color: var(--danger-text); border: 1px solid #ef9a9a; }
+
+/* ===== JOURNAL ===== */
+.filter-panel {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface-soft);
+}
+.filter-toggle {
+  display: flex;
+  align-items: center;
   gap: 8px;
   margin-top: 12px;
+  color: var(--ink-700);
+  font-size: 14px;
+}
+.filter-toggle input { width: auto; }
+
+.print-panel {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: 18px;
+  background: #fff7f7;
+}
+.print-choice-row {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 14px;
+  align-items: end;
+}
+#btnInSo { margin: 0; min-height: 48px; border: 0; border-radius: 14px; background: linear-gradient(135deg,#5d4037,#795548); color: #fff; font-weight: 900; }
+
+.table-wrap { overflow-x: auto; margin-top: 18px; border: 1px solid #eee; border-radius: 16px; background: #fff; }
+table { width: 100%; border-collapse: collapse; }
+.log-table { min-width: 1060px; }
+th, td { padding: 12px 12px; border-bottom: 1px solid #eee; font-size: 14px; text-align: left; vertical-align: top; }
+th { background: var(--brand-900); color: #fff; font-weight: 900; }
+tr:nth-child(even) { background: #fffafa; }
+.row-cancelled { color: #676767; background: #fafafa !important; }
+.status-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 92px; padding: 6px 10px; border-radius: 999px; font-size: 12px; font-weight: 900; white-space: nowrap; }
+.status-active { background: #e8f5e9; color: #1b5e20; border: 1px solid #a5d6a7; }
+.status-cancelled { background: #eeeeee; color: #666; border: 1px solid #d2d2d2; }
+.file-link { display: inline-flex; align-items: center; justify-content: center; min-height: 34px; padding: 7px 12px; border-radius: 10px; background: var(--warning-bg); color: var(--warning-text); font-weight: 900; text-decoration: none; white-space: nowrap; }
+.file-link:hover { background: #ffe4b9; }
+.btn-danger, .btn-huy { margin: 0; min-height: 34px; padding: 7px 13px; border: 0; border-radius: 999px; background: var(--brand-700); color: #fff; font-weight: 900; white-space: nowrap; }
+.action-cell { min-width: 80px; }
+
+.mobile-log-list { display: none; }
+.empty-mobile { padding: 16px; border-radius: 14px; background: #fff; border: 1px solid var(--line); color: var(--ink-500); text-align: center; }
+.log-card { margin-top: 12px; padding: 15px; border: 1px solid var(--line); border-left: 5px solid var(--brand-700); border-radius: 16px; background: #fff; box-shadow: var(--shadow-sm); }
+.log-card-cancelled { border-left-color: #a1a1aa; background: #fafafa; }
+.log-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.log-number { color: var(--brand-900); font-size: 16px; font-weight: 900; }
+.log-meta, .log-info { color: var(--ink-500); font-size: 12px; }
+.log-title { margin-top: 10px; line-height: 1.45; font-size: 14px; }
+.log-info { display: grid; gap: 4px; margin-top: 10px; }
+.log-card-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+
+/* ===== FOOTER / MOBILE NAV ===== */
+.footer { text-align: center; color: var(--ink-500); font-size: 12px; padding: 20px 0 8px; }
+.mobile-bottom-nav { display: none; }
+
+/* ===== MODAL ===== */
+.modal { display: none; position: fixed; z-index: 9999; inset: 0; background: rgba(0,0,0,.52); }
+.modal-content { position: relative; width: min(92%, 540px); margin: 80px auto; padding: 26px; border-radius: 20px; background: #fff; box-shadow: 0 18px 46px rgba(0,0,0,.25); }
+.close { position: absolute; top: 10px; right: 18px; color: var(--brand-700); font-size: 30px; cursor: pointer; }
+
+/* ===== PRINT PREVIEW ===== */
+#printSection { position: fixed; z-index: 10000; inset: 0; overflow: auto; padding: 18px; background: #e5e5e5; }
+.print-toolbar { display: grid; grid-template-columns: 1fr 1fr; max-width: 1200px; gap: 12px; margin: 0 auto 14px; }
+.print-toolbar button { min-height: 50px; border: 0; border-radius: 14px; background: linear-gradient(135deg, var(--brand-800), var(--brand-600)); color: #fff; font-weight: 900; }
+.print-page { width: 100%; max-width: 1200px; padding: 8px; margin: 0 auto 30px; background: #fff; }
+.print-table { width: 100%; min-width: 0; border-collapse: collapse; table-layout: fixed; font-size: 11px; }
+.print-table th, .print-table td { padding: 5px; color: #000; border: 1px solid #000; background: #fff; line-height: 1.25; text-align: center; vertical-align: middle; overflow-wrap: break-word; word-break: break-word; white-space: normal; }
+.print-di td:nth-child(3), .print-di td:nth-child(7), .print-di td:nth-child(8), .print-di td:nth-child(10) { text-align: left; }
+.print-di th:nth-child(1), .print-di td:nth-child(1) { width: 10%; }
+.print-di th:nth-child(2), .print-di td:nth-child(2) { width: 10%; }
+.print-di th:nth-child(3), .print-di td:nth-child(3) { width: 22%; }
+.print-di th:nth-child(4), .print-di td:nth-child(4) { width: 9%; }
+.print-di th:nth-child(5), .print-di td:nth-child(5) { width: 5%; }
+.print-di th:nth-child(6), .print-di td:nth-child(6) { width: 5%; }
+.print-di th:nth-child(7), .print-di td:nth-child(7) { width: 12%; }
+.print-di th:nth-child(8), .print-di td:nth-child(8) { width: 12%; }
+.print-di th:nth-child(9), .print-di td:nth-child(9) { width: 7%; }
+.print-di th:nth-child(10), .print-di td:nth-child(10) { width: 8%; }
+.print-den th:nth-child(1), .print-den td:nth-child(1) { width: 9%; }
+.print-den th:nth-child(2), .print-den td:nth-child(2) { width: 6%; }
+.print-den th:nth-child(3), .print-den td:nth-child(3) { width: 8%; }
+.print-den th:nth-child(4), .print-den td:nth-child(4) { width: 8%; }
+.print-den th:nth-child(5), .print-den td:nth-child(5) { width: 10%; }
+.print-den th:nth-child(6), .print-den td:nth-child(6) { width: 11%; }
+.print-den th:nth-child(7), .print-den td:nth-child(7) { width: 9%; }
+.print-den th:nth-child(8), .print-den td:nth-child(8) { width: 22%; }
+.print-den th:nth-child(9), .print-den td:nth-child(9) { width: 5%; }
+.print-den th:nth-child(10), .print-den td:nth-child(10) { width: 5%; }
+.print-den th:nth-child(11), .print-den td:nth-child(11) { width: 7%; }
+.print-den td:nth-child(3), .print-den td:nth-child(4), .print-den td:nth-child(5), .print-den td:nth-child(8), .print-den td:nth-child(11) { text-align: left; }
+
+@media (min-width: 1180px) {
+  #tab-nhatky.card { max-width: 1280px; margin-left: calc((var(--page) - 1280px) / 2); margin-right: calc((var(--page) - 1280px) / 2); }
 }
 
-.log-card-actions .file-link,
-.log-card-actions .btn-huy {
-  flex: 1;
-  text-align: center;
+@media (max-width: 760px) {
+  body { padding-bottom: 78px; }
+  .app-header { position: static; border-bottom-left-radius: 22px; border-bottom-right-radius: 22px; }
+  .header-inner { width: calc(100% - 24px); min-height: 92px; grid-template-columns: 1fr auto; gap: 10px; }
+  .brand-mark { display: none; }
+  .brand-title h1 { font-size: 18px; text-align: left; }
+  .brand-title p { font-size: 12px; }
+  .about-btn { width: 36px; height: 36px; font-size: 19px; }
+  .container { width: 100%; margin: 12px auto 0; padding: 0 10px 12px; }
+  .top-nav { display: none; }
+  .card { padding: 14px; border-radius: 18px; box-shadow: 0 8px 22px rgba(127,0,0,.10); }
+  .card-head { margin-bottom: 12px; }
+  .card-head h2 { font-size: 18px; }
+  .card-head p, .module-badge { display: none; }
+  .form-section { margin-top: 12px; padding: 13px; border-radius: 16px; }
+  .section-title { font-size: 13px; margin-bottom: 12px; }
+  .grid-2, .grid-3, .row, .row-3, .so-box, .print-choice-row { grid-template-columns: 1fr; gap: 10px; }
+  input, textarea, select { font-size: 16px; border-radius: 12px; padding: 11px 12px; }
+  textarea { min-height: 84px; }
+  .so-card { min-height: 78px; padding: 12px; }
+  .so-card .value { font-size: 28px; }
+  #btnLuuDi, #btnLuuDen { width: 100%; min-height: 48px; }
+  .desktop-log-table { display: none; }
+  .mobile-log-list { display: block; }
+  .print-panel { padding: 12px; }
+  #btnInSo { width: 100%; }
+  .footer { display: none; }
+  .mobile-bottom-nav { position: fixed; z-index: 30; left: 10px; right: 10px; bottom: 10px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 8px; border-radius: 18px; background: rgba(255,255,255,.96); border: 1px solid var(--line); box-shadow: 0 16px 40px rgba(80,0,0,.22); backdrop-filter: blur(10px); }
+  .mobile-bottom-nav .tab-btn { min-height: 48px; border-radius: 14px; font-size: 12px; box-shadow: none; }
+  #printSection { padding: 8px; }
+  .print-toolbar { grid-template-columns: 1fr; }
 }
 
-@media (min-width: 901px) {
-  .table-wrap {
-    max-height: 560px;
-    overflow: auto;
-  }
-
-  .log-table {
-    min-width: 1060px;
-  }
-}
-
-@media (max-width: 700px) {
-  .desktop-log-table {
-    display: none;
-  }
-
-  .mobile-log-list {
-    display: block;
-  }
-
-  .pdf-action {
-    padding: 12px;
-  }
-
-  .print-choice-row {
-    grid-template-columns: 1fr;
-  }
+@media print {
+  @page { size: A4 landscape; margin: 7mm; }
+  body { background: #fff; }
+  .app-header, .container, .modal, .print-toolbar, .mobile-bottom-nav { display: none !important; }
+  #printSection { display: block !important; position: static; padding: 0; background: #fff; }
+  .print-page { max-width: none; padding: 0; margin: 0; }
+  .print-table { font-size: 9.5px; }
+  .print-table thead { display: table-header-group; }
+  .print-table tr { page-break-inside: avoid; break-inside: avoid; }
 }
 
 </style>
@@ -952,231 +459,296 @@ input[type="file"] {
 
 <body>
 
-<div class="header">
-  <button type="button" class="about-btn" onclick="moGioiThieu()">ⓘ</button>
-  <h1>QUẢN LÝ VĂN BẢN ĐẢNG</h1>
-  <p>Đăng ký văn bản đi, văn bản đến</p>
-</div>
-
-<div class="container">
-
-  <div class="tabs">
-    <button type="button" class="tab-btn active" onclick="showTab('di',this)">📄 Văn bản đi</button>
-    <button type="button" class="tab-btn" onclick="showTab('den',this)">📥 Văn bản đến</button>
+<header class="app-header">
+  <div class="header-inner">
+    <div class="brand-mark"><img src="./icon-192.png" alt="Logo" onerror="this.style.display='none'"></div>
+    <div class="brand-title">
+      <h1>QUẢN LÝ VĂN BẢN ĐẢNG</h1>
+      <p>Đăng ký, tra cứu, lưu PDF và quản lý sổ văn bản đi - đến</p>
+    </div>
+    <button type="button" class="about-btn" onclick="moGioiThieu()" aria-label="Thông tin ứng dụng">ⓘ</button>
   </div>
+</header>
 
-  <div id="tab-di" class="card">
-    <h3 style="color:#8b0000;margin-top:0">📄 Đăng ký văn bản đi</h3>
+<main class="container">
+  <nav class="top-nav" aria-label="Chức năng chính">
+    <button type="button" class="tab-btn active" data-tab="di" onclick="showTab('di',this)">📄 Văn bản đi</button>
+    <button type="button" class="tab-btn" data-tab="den" onclick="showTab('den',this)">📥 Văn bản đến</button>
+    <button type="button" class="tab-btn" data-tab="nhatky" onclick="showTab('nhatky',this)">📒 Nhật ký</button>
+  </nav>
 
-    <div class="row">
+  <section id="tab-di" class="card">
+    <div class="card-head">
       <div>
-        <label>Năm</label>
-        <input type="number" id="namDi">
+        <h2>📄 Đăng ký văn bản đi</h2>
+        <p>Nhập thông tin, đính kèm PDF và cấp số văn bản đi.</p>
       </div>
-      <div>
-        <label>Ký hiệu</label>
-        <select id="kyHieuDi">
-          <option value="-CV/ĐBBPTH">-CV/ĐBBPTH</option>
-          <option value="-TB/ĐBBPTH">-TB/ĐBBPTH</option>
-          <option value="-QĐ/ĐBBPTH">-QĐ/ĐBBPTH</option>
-          <option value="-KH/ĐBBPTH">-KH/ĐBBPTH</option>
-          <option value="-TTr/ĐBBPTH">-TTr/ĐBBPTH</option>
-          <option value="-NQ/ĐBBPTH">-NQ/ĐBBPTH</option>
-          <option value="-BC/ĐBBPTH">-BC/ĐBBPTH</option>
-          <option value="-CTr/ĐBBPTH">-CTr/ĐBBPTH</option>
-        </select>
-      </div>
+      <span class="module-badge">Sổ văn bản đi</span>
     </div>
 
-    <div class="so-box">
-      <div class="so-card">
-        <div class="label">Số hiện tại</div>
-        <div class="value" id="soHTDi">-</div>
-      </div>
-      <div class="so-card">
-        <div class="label">Số sẽ cấp khi lưu</div>
-        <div class="value" id="soTTDi">-</div>
-      </div>
-    </div>
-
-    <label>Ngày tháng năm văn bản</label>
-    <input type="date" id="ngayDi">
-
-    <label>Tên loại và trích yếu nội dung văn bản</label>
-    <textarea id="trichYeuDi"></textarea>
-
-    <label>Người ký</label>
-    <select id="nguoiKyDi">
-      <option value="">-- Chọn người ký --</option>
-      <option value="Nguyễn Văn Nam">Nguyễn Văn Nam</option>
-      <option value="Nguyễn Đình Bắc">Nguyễn Đình Bắc</option>
-    </select>
-
-    <div class="row">
-      <div>
-        <label>Số trang</label>
-        <input type="number" id="soTrangDi">
-      </div>
-      <div>
-        <label>Số bản</label>
-        <input type="number" id="soBanDi">
-      </div>
-    </div>
-
-    <label>Đơn vị/cá nhân nhận bản lưu</label>
-    <input id="donViNhanBanLuuDi">
-
-    <label>Nơi nhận văn bản</label>
-    <textarea id="noiNhanDi"></textarea>
-
-    <label>Lưu hồ sơ số</label>
-    <input id="luuHoSoDi">
-
-    <label>Ghi chú</label>
-    <textarea id="ghiChuDi"></textarea>
-
-    <label>File PDF văn bản nếu có</label>
-    <input type="file" id="pdfDi" accept="application/pdf">
-    <div class="help-text">Khi lưu, file được đặt tên theo số và ký hiệu văn bản để tiện tra cứu.</div>
-
-    <button type="button" id="btnLuuDi" onclick="luuVanBanDi()">Lưu và cấp số văn bản đi</button>
-    <div id="msgDi" class="message"></div>
-  </div>
-
-  <div id="tab-den" class="card hidden">
-    <h3 style="color:#8b0000;margin-top:0">📥 Đăng ký văn bản đến</h3>
-
-    <label>Năm</label>
-    <input type="number" id="namDen">
-
-    <div class="so-box">
-      <div class="so-card">
-        <div class="label">Số đến hiện tại</div>
-        <div class="value" id="soHTDen">-</div>
-      </div>
-      <div class="so-card">
-        <div class="label">Số đến sẽ cấp khi lưu</div>
-        <div class="value" id="soTTDen">-</div>
-      </div>
-    </div>
-
-    <label>Ngày tháng năm đến</label>
-    <input type="date" id="ngayDen">
-
-    <label>Lưu hồ sơ</label>
-    <input id="luuHoSoDen">
-
-    <label>Ghi chú</label>
-    <textarea id="ghiChuDen"></textarea>
-
-    <label>Tác giả</label>
-    <input id="tacGiaDen">
-
-    <label>Số và ký hiệu văn bản</label>
-    <input id="soKyHieuDen">
-
-    <label>Ngày tháng năm văn bản</label>
-    <input type="date" id="ngayVanBanDen">
-
-    <label>Tên loại và trích yếu nội dung văn bản</label>
-    <textarea id="trichYeuDen"></textarea>
-
-    <div class="row">
-      <div>
-        <label>Số trang</label>
-        <input type="number" id="soTrangDen">
-      </div>
-      <div>
-        <label>Số bản</label>
-        <input type="number" id="soBanDen">
-      </div>
-    </div>
-
-    <label>Đơn vị/cá nhân nhận văn bản</label>
-    <input id="donViNhanDen">
-
-    <label>File PDF văn bản đến nếu có</label>
-    <input type="file" id="pdfDen" accept="application/pdf">
-    <div class="help-text">Khi lưu, file được đặt tên theo số đến và số ký hiệu văn bản để tiện mở xem.</div>
-
-    <button type="button" id="btnLuuDen" onclick="luuVanBanDen()">Lưu và cấp số văn bản đến</button>
-    <div id="msgDen" class="message"></div>
-  </div>
-
-  <div id="tab-nhatky" class="card hidden">
-    <h3 style="color:#8b0000;margin-top:0">📒 Nhật ký</h3>
-
-    <label>Từ khóa tìm kiếm</label>
-    <input id="filterTuKhoa" placeholder="Nhập số, ký hiệu, trích yếu hoặc lý do...">
-
-    <label style="display:flex;align-items:center;gap:8px;margin-top:12px">
-      <input type="checkbox" id="moRongLoc" style="width:auto">
-      Mở rộng bộ lọc
-    </label>
-
-    <div id="boLocMoRong" class="hidden">
-      <div class="row-3">
-        <div>
-          <label>Từ ngày</label>
-          <input type="date" id="tuNgay">
-        </div>
-        <div>
-          <label>Đến ngày</label>
-          <input type="date" id="denNgay">
-        </div>
+    <div class="form-section">
+      <div class="section-title"><span class="step">1</span> Thông tin cấp số</div>
+      <div class="grid-2">
         <div>
           <label>Năm</label>
-          <input type="number" id="filterNam">
-        </div>
-      </div>
-
-      <div class="row">
-        <div>
-          <label>Loại sổ</label>
-          <select id="filterLoaiSo">
-            <option value="">Tất cả</option>
-            <option value="Văn bản đi">Văn bản đi</option>
-            <option value="Văn bản đến">Văn bản đến</option>
-          </select>
+          <input type="number" id="namDi">
         </div>
         <div>
-          <label>Trạng thái</label>
-          <select id="filterTrangThai">
-            <option value="">Tất cả</option>
-            <option value="Đã đăng ký">Đã đăng ký</option>
-            <option value="Đã hủy">Đã hủy</option>
+          <label>Ký hiệu</label>
+          <select id="kyHieuDi">
+            <option value="-CV/ĐBBPTH">-CV/ĐBBPTH</option>
+            <option value="-TB/ĐBBPTH">-TB/ĐBBPTH</option>
+            <option value="-QĐ/ĐBBPTH">-QĐ/ĐBBPTH</option>
+            <option value="-KH/ĐBBPTH">-KH/ĐBBPTH</option>
+            <option value="-TTr/ĐBBPTH">-TTr/ĐBBPTH</option>
+            <option value="-NQ/ĐBBPTH">-NQ/ĐBBPTH</option>
+            <option value="-BC/ĐBBPTH">-BC/ĐBBPTH</option>
+            <option value="-CTr/ĐBBPTH">-CTr/ĐBBPTH</option>
           </select>
         </div>
       </div>
-
-      <label>Lọc theo số ký hiệu</label>
-      <select id="filterKyHieu">
-        <option value="">Tất cả ký hiệu</option>
-        <option value="CV">Công văn - CV</option>
-        <option value="TB">Thông báo - TB</option>
-        <option value="QD">Quyết định - QĐ</option>
-        <option value="KH">Kế hoạch - KH</option>
-        <option value="TTR">Tờ trình - TTr</option>
-        <option value="NQ">Nghị quyết - NQ</option>
-        <option value="BC">Báo cáo - BC</option>
-        <option value="CTr">Chương trình - CTr</option>
-      </select>
+      <div class="so-box" style="margin-top:16px">
+        <div class="so-card"><div><div class="label">Số hiện tại</div><div class="value" id="soHTDi">-</div></div></div>
+        <div class="so-card"><div><div class="label">Số sẽ cấp khi lưu</div><div class="value" id="soTTDi">-</div></div></div>
+      </div>
     </div>
 
-    <button type="button" id="btnTimKiem" onclick="timKiemNhatKy()">Tìm kiếm</button>
-    <div id="msgNhatKy" class="message"></div>
+    <div class="form-section">
+      <div class="section-title"><span class="step">2</span> Nội dung văn bản</div>
+      <div class="grid-2">
+        <div>
+          <label>Ngày tháng năm văn bản</label>
+          <input type="date" id="ngayDi">
+        </div>
+        <div>
+          <label>Người ký</label>
+          <select id="nguoiKyDi">
+            <option value="">-- Chọn người ký --</option>
+            <option value="Nguyễn Văn Nam">Nguyễn Văn Nam</option>
+            <option value="Nguyễn Đình Bắc">Nguyễn Đình Bắc</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-top:14px">
+        <label>Tên loại và trích yếu nội dung văn bản</label>
+        <textarea id="trichYeuDi"></textarea>
+      </div>
+    </div>
 
-    <div id="pdfAction" class="pdf-action hidden">
+    <div class="form-section">
+      <div class="section-title"><span class="step">3</span> Thông tin phát hành và lưu hồ sơ</div>
+      <div class="grid-2">
+        <div>
+          <label>Số trang</label>
+          <input type="number" id="soTrangDi">
+        </div>
+        <div>
+          <label>Số bản</label>
+          <input type="number" id="soBanDi">
+        </div>
+      </div>
+      <div class="grid-2" style="margin-top:14px">
+        <div>
+          <label>Đơn vị/cá nhân nhận bản lưu</label>
+          <input id="donViNhanBanLuuDi">
+        </div>
+        <div>
+          <label>Lưu hồ sơ số</label>
+          <input id="luuHoSoDi">
+        </div>
+      </div>
+      <div style="margin-top:14px">
+        <label>Nơi nhận văn bản</label>
+        <textarea id="noiNhanDi"></textarea>
+      </div>
+      <div style="margin-top:14px">
+        <label>Ghi chú</label>
+        <textarea id="ghiChuDi"></textarea>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-title"><span class="step">4</span> Tệp PDF đính kèm</div>
+      <label>File PDF văn bản nếu có</label>
+      <input class="file-input" type="file" id="pdfDi" accept="application/pdf">
+      <div class="help-text">Khi lưu, file được đặt tên theo số và ký hiệu văn bản để tiện tra cứu.</div>
+    </div>
+
+    <div class="action-bar"><button type="button" id="btnLuuDi" onclick="luuVanBanDi()">Lưu và cấp số văn bản đi</button></div>
+    <div id="msgDi" class="message"></div>
+  </section>
+
+  <section id="tab-den" class="card hidden">
+    <div class="card-head">
+      <div>
+        <h2>📥 Đăng ký văn bản đến</h2>
+        <p>Tiếp nhận, cấp số đến, lưu thông tin xử lý và file PDF.</p>
+      </div>
+      <span class="module-badge">Sổ văn bản đến</span>
+    </div>
+
+    <div class="form-section">
+      <div class="section-title"><span class="step">1</span> Thông tin cấp số đến</div>
+      <div class="grid-2">
+        <div>
+          <label>Năm</label>
+          <input type="number" id="namDen">
+        </div>
+        <div>
+          <label>Ngày tháng năm đến</label>
+          <input type="date" id="ngayDen">
+        </div>
+      </div>
+      <div class="so-box" style="margin-top:16px">
+        <div class="so-card"><div><div class="label">Số đến hiện tại</div><div class="value" id="soHTDen">-</div></div></div>
+        <div class="so-card"><div><div class="label">Số đến sẽ cấp khi lưu</div><div class="value" id="soTTDen">-</div></div></div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-title"><span class="step">2</span> Thông tin văn bản gốc</div>
+      <div class="grid-3">
+        <div>
+          <label>Tác giả</label>
+          <input id="tacGiaDen">
+        </div>
+        <div>
+          <label>Số và ký hiệu văn bản</label>
+          <input id="soKyHieuDen">
+        </div>
+        <div>
+          <label>Ngày tháng năm văn bản</label>
+          <input type="date" id="ngayVanBanDen">
+        </div>
+      </div>
+      <div style="margin-top:14px">
+        <label>Tên loại và trích yếu nội dung văn bản</label>
+        <textarea id="trichYeuDen"></textarea>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-title"><span class="step">3</span> Lưu chuyển và lưu hồ sơ</div>
+      <div class="grid-2">
+        <div>
+          <label>Lưu hồ sơ</label>
+          <input id="luuHoSoDen">
+        </div>
+        <div>
+          <label>Đơn vị/cá nhân nhận văn bản</label>
+          <input id="donViNhanDen">
+        </div>
+      </div>
+      <div class="grid-2" style="margin-top:14px">
+        <div>
+          <label>Số trang</label>
+          <input type="number" id="soTrangDen">
+        </div>
+        <div>
+          <label>Số bản</label>
+          <input type="number" id="soBanDen">
+        </div>
+      </div>
+      <div style="margin-top:14px">
+        <label>Ghi chú</label>
+        <textarea id="ghiChuDen"></textarea>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-title"><span class="step">4</span> Tệp PDF đính kèm</div>
+      <label>File PDF văn bản đến nếu có</label>
+      <input class="file-input" type="file" id="pdfDen" accept="application/pdf">
+      <div class="help-text">Khi lưu, file được đặt tên theo số đến và số ký hiệu văn bản để tiện mở xem.</div>
+    </div>
+
+    <div class="action-bar"><button type="button" id="btnLuuDen" onclick="luuVanBanDen()">Lưu và cấp số văn bản đến</button></div>
+    <div id="msgDen" class="message"></div>
+  </section>
+
+  <section id="tab-nhatky" class="card hidden">
+    <div class="card-head">
+      <div>
+        <h2>📒 Nhật ký tra cứu</h2>
+        <p>Tra cứu văn bản, mở PDF, hủy văn bản và in sổ theo bộ lọc.</p>
+      </div>
+      <span class="module-badge">Theo dõi xử lý</span>
+    </div>
+
+    <div class="filter-panel">
+      <label>Từ khóa tìm kiếm</label>
+      <input id="filterTuKhoa" placeholder="Nhập số, ký hiệu, trích yếu hoặc lý do...">
+
+      <label class="filter-toggle">
+        <input type="checkbox" id="moRongLoc">
+        Mở rộng bộ lọc
+      </label>
+
+      <div id="boLocMoRong" class="hidden" style="margin-top:14px">
+        <div class="grid-3">
+          <div>
+            <label>Từ ngày</label>
+            <input type="date" id="tuNgay">
+          </div>
+          <div>
+            <label>Đến ngày</label>
+            <input type="date" id="denNgay">
+          </div>
+          <div>
+            <label>Năm</label>
+            <input type="number" id="filterNam">
+          </div>
+        </div>
+
+        <div class="grid-3" style="margin-top:14px">
+          <div>
+            <label>Loại sổ</label>
+            <select id="filterLoaiSo">
+              <option value="">Tất cả</option>
+              <option value="Văn bản đi">Văn bản đi</option>
+              <option value="Văn bản đến">Văn bản đến</option>
+            </select>
+          </div>
+          <div>
+            <label>Trạng thái</label>
+            <select id="filterTrangThai">
+              <option value="">Tất cả</option>
+              <option value="Đã đăng ký">Đã đăng ký</option>
+              <option value="Đã hủy">Đã hủy</option>
+            </select>
+          </div>
+          <div>
+            <label>Lọc theo số ký hiệu</label>
+            <select id="filterKyHieu">
+              <option value="">Tất cả ký hiệu</option>
+              <option value="CV">Công văn - CV</option>
+              <option value="TB">Thông báo - TB</option>
+              <option value="QD">Quyết định - QĐ</option>
+              <option value="KH">Kế hoạch - KH</option>
+              <option value="TTR">Tờ trình - TTr</option>
+              <option value="NQ">Nghị quyết - NQ</option>
+              <option value="BC">Báo cáo - BC</option>
+              <option value="CTr">Chương trình - CTr</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" id="btnTimKiem" onclick="timKiemNhatKy()">Tìm kiếm</button>
+      <div id="msgNhatKy" class="message"></div>
+    </div>
+
+    <div id="pdfAction" class="print-panel hidden">
       <div class="print-choice-row">
         <div>
-          <label>Chọn sổ cần xem/in</label>
+          <label>Chọn loại sổ</label>
           <select id="chonSoIn">
             <option value="">-- Chọn loại sổ --</option>
             <option value="di">Sổ văn bản đi</option>
             <option value="den">Sổ văn bản đến</option>
           </select>
         </div>
-        <button type="button" id="btnInSo" onclick="inSoDaChon()">🖨️ Xem / In - Lưu PDF</button>
+        <button type="button" id="btnInSo" onclick="inSoDaChon()">🖨️ Xem sổ / In PDF</button>
       </div>
     </div>
 
@@ -1191,8 +763,8 @@ input[type="file"] {
             <th>Số và ký hiệu</th>
             <th>Trích yếu</th>
             <th>File PDF</th>
-            <th>Thao tác</th>
-            <th>Lý do</th>
+            <th>Xử lý</th>
+            <th>Lý do hủy</th>
           </tr>
         </thead>
         <tbody id="bodyNhatKy">
@@ -1202,13 +774,16 @@ input[type="file"] {
     </div>
 
     <div id="mobileNhatKy" class="mobile-log-list"></div>
-  </div>
+  </section>
 
-  <div class="footer">
-    <button type="button" class="footer-log-btn" onclick="showTab('nhatky',null)">📒 Nhật ký</button>
-    <div>Phần mềm quản lý văn bản Đảng</div>
-  </div>
-</div>
+  <div class="footer">Phần mềm quản lý văn bản Đảng · Trung tâm Bảo trợ xã hội Tân Hiệp</div>
+</main>
+
+<nav class="mobile-bottom-nav" aria-label="Điều hướng nhanh">
+  <button type="button" class="tab-btn active" data-tab="di" onclick="showTab('di',this)">📄<br>Văn bản đi</button>
+  <button type="button" class="tab-btn" data-tab="den" onclick="showTab('den',this)">📥<br>Văn bản đến</button>
+  <button type="button" class="tab-btn" data-tab="nhatky" onclick="showTab('nhatky',this)">📒<br>Nhật ký</button>
+</nav>
 
 <div id="printSection" class="hidden">
   <div class="print-toolbar">
@@ -1228,7 +803,7 @@ input[type="file"] {
   <div class="modal-content">
     <span class="close" onclick="dongGioiThieu()">&times;</span>
     <h2>QUẢN LÝ VĂN BẢN ĐẢNG</h2>
-    <p><b>Phiên bản:</b> 1.0</p>
+    <p><b>Phiên bản:</b> 2.0 - giao diện triển khai thực tế</p>
     <p><b>Căn cứ pháp lý</b></p>
     <p style="text-align:justify">
       Quy định số <b>693-QĐ/VPTW</b> ngày <b>15/12/2021</b>
@@ -1298,16 +873,14 @@ function showTab(tab, button) {
   el('tab-' + tab).classList.remove('hidden');
 
   document.querySelectorAll('.tab-btn').forEach(function(btn) {
-    btn.classList.remove('active');
+    btn.classList.toggle('active', btn.getAttribute('data-tab') === tab);
   });
-
-  if (button && button.classList.contains('tab-btn')) {
-    button.classList.add('active');
-  }
 
   if (tab === 'nhatky') {
     moNhatKy();
   }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function moNhatKy() {
@@ -1588,6 +1161,18 @@ function taiNhatKy(laTimKiem) {
   });
 }
 
+
+function chuanHoaLyDo(value) {
+  let text = String(value || '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (!text) return '';
+
+  text = text.toLocaleLowerCase('vi-VN');
+  return text.charAt(0).toLocaleUpperCase('vi-VN') + text.slice(1);
+}
+
 function chuanHoaNhatKy(data) {
   const huyMap = {};
   const dangKyMap = {};
@@ -1599,7 +1184,7 @@ function chuanHoaNhatKy(data) {
 
     if (item.trangThai === 'Đã hủy') {
       huyMap[key] = {
-        lyDo: item.lyDo || '',
+        lyDo: chuanHoaLyDo(item.lyDo),
         thoiGianHuy: item.thoiGian || ''
       };
     }
@@ -1619,7 +1204,7 @@ function chuanHoaNhatKy(data) {
     if (huyMap[key]) {
       row.trangThai = 'Đã hủy';
       row.daHuy = true;
-      row.lyDo = huyMap[key].lyDo || row.lyDo || '';
+      row.lyDo = chuanHoaLyDo(huyMap[key].lyDo || row.lyDo || '');
       row.thoiGianHuy = huyMap[key].thoiGianHuy || '';
     } else {
       row.daHuy = false;
@@ -1809,6 +1394,8 @@ async function huyVanBan(loaiSo, nam, soVaKyHieu, trichYeu) {
 
   if (!xacNhan) return;
 
+  const lyDoChuan = chuanHoaLyDo(lyDo);
+
   try {
     await post({
       action: 'HUY_VAN_BAN',
@@ -1816,7 +1403,7 @@ async function huyVanBan(loaiSo, nam, soVaKyHieu, trichYeu) {
       nam: nam,
       soVaKyHieu: soVaKyHieu,
       trichYeu: trichYeu,
-      lyDo: lyDo.trim()
+      lyDo: lyDoChuan
     });
 
     await sleep(900);
