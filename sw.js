@@ -1,4 +1,4 @@
-const CACHE_NAME = 'van-ban-dang-cache-v1.0.12';
+const CACHE_NAME = 'van-ban-dang-cache-v1.0.20';
 
 const ASSETS = [
   './',
