@@ -784,6 +784,169 @@ input[type="file"] {
     margin-top: 20px;
   }
 }
+
+/* ===== NHẬT KÝ SỬ DỤNG THỰC TẾ - DESKTOP / MOBILE ===== */
+
+.log-table th:nth-child(8),
+.log-table td:nth-child(8) {
+  position: sticky;
+  right: 0;
+  z-index: 2;
+  background: #fff;
+  text-align: center;
+  min-width: 88px;
+}
+
+.log-table th:nth-child(8) {
+  background: var(--red-dark);
+  color: white;
+  z-index: 3;
+}
+
+.action-cell {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.btn-huy {
+  width: auto;
+  min-width: 66px;
+  margin: 0;
+  padding: 9px 12px;
+  border-radius: 999px;
+}
+
+.row-cancelled {
+  background: #fff7f7 !important;
+  color: #555;
+}
+
+.row-cancelled td {
+  opacity: 0.92;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 84px;
+  padding: 6px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.status-active {
+  background: #e8f5e9;
+  color: #1b5e20;
+}
+
+.status-cancelled {
+  background: #ffebee;
+  color: #b71c1c;
+}
+
+.mobile-log-list {
+  display: none;
+}
+
+.empty-mobile {
+  padding: 16px;
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.log-card {
+  padding: 14px;
+  margin-top: 12px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 5px 16px rgba(90, 0, 0, 0.08);
+}
+
+.log-card-cancelled {
+  background: #fff7f7;
+}
+
+.log-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.log-number {
+  color: var(--red-dark);
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.log-meta {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.log-title {
+  margin-top: 10px;
+  line-height: 1.45;
+  font-size: 14px;
+}
+
+.log-info {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+  color: #555;
+  font-size: 12px;
+}
+
+.log-card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.log-card-actions .file-link,
+.log-card-actions .btn-huy {
+  flex: 1;
+  text-align: center;
+}
+
+@media (min-width: 901px) {
+  .table-wrap {
+    max-height: 560px;
+    overflow: auto;
+  }
+
+  .log-table {
+    min-width: 1060px;
+  }
+}
+
+@media (max-width: 700px) {
+  .desktop-log-table {
+    display: none;
+  }
+
+  .mobile-log-list {
+    display: block;
+  }
+
+  .pdf-action {
+    padding: 12px;
+  }
+
+  .print-choice-row {
+    grid-template-columns: 1fr;
+  }
+}
+
 </style>
 </head>
 
@@ -1017,8 +1180,8 @@ input[type="file"] {
       </div>
     </div>
 
-    <div class="table-wrap">
-      <table>
+    <div class="table-wrap desktop-log-table">
+      <table class="log-table">
         <thead>
           <tr>
             <th>Thời gian</th>
@@ -1027,9 +1190,9 @@ input[type="file"] {
             <th>Năm</th>
             <th>Số và ký hiệu</th>
             <th>Trích yếu</th>
-            <th>Lý do</th>
             <th>File PDF</th>
             <th>Thao tác</th>
+            <th>Lý do</th>
           </tr>
         </thead>
         <tbody id="bodyNhatKy">
@@ -1037,6 +1200,8 @@ input[type="file"] {
         </tbody>
       </table>
     </div>
+
+    <div id="mobileNhatKy" class="mobile-log-list"></div>
   </div>
 
   <div class="footer">
@@ -1079,6 +1244,8 @@ input[type="file"] {
 const DATA_SERVICE_URL = 'https://script.google.com/macros/s/AKfycbwazhWwdWiojwjLLR_V93HzURX1QIry1Przv8l-9WgsbJY7SgD63ruAL98UdUj4HdKW/exec';
 
 let lastSearchFilters = {};
+let lastNhatKyData = [];
+let lastNhatKyDangHieuLuc = [];
 
 document.addEventListener('DOMContentLoaded', initApp);
 
@@ -1361,20 +1528,45 @@ function taiNhatKy(laTimKiem) {
     button.innerText = 'Đang tìm kiếm...';
   }
 
+  // Trạng thái được lọc ở giao diện sau khi đã gộp các bản ghi hủy.
+  // Cách này bảo đảm văn bản đã hủy không còn xuất hiện như một dòng "Đã đăng ký".
+  const queryFilters = Object.assign({}, filters, {
+    trangThai: '',
+    kyHieu: ''
+  });
+
   jsonp({
     action: 'TRA_CUU_NHAT_KY',
-    ...filters
+    tuNgay: queryFilters.tuNgay || '',
+    denNgay: queryFilters.denNgay || '',
+    nam: queryFilters.nam || '',
+    loaiSo: queryFilters.loaiSo || '',
+    trangThai: '',
+    tuKhoa: queryFilters.tuKhoa || ''
   }, function(result) {
     const rawData = result.success ? (result.data || []) : [];
-    const data = locTheoKyHieuNhatKy(rawData, filters.kyHieu);
+
+    let data = chuanHoaNhatKy(rawData);
+    data = locTheoKyHieuNhatKy(data, filters.kyHieu);
+
+    if (filters.trangThai) {
+      data = data.filter(function(item) {
+        return item.trangThai === filters.trangThai;
+      });
+    }
+
+    lastNhatKyData = data;
+    lastNhatKyDangHieuLuc = data.filter(function(item) {
+      return item.trangThai === 'Đã đăng ký';
+    });
 
     renderNhatKy(data);
 
-    const coVanBanDi = data.some(function(item) {
+    const coVanBanDi = lastNhatKyDangHieuLuc.some(function(item) {
       return item.loaiSo === 'Văn bản đi';
     });
 
-    const coVanBanDen = data.some(function(item) {
+    const coVanBanDen = lastNhatKyDangHieuLuc.some(function(item) {
       return item.loaiSo === 'Văn bản đến';
     });
 
@@ -1396,6 +1588,94 @@ function taiNhatKy(laTimKiem) {
   });
 }
 
+function chuanHoaNhatKy(data) {
+  const huyMap = {};
+  const dangKyMap = {};
+  const result = [];
+
+  (data || []).forEach(function(item) {
+    const key = taoKeyNhatKy(item);
+    if (!key) return;
+
+    if (item.trangThai === 'Đã hủy') {
+      huyMap[key] = {
+        lyDo: item.lyDo || '',
+        thoiGianHuy: item.thoiGian || ''
+      };
+    }
+  });
+
+  (data || []).forEach(function(item) {
+    const key = taoKeyNhatKy(item);
+    if (!key) return;
+
+    if (item.trangThai === 'Đã hủy') {
+      return;
+    }
+
+    const row = Object.assign({}, item);
+    dangKyMap[key] = true;
+
+    if (huyMap[key]) {
+      row.trangThai = 'Đã hủy';
+      row.daHuy = true;
+      row.lyDo = huyMap[key].lyDo || row.lyDo || '';
+      row.thoiGianHuy = huyMap[key].thoiGianHuy || '';
+    } else {
+      row.daHuy = false;
+    }
+
+    result.push(row);
+  });
+
+  // Trường hợp dữ liệu cũ chỉ còn bản ghi hủy mà không tìm thấy bản đăng ký tương ứng.
+  (data || []).forEach(function(item) {
+    const key = taoKeyNhatKy(item);
+    if (!key) return;
+
+    if (item.trangThai === 'Đã hủy' && !dangKyMap[key]) {
+      const row = Object.assign({}, item);
+      row.daHuy = true;
+      result.push(row);
+      dangKyMap[key] = true;
+    }
+  });
+
+  return result.sort(function(a, b) {
+    return parseDateVn(b.thoiGian) - parseDateVn(a.thoiGian);
+  });
+}
+
+function taoKeyNhatKy(item) {
+  return [
+    String(item.loaiSo || '').trim(),
+    String(item.nam || '').trim(),
+    chuanHoaSoKyHieu(item.soVaKyHieu)
+  ].join('|');
+}
+
+function chuanHoaSoKyHieu(value) {
+  return boDauTiengViet(String(value || ''))
+    .toUpperCase()
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function parseDateVn(value) {
+  const text = String(value || '').trim();
+  const match = text.match(/^(\d{2})\/(\d{2})\/(\d{4})(?:\s+(\d{2}):(\d{2}):(\d{2}))?$/);
+
+  if (!match) return 0;
+
+  return new Date(
+    Number(match[3]),
+    Number(match[2]) - 1,
+    Number(match[1]),
+    Number(match[4] || 0),
+    Number(match[5] || 0),
+    Number(match[6] || 0)
+  ).getTime();
+}
 
 function locTheoKyHieuNhatKy(data, kyHieu) {
   if (!kyHieu) return data;
@@ -1444,26 +1724,31 @@ function boDauTiengViet(value) {
 
 function renderNhatKy(data) {
   const body = el('bodyNhatKy');
+  const mobile = el('mobileNhatKy');
+
   body.innerHTML = '';
+  mobile.innerHTML = '';
 
   if (!data.length) {
     body.innerHTML = '<tr><td colspan="9">Không có dữ liệu phù hợp.</td></tr>';
+    mobile.innerHTML = '<div class="empty-mobile">Không có dữ liệu phù hợp.</div>';
     return;
   }
 
   data.forEach(function(item) {
     const coTheHuy = item.trangThai === 'Đã đăng ký' && !item.daHuy;
+    const trangThaiClass = item.trangThai === 'Đã hủy' ? 'status-cancelled' : 'status-active';
 
     const tr = document.createElement('tr');
+    tr.className = item.trangThai === 'Đã hủy' ? 'row-cancelled' : '';
 
     tr.innerHTML = `
       <td>${esc(item.thoiGian)}</td>
-      <td>${esc(item.trangThai)}</td>
+      <td><span class="status-badge ${trangThaiClass}">${esc(item.trangThai)}</span></td>
       <td>${esc(item.loaiSo)}</td>
       <td>${esc(item.nam)}</td>
       <td><b>${esc(item.soVaKyHieu)}</b></td>
       <td>${esc(item.trichYeu)}</td>
-      <td>${esc(item.lyDo)}</td>
       <td>
         ${
           item.fileUrl
@@ -1471,12 +1756,44 @@ function renderNhatKy(data) {
             : ''
         }
       </td>
-      <td>
-        ${coTheHuy ? `<button type="button" class="btn-danger" onclick="huyVanBan('${escA(item.loaiSo)}','${escA(item.nam)}','${escA(item.soVaKyHieu)}','${escA(item.trichYeu)}')">Hủy</button>` : ''}
+      <td class="action-cell">
+        ${coTheHuy ? `<button type="button" class="btn-danger btn-huy" onclick="huyVanBan('${escA(item.loaiSo)}','${escA(item.nam)}','${escA(item.soVaKyHieu)}','${escA(item.trichYeu)}')">Hủy</button>` : ''}
       </td>
+      <td>${esc(item.lyDo)}</td>
     `;
 
     body.appendChild(tr);
+
+    const card = document.createElement('div');
+    card.className = 'log-card ' + (item.trangThai === 'Đã hủy' ? 'log-card-cancelled' : '');
+
+    card.innerHTML = `
+      <div class="log-card-top">
+        <div>
+          <div class="log-number">${esc(item.soVaKyHieu)}</div>
+          <div class="log-meta">${esc(item.loaiSo)} · ${esc(item.nam)}</div>
+        </div>
+        <span class="status-badge ${trangThaiClass}">${esc(item.trangThai)}</span>
+      </div>
+
+      <div class="log-title">${esc(item.trichYeu)}</div>
+
+      <div class="log-info">
+        <span>🕒 ${esc(item.thoiGian)}</span>
+        ${item.lyDo ? `<span>⚠️ ${esc(item.lyDo)}</span>` : ''}
+      </div>
+
+      <div class="log-card-actions">
+        ${
+          item.fileUrl
+            ? `<a class="file-link" href="${escA(item.fileUrl)}" target="_blank" rel="noopener">Mở PDF</a>`
+            : ''
+        }
+        ${coTheHuy ? `<button type="button" class="btn-danger btn-huy" onclick="huyVanBan('${escA(item.loaiSo)}','${escA(item.nam)}','${escA(item.soVaKyHieu)}','${escA(item.trichYeu)}')">Hủy</button>` : ''}
+      </div>
+    `;
+
+    mobile.appendChild(card);
   });
 }
 
@@ -1485,17 +1802,30 @@ async function huyVanBan(loaiSo, nam, soVaKyHieu, trichYeu) {
 
   if (!lyDo || !lyDo.trim()) return;
 
-  await post({
-    action: 'HUY_VAN_BAN',
-    loaiSo: loaiSo,
-    nam: nam,
-    soVaKyHieu: soVaKyHieu,
-    trichYeu: trichYeu,
-    lyDo: lyDo.trim()
-  });
+  const xacNhan = confirm(
+    'Xác nhận hủy văn bản: ' + soVaKyHieu + '\\n\\n' +
+    'Sau khi hủy, văn bản sẽ không xuất hiện trong sổ in/lưu PDF.'
+  );
 
-  await sleep(700);
-  timKiemNhatKy();
+  if (!xacNhan) return;
+
+  try {
+    await post({
+      action: 'HUY_VAN_BAN',
+      loaiSo: loaiSo,
+      nam: nam,
+      soVaKyHieu: soVaKyHieu,
+      trichYeu: trichYeu,
+      lyDo: lyDo.trim()
+    });
+
+    await sleep(900);
+    msg('msgNhatKy', 'Đã ghi nhận hủy văn bản. Văn bản đã hủy sẽ không đưa vào sổ in.', 'success');
+    timKiemNhatKy();
+
+  } catch (error) {
+    msg('msgNhatKy', 'Không gửi được yêu cầu hủy. Vui lòng kiểm tra kết nối.', 'error');
+  }
 }
 
 function capNhatVungChonSoIn(coVanBanDi, coVanBanDen, filters) {
@@ -1557,6 +1887,55 @@ function inSoDaChon() {
   }
 }
 
+
+function locBoVanBanDaHuyKhiIn(data, loaiSo) {
+  if (!lastNhatKyDangHieuLuc || !lastNhatKyDangHieuLuc.length) {
+    return [];
+  }
+
+  const activeKeys = new Set(
+    lastNhatKyDangHieuLuc
+      .filter(function(item) {
+        return item.loaiSo === (loaiSo === 'di' ? 'Văn bản đi' : 'Văn bản đến');
+      })
+      .map(taoKeyNhatKy)
+  );
+
+  return (data || []).filter(function(item) {
+    const key = loaiSo === 'di'
+      ? taoKeyTuDongInVanBanDi(item)
+      : taoKeyTuDongInVanBanDen(item);
+
+    return activeKeys.has(key);
+  });
+}
+
+function taoKeyTuDongInVanBanDi(item) {
+  return [
+    'Văn bản đi',
+    namTuNgayVn(item.ngayVanBan),
+    chuanHoaSoKyHieu(item.soKyHieu)
+  ].join('|');
+}
+
+function taoKeyTuDongInVanBanDen(item) {
+  const soVaKyHieu =
+    'Số đến ' + String(item.soDen || '').trim() +
+    (item.soKyHieuVanBan ? ' - ' + String(item.soKyHieuVanBan).trim() : '');
+
+  return [
+    'Văn bản đến',
+    namTuNgayVn(item.ngayDen),
+    chuanHoaSoKyHieu(soVaKyHieu)
+  ].join('|');
+}
+
+function namTuNgayVn(value) {
+  const text = String(value || '').trim();
+  const match = text.match(/(\d{4})$/);
+  return match ? match[1] : '';
+}
+
 function moSoVanBanDi() {
   const filters = lastSearchFilters || getFilters();
 
@@ -1572,7 +1951,8 @@ function moSoVanBanDi() {
       return;
     }
 
-    const data = locTheoKyHieuSoIn(result.data || [], filters.kyHieu, 'di');
+    let data = locTheoKyHieuSoIn(result.data || [], filters.kyHieu, 'di');
+    data = locBoVanBanDaHuyKhiIn(data, 'di');
     renderSoVanBanDi(data);
     el('printSection').classList.remove('hidden');
 
@@ -1601,7 +1981,8 @@ function moSoVanBanDen() {
       return;
     }
 
-    const data = locTheoKyHieuSoIn(result.data || [], filters.kyHieu, 'den');
+    let data = locTheoKyHieuSoIn(result.data || [], filters.kyHieu, 'den');
+    data = locBoVanBanDaHuyKhiIn(data, 'den');
     renderSoVanBanDen(data);
     el('printSection').classList.remove('hidden');
 
