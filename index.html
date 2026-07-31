@@ -2145,99 +2145,308 @@
       }
     }
 
-    function locBoVanBanDaHuyKhiIn(data, loaiSo) {
-      if (!lastNhatKyDangHieuLuc || !lastNhatKyDangHieuLuc.length) {
-        return [];
-      }
+    /*
+      Trước khi in, luôn lấy lại toàn bộ trạng thái trong Nhật ký.
+      Không dùng danh sách Nhật ký đang hiển thị vì danh sách đó có thể
+      đang bị giới hạn bởi ngày, từ khóa hoặc trạng thái.
+    */
+    function layTrangThaiSoIn(loaiSo, nam, success, error) {
+      jsonp({
+        action: "TRA_CUU_NHAT_KY",
+        tuNgay: "",
+        denNgay: "",
+        nam: nam || "",
+        loaiSo: loaiSo,
+        trangThai: "",
+        tuKhoa: ""
+      }, function(result) {
+        if (!result.success) {
+          if (error) {
+            error(result.message || "Không kiểm tra được trạng thái văn bản.");
+          }
+          return;
+        }
 
-      const activeKeys = new Set(
-        lastNhatKyDangHieuLuc
-          .filter(function(item) {
-            return item.loaiSo === (loaiSo === "di" ? "Văn bản đi" : "Văn bản đến");
-          })
-          .map(taoKeyNhatKy)
-      );
-
-      return (data || []).filter(function(item) {
-        const key = loaiSo === "di"
-          ? taoKeyTuDongInVanBanDi(item)
-          : taoKeyTuDongInVanBanDen(item);
-
-        return activeKeys.has(key);
+        success(taoBoTrangThaiSoIn(result.data || [], loaiSo));
+      }, function() {
+        if (error) {
+          error("Không kết nối được hệ thống dữ liệu để kiểm tra văn bản đã hủy.");
+        }
       });
     }
 
-    function taoKeyTuDongInVanBanDi(item) {
-      return [
-        "Văn bản đi",
-        namTuNgayVn(item.ngayVanBan),
-        chuanHoaSoKyHieu(item.soKyHieu)
-      ].join("|");
+    function taoBoTrangThaiSoIn(data, loaiSo) {
+      const daDangKy = new Set();
+      const daHuy = new Set();
+
+      (data || []).forEach(function(item) {
+        if (String(item.loaiSo || "").trim() !== loaiSo) return;
+
+        const keys = taoCacKhoaNhatKyChoIn(item);
+        if (!keys.length) return;
+
+        if (laTrangThaiHuy(item.trangThai)) {
+          keys.forEach(function(key) {
+            daHuy.add(key);
+          });
+          return;
+        }
+
+        if (laTrangThaiDangKy(item.trangThai)) {
+          keys.forEach(function(key) {
+            daDangKy.add(key);
+          });
+        }
+      });
+
+      /*
+        Một số đã từng hủy sẽ luôn bị loại khỏi sổ in, kể cả dữ liệu gốc
+        còn nhiều dòng cùng số hoặc có dòng đăng ký lặp.
+      */
+      daHuy.forEach(function(key) {
+        daDangKy.delete(key);
+      });
+
+      return {
+        daDangKy: daDangKy,
+        daHuy: daHuy
+      };
     }
 
-    function taoKeyTuDongInVanBanDen(item) {
-      const soVaKyHieu =
-        "Số đến " + String(item.soDen || "").trim() +
-        (item.soKyHieuVanBan ? " - " + String(item.soKyHieuVanBan).trim() : "");
+    function laTrangThaiHuy(value) {
+      return boDauTiengViet(value)
+        .toUpperCase()
+        .includes("HUY");
+    }
 
-      return [
-        "Văn bản đến",
-        namTuNgayVn(item.ngayDen),
-        chuanHoaSoKyHieu(soVaKyHieu)
-      ].join("|");
+    function laTrangThaiDangKy(value) {
+      return boDauTiengViet(value)
+        .toUpperCase()
+        .includes("DANG KY");
+    }
+
+    function taoCacKhoaNhatKyChoIn(item) {
+      const loaiSo = String(item.loaiSo || "").trim();
+      const nam = String(item.nam || "").trim();
+      const soVaKyHieu = String(item.soVaKyHieu || "").trim();
+      const normalized = chuanHoaKhoaSoIn(soVaKyHieu);
+      const keys = [];
+
+      if (!loaiSo || !nam || !normalized) return keys;
+
+      if (loaiSo === "Văn bản đến") {
+        const soDen = laySoDenTuChuoi(normalized);
+
+        if (soDen) {
+          keys.push(taoKhoaSoDen(nam, soDen));
+        }
+
+        keys.push(taoKhoaDayDu(loaiSo, nam, normalized));
+        return Array.from(new Set(keys));
+      }
+
+      keys.push(taoKhoaSoDi(nam, normalized));
+      return keys;
+    }
+
+    function taoCacKhoaDongSoIn(item, loaiSo) {
+      if (loaiSo === "den") {
+        const nam = String(item.nam || namTuNgayVn(item.ngayDen)).trim();
+        const soDen = chuanHoaSoThuTu(item.soDen);
+        const soVaKyHieu =
+          "Số đến " + String(item.soDen || "").trim() +
+          (item.soKyHieuVanBan ? " - " + String(item.soKyHieuVanBan).trim() : "");
+        const keys = [];
+
+        if (nam && soDen) {
+          keys.push(taoKhoaSoDen(nam, soDen));
+        }
+
+        if (nam && chuanHoaKhoaSoIn(soVaKyHieu)) {
+          keys.push(taoKhoaDayDu("Văn bản đến", nam, chuanHoaKhoaSoIn(soVaKyHieu)));
+        }
+
+        return Array.from(new Set(keys));
+      }
+
+      const nam = String(item.nam || namTuNgayVn(item.ngayVanBan)).trim();
+      const soKyHieu = chuanHoaKhoaSoIn(item.soKyHieu || item.soVaKyHieu || "");
+
+      if (!nam || !soKyHieu) return [];
+      return [taoKhoaSoDi(nam, soKyHieu)];
+    }
+
+    function taoKhoaSoDi(nam, soKyHieu) {
+      return "Văn bản đi|" + String(nam).trim() + "|SO|" + chuanHoaKhoaSoIn(soKyHieu);
+    }
+
+    function taoKhoaSoDen(nam, soDen) {
+      return "Văn bản đến|" + String(nam).trim() + "|SO_DEN|" + chuanHoaSoThuTu(soDen);
+    }
+
+    function taoKhoaDayDu(loaiSo, nam, soVaKyHieu) {
+      return String(loaiSo).trim() + "|" + String(nam).trim() + "|DAY_DU|" + chuanHoaKhoaSoIn(soVaKyHieu);
+    }
+
+    function chuanHoaKhoaSoIn(value) {
+      return boDauTiengViet(String(value || ""))
+        .toUpperCase()
+        .replace(/[–—−]/g, "-")
+        .replace(/\s+/g, "")
+        .replace(/\/+/g, "/")
+        .trim();
+    }
+
+    function chuanHoaSoThuTu(value) {
+      const text = String(value || "").trim();
+      if (!text) return "";
+
+      const number = Number(text);
+      return Number.isFinite(number) ? String(number) : text.replace(/^0+/, "") || "0";
+    }
+
+    function laySoDenTuChuoi(normalized) {
+      const text = String(normalized || "");
+      let match = text.match(/SODEN[:#-]?(\d+)/);
+
+      if (!match) {
+        match = text.match(/^(\d+)(?:-|\/|$)/);
+      }
+
+      return match ? chuanHoaSoThuTu(match[1]) : "";
     }
 
     function namTuNgayVn(value) {
       const text = String(value || "").trim();
-      const match = text.match(/(\d{4})$/);
+      let match = text.match(/^\d{1,2}\/\d{1,2}\/(\d{4})/);
+
+      if (!match) {
+        match = text.match(/^(\d{4})-\d{1,2}-\d{1,2}/);
+      }
+
+      if (!match) {
+        match = text.match(/\b((?:19|20)\d{2})\b/);
+      }
+
       return match ? match[1] : "";
+    }
+
+    function coKhoaTrongSet(keys, set) {
+      return keys.some(function(key) {
+        return set.has(key);
+      });
+    }
+
+    /*
+      Chỉ giữ văn bản đã đăng ký, chưa hủy.
+      Nếu sổ gốc có nhiều dòng cùng số, giữ bản ghi cuối cùng và chỉ in một dòng.
+    */
+    function locVanBanConHieuLucVaKhongTrung(data, loaiSo, boTrangThai) {
+      const theoKhoa = new Map();
+      const thuTuKhoa = [];
+
+      (data || []).forEach(function(item) {
+        const keys = taoCacKhoaDongSoIn(item, loaiSo);
+        if (!keys.length) return;
+
+        if (coKhoaTrongSet(keys, boTrangThai.daHuy)) return;
+        if (!coKhoaTrongSet(keys, boTrangThai.daDangKy)) return;
+
+        const primaryKey = keys[0];
+
+        if (!theoKhoa.has(primaryKey)) {
+          thuTuKhoa.push(primaryKey);
+        }
+
+        // Dữ liệu nhập sau cùng là dữ liệu được giữ lại khi có dòng trùng số.
+        theoKhoa.set(primaryKey, item);
+      });
+
+      const result = thuTuKhoa.map(function(key) {
+        return theoKhoa.get(key);
+      });
+
+      return result.sort(function(a, b) {
+        const namA = Number(
+          a.nam || namTuNgayVn(loaiSo === "den" ? a.ngayDen : a.ngayVanBan)
+        ) || 0;
+        const namB = Number(
+          b.nam || namTuNgayVn(loaiSo === "den" ? b.ngayDen : b.ngayVanBan)
+        ) || 0;
+
+        if (namA !== namB) return namA - namB;
+
+        const soA = laySoThuTuDeSapXep(a, loaiSo);
+        const soB = laySoThuTuDeSapXep(b, loaiSo);
+
+        return soA - soB;
+      });
+    }
+
+    function laySoThuTuDeSapXep(item, loaiSo) {
+      if (loaiSo === "den") {
+        const soDen = Number(item.soDen);
+        return Number.isFinite(soDen) ? soDen : Number.MAX_SAFE_INTEGER;
+      }
+
+      const text = chuanHoaKhoaSoIn(item.soKyHieu || item.soVaKyHieu || "");
+      const match = text.match(/^(\d+)/);
+      return match ? Number(match[1]) : Number.MAX_SAFE_INTEGER;
     }
 
     function moSoVanBanDi() {
       const filters = lastSearchFilters || getFilters();
 
-      jsonp({
-        action: "LAY_DANH_SACH_VAN_BAN_DI",
-        tuNgay: filters.tuNgay || "",
-        denNgay: filters.denNgay || "",
-        nam: filters.nam || "",
-        tuKhoa: filters.tuKhoa || ""
-      }, function(result) {
-        if (!result.success) {
-          alert(result.message || "Không lấy được dữ liệu sổ văn bản đi.");
-          return;
-        }
+      layTrangThaiSoIn("Văn bản đi", filters.nam, function(boTrangThai) {
+        jsonp({
+          action: "LAY_DANH_SACH_VAN_BAN_DI",
+          tuNgay: filters.tuNgay || "",
+          denNgay: filters.denNgay || "",
+          nam: filters.nam || "",
+          tuKhoa: filters.tuKhoa || ""
+        }, function(result) {
+          if (!result.success) {
+            alert(result.message || "Không lấy được dữ liệu sổ văn bản đi.");
+            return;
+          }
 
-        let data = locTheoKyHieuSoIn(result.data || [], filters.kyHieu, "di");
-        data = locBoVanBanDaHuyKhiIn(data, "di");
-        renderSoVanBanDi(data);
-        el("printSection").classList.remove("hidden");
-      }, function() {
-        alert("Không kết nối được hệ thống dữ liệu để lấy sổ văn bản đi.");
+          let data = locTheoKyHieuSoIn(result.data || [], filters.kyHieu, "di");
+          data = locVanBanConHieuLucVaKhongTrung(data, "di", boTrangThai);
+          renderSoVanBanDi(data);
+          el("printSection").classList.remove("hidden");
+        }, function() {
+          alert("Không kết nối được hệ thống dữ liệu để lấy sổ văn bản đi.");
+        });
+      }, function(message) {
+        alert(message);
       });
     }
 
     function moSoVanBanDen() {
       const filters = lastSearchFilters || getFilters();
 
-      jsonp({
-        action: "LAY_DANH_SACH_VAN_BAN_DEN",
-        tuNgay: filters.tuNgay || "",
-        denNgay: filters.denNgay || "",
-        nam: filters.nam || "",
-        tuKhoa: filters.tuKhoa || ""
-      }, function(result) {
-        if (!result.success) {
-          alert(result.message || "Không lấy được dữ liệu sổ văn bản đến.");
-          return;
-        }
+      layTrangThaiSoIn("Văn bản đến", filters.nam, function(boTrangThai) {
+        jsonp({
+          action: "LAY_DANH_SACH_VAN_BAN_DEN",
+          tuNgay: filters.tuNgay || "",
+          denNgay: filters.denNgay || "",
+          nam: filters.nam || "",
+          tuKhoa: filters.tuKhoa || ""
+        }, function(result) {
+          if (!result.success) {
+            alert(result.message || "Không lấy được dữ liệu sổ văn bản đến.");
+            return;
+          }
 
-        let data = locTheoKyHieuSoIn(result.data || [], filters.kyHieu, "den");
-        data = locBoVanBanDaHuyKhiIn(data, "den");
-        renderSoVanBanDen(data);
-        el("printSection").classList.remove("hidden");
-      }, function() {
-        alert("Không kết nối được hệ thống dữ liệu để lấy sổ văn bản đến.");
+          let data = locTheoKyHieuSoIn(result.data || [], filters.kyHieu, "den");
+          data = locVanBanConHieuLucVaKhongTrung(data, "den", boTrangThai);
+          renderSoVanBanDen(data);
+          el("printSection").classList.remove("hidden");
+        }, function() {
+          alert("Không kết nối được hệ thống dữ liệu để lấy sổ văn bản đến.");
+        });
+      }, function(message) {
+        alert(message);
       });
     }
 
